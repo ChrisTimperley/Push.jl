@@ -1,111 +1,111 @@
-INTEGER_MOD(ctx::Push3Context) = if length(ctx.integer) >= 2
-  divisor = pop!(ctx.integer)
+INTEGER_MOD(s::State) = if length(s.integer) >= 2
+  divisor = pop!(s.integer)
   if divisor != zero(Int32)
     # FILL IN.
   end 
 end
 
-INTEGER_MUL(ctx::Push3Context) = if length(ctx.integer) >= 2
-  push!(ctx.integer, pop!(ctx.integer) * pop!(ctx.integer))
+INTEGER_MUL(s::State) = if length(s.integer) >= 2
+  push!(s.integer, pop!(s.integer) * pop!(s.integer))
 end
 
-INTEGER_PLUS(ctx::Push3Context) = if length(ctx.integer) >= 2
-  push!(ctx.integer, pop!(ctx.integer) + pop!(ctx.integer))
+INTEGER_PLUS(s::State) = if length(s.integer) >= 2
+  push!(s.integer, pop!(s.integer) + pop!(s.integer))
 end
 
-INTEGER_MINUS(ctx::Push3Context) = if length(ctx.integer) >= 2
-  push!(ctx.integer, - pop!(ctx.integer) + pop!(ctx.integer))
+INTEGER_MINUS(s::State) = if length(s.integer) >= 2
+  push!(s.integer, - pop!(s.integer) + pop!(s.integer))
 end
 
-INTEGER_DIV(ctx::Push3Context) = if length(ctx.integer) >= 2
-  div = peek(ctx.integer)
+INTEGER_DIV(s::State) = if length(s.integer) >= 2
+  div = peek(s.integer)
   if div != zero(Int32)
-    pop!(ctx.integer)
-    push!(ctx.integer, pop!(ctx.integer) / div)
+    pop!(s.integer)
+    push!(s.integer, pop!(s.integer) / div)
   end
 end
 
-INTEGER_LT(ctx::Push3Context) = if length(ctx.integer) >= 2
-  push!(ctx.boolean, pop!(ctx.integer) > pop!(ctx.integer))
+INTEGER_LT(s::State) = if length(s.integer) >= 2
+  push!(s.boolean, pop!(s.integer) > pop!(s.integer))
 end
 
-INTEGER_EQ(ctx::Push3Context) = if length(ctx.integer) >= 2
-  push!(ctx.boolean, pop!(ctx.integer) == pop!(ctx.integer))
+INTEGER_EQ(s::State) = if length(s.integer) >= 2
+  push!(s.boolean, pop!(s.integer) == pop!(s.integer))
 end
 
-INTEGER_GT(ctx::Push3Context) = if length(ctx.integer) >= 2
-  push!(ctx.boolean, pop!(ctx.integer) < pop!(ctx.integer))
+INTEGER_GT(s::State) = if length(s.integer) >= 2
+  push!(s.boolean, pop!(s.integer) < pop!(s.integer))
 end
 
-INTEGER_DEFINE(ctx::Push3Context) = if !isempty(ctx.integer) && !isempty(ctx.name)
-  register(ctx, pop!(ctx.name), pop!(ctx.integer))
+INTEGER_DEFINE(s::State) = if !isempty(s.integer) && !isempty(s.name)
+  register(s, pop!(s.name), pop!(s.integer))
 end
 
-INTEGER_DUP(ctx::Push3Context) = if !isempty(ctx.integer)
-  push!(ctx.integer, peek(ctx.integer))
+INTEGER_DUP(s::State) = if !isempty(s.integer)
+  push!(s.integer, peek(s.integer))
 end
 
-INTEGER_FLUSH(ctx::Push3Context) = clear!(ctx.integer)
+INTEGER_FLUSH(s::State) = clear!(s.integer)
 
-INTEGER_FROM_BOOLEAN(ctx::Push3Context) = if !isempty(ctx.boolean)
-  push!(ctx.integer, pop!(ctx.boolean) ? one(Int32) : zero(Int32))
+INTEGER_FROM_BOOLEAN(s::State) = if !isempty(s.boolean)
+  push!(s.integer, pop!(s.boolean) ? one(Int32) : zero(Int32))
 end
 
 # 
 # TODO:
 # Check Push3 reference integer to floating point conversion semantics.
 #
-INTEGER_FROM_FLOAT(ctx::Push3Context) = if !isempty(ctx.float)
-  push!(ctx.integer, pop!(ctx.float))
+INTEGER_FROM_FLOAT(s::State) = if !isempty(s.float)
+  push!(s.integer, pop!(s.float))
 end
 
-INTEGER_MAX(ctx::Push3Context) = if length(ctx.integer) >= 2
-  push!(ctx.integer, max(pop!(ctx.integer), pop!(ctx.integer)))
+INTEGER_MAX(s::State) = if length(s.integer) >= 2
+  push!(s.integer, max(pop!(s.integer), pop!(s.integer)))
 end
 
-INTEGER_MIN(ctx::Push3Context) = if length(ctx.integer) >= 2
-  push!(ctx.integer, min(pop!(ctx.integer), pop!(ctx.integer)))
+INTEGER_MIN(s::State) = if length(s.integer) >= 2
+  push!(s.integer, min(pop!(s.integer), pop!(s.integer)))
 end
 
-INTEGER_POP(ctx::Push3Context) = if !isempty(ctx.integer)
-  pop!(ctx.integer)
+INTEGER_POP(s::State) = if !isempty(s.integer)
+  pop!(s.integer)
 end
 
 #
 # TODO:
 # Implement RAND functions.
 #
-INTEGER_RAND(ctx::Push3Context) = return
+INTEGER_RAND(s::State) = return
 
-INTEGER_ROT(ctx::Push3Context) = if length(ctx.integer) >= 3
-  ctx.integer[1], ctx.integer[3] = ctx.integer[3], ctx.integer[1]
+INTEGER_ROT(s::State) = if length(s.integer) >= 3
+  s.integer[1], s.integer[3] = s.integer[3], s.integer[1]
 end
 
 # 
 # TODO:
 # Look into semantics of SHOVE.
 #
-INTEGER_SHOVE(ctx::Push3Context) = if length(ctx.integer) >= 2
-  #index = pop!(ctx.integer)
+INTEGER_SHOVE(s::State) = if length(s.integer) >= 2
+  #index = pop!(s.integer)
 #
-  #insert_at!(ctx.integer, pop!(ctx.integer), pop!(ctx.integer))
+  #insert_at!(s.integer, pop!(s.integer), pop!(s.integer))
 end
 
-INTEGER_STACK_DEPTH(ctx::Push3Context) = push!(ctx.integer, length(ctx.integer))
+INTEGER_STACK_DEPTH(s::State) = push!(s.integer, length(s.integer))
 
-INTEGER_SWAP(ctx::Push3Context) = if length(ctx.integer) >= 2
-  ctx.integer[1], ctx.integer[2] = ctx.integer[2], ctx.integer[1]
+INTEGER_SWAP(s::State) = if length(s.integer) >= 2
+  s.integer[1], s.integer[2] = s.integer[2], s.integer[1]
 end
 
 #
 # TODO
 #
-INTEGER_YANK(ctx::Push3Context) = return
+INTEGER_YANK(s::State) = return
 
 #
 # TODO
 #
-INTEGER_YANKDUP(ctx::Push3Context) = return
+INTEGER_YANKDUP(s::State) = return
 
 Push3.register("INTEGER.%",           INTEGER_MOD)
 Push3.register("INTEGER.*",           INTEGER_MUL)

@@ -1,225 +1,225 @@
-CODE_EQ(ctx::Push3Context) = if length(ctx.code) >= 2
-  push!(ctx.boolean, pop!(ctx.code) === pop!(ctx.code))
+CODE_EQ(s::State) = if length(s.code) >= 2
+  push!(s.boolean, pop!(s.code) === pop!(s.code))
 end
 
 #
 # TODO
 #
-CODE_APPEND(ctx::Push3Context) = return
+CODE_APPEND(s::State) = return
 
 #
 # TODO
 #
-CODE_ATOM(ctx::Push3Context) = return
+CODE_ATOM(s::State) = return
 
 #
 # TODO
 #
-CODE_CAR(ctx::Push3Context) = return
+CODE_CAR(s::State) = return
 
 #
 # TODO
 #
-CODE_CDR(ctx::Push3Context) = return
+CODE_CDR(s::State) = return
 
 #
 # TODO
 #
-CODE_CONS(ctx::Push3Context) = return
+CODE_CONS(s::State) = return
 
 #
 # TODO
 #
-CODE_CONTAINER(ctx::Push3Context) = return
+CODE_CONTAINER(s::State) = return
 
 #
 # TODO
 #
-CODE_CONTAINS(ctx::Push3Context) = return
+CODE_CONTAINS(s::State) = return
 
 #
 # TODO
 #
-CODE_DEFINE(ctx::Push3Context) = return
+CODE_DEFINE(s::State) = return
 
 #
 # TODO
 #
-CODE_DEFINITION(ctx::Push3Context) = return
+CODE_DEFINITION(s::State) = return
 
 #
 # TODO
 #
-CODE_DISCREPANCY(ctx::Push3Context) = return
+CODE_DISCREPANCY(s::State) = return
 
 #
 # TODO
 #
-CODE_DO(ctx::Push3Context) = return
+CODE_DO(s::State) = return
 
 #
 # TODO
 #
-CODE_DO_STAR(ctx::Push3Context) = return
+CODE_DO_STAR(s::State) = return
 
 #
 # TODO
 #
-CODE_DO_STAR_COUNT(ctx::Push3Context) = return
+CODE_DO_STAR_COUNT(s::State) = return
 
 #
 # TODO
 #
-CODE_DO_STAR_RANGE(ctx::Push3Context) = return
+CODE_DO_STAR_RANGE(s::State) = return
 
 #
 # TODO
 #
-CODE_DO_STAR_TIMES(ctx::Push3Context) = return
+CODE_DO_STAR_TIMES(s::State) = return
 
-CODE_DUP(ctx::Push3Context) = if !isempty(ctx.code)
-  push!(ctx.code, peek(ctx.code))
+CODE_DUP(s::State) = if !isempty(s.code)
+  push!(s.code, peek(s.code))
 end
 
 #
 # TODO
 #
-CODE_EXTRACT(ctx::Push3Context) = return
+CODE_EXTRACT(s::State) = return
 
-CODE_FLUSH(ctx::Push3Context) = clear!(ctx.code)
+CODE_FLUSH(s::State) = clear!(s.code)
 
 #
 # TODO
 #
-CODE_FROM_BOOLEAN(ctx::Push3Context) = if !isempty(ctx.boolean)
+CODE_FROM_BOOLEAN(s::State) = if !isempty(s.boolean)
   
 end
 
 #
 # TODO
 #
-CODE_FROM_FLOAT(ctx::Push3Context) = if !isempty(ctx.float)
+CODE_FROM_FLOAT(s::State) = if !isempty(s.float)
 
 end
 
 #
 # TODO
 #
-CODE_FROM_INTEGER(ctx::Push3Context) = if !isempty(ctx.integer)
+CODE_FROM_INTEGER(s::State) = if !isempty(s.integer)
 
 end
 
 #
 # TODO
 #
-CODE_FROM_NAME(ctx::Push3Context) = if !isempty(ctx.name)
+CODE_FROM_NAME(s::State) = if !isempty(s.name)
 
 end
 
-CODE_IF(ctx::Push3Context) = if !isempty(ctx.boolean) && length(ctx.code) >= 2
-  a = pop!(ctx.boolean)
-  b = pop!(ctx.boolean)
-  push!(ctx.exec, pop!(ctx.boolean) ? b : a)
-end
-
-#
-# TODO
-#
-CODE_INSERT(ctx::Push3Context) = return
-
-#
-# TODO
-#
-CODE_INSTRUCTIONS(ctx::Push3Context) = return
-
-#
-# TODO
-#
-CODE_LENGTH(ctx::Push3Context) = return
-
-#
-# TODO
-#
-CODE_LIST(ctx::Push3Context) = return
-
-#
-# TODO
-#
-CODE_MEMBER(ctx::Push3Context) = return
-
-CODE_NOOP(ctx::Push3Context) = return
-
-#
-# TODO
-#
-CODE_NTH(ctx::Push3Context) = return
-
-#
-# TODO
-#
-CODE_NTH_CDR(ctx::Push3Context) = return
-
-#
-# TODO
-#
-CODE_NULL(ctx::Push3Context) = return
-
-CODE_POP(ctx::Push3Context) = if !isempty(ctx.code)
-  pop!(ctx.code)
+CODE_IF(s::State) = if !isempty(s.boolean) && length(s.code) >= 2
+  a = pop!(s.boolean)
+  b = pop!(s.boolean)
+  push!(s.exec, pop!(s.boolean) ? b : a)
 end
 
 #
 # TODO
 #
-CODE_POSITION(ctx::Push3Context) = return
+CODE_INSERT(s::State) = return
 
 #
 # TODO
 #
-CODE_QUOTE(ctx::Push3Context) = ctx.flag_quote = true
+CODE_INSTRUCTIONS(s::State) = return
 
 #
 # TODO
 #
-CODE_RAND(ctx::Push3Context) = return
+CODE_LENGTH(s::State) = return
 
-CODE_ROT(ctx::Push3Context) = if length(ctx.code) >= 3
-  ctx.code[1], ctx.code[3] = ctx.code[3], ctx.code[1]
+#
+# TODO
+#
+CODE_LIST(s::State) = return
+
+#
+# TODO
+#
+CODE_MEMBER(s::State) = return
+
+CODE_NOOP(s::State) = return
+
+#
+# TODO
+#
+CODE_NTH(s::State) = return
+
+#
+# TODO
+#
+CODE_NTH_CDR(s::State) = return
+
+#
+# TODO
+#
+CODE_NULL(s::State) = return
+
+CODE_POP(s::State) = if !isempty(s.code)
+  pop!(s.code)
 end
 
 #
 # TODO
 #
-CODE_SHOVE(ctx::Push3Context) = return
+CODE_POSITION(s::State) = return
 
 #
 # TODO
 #
-CODE_SIZE(ctx::Push3Context) = return
+CODE_QUOTE(s::State) = s.flag_quote = true
 
 #
 # TODO
 #
-CODE_STACK_DEPTH(ctx::Push3Context) = push!(ctx.integer, length(ctx.code))
+CODE_RAND(s::State) = return
 
-#
-# TODO
-#
-CODE_SUBST(ctx::Push3Context) = return
-
-CODE_SWAP(ctx::Push3Context) = if length(ctx.code) >= 2
-  ctx.code[1], ctx.code[2] = ctx.code[2], ctx.code[1]
+CODE_ROT(s::State) = if length(s.code) >= 3
+  s.code[1], s.code[3] = s.code[3], s.code[1]
 end
 
 #
 # TODO
 #
-CODE_YANK(ctx::Push3Context) = return
+CODE_SHOVE(s::State) = return
 
 #
 # TODO
 #
-CODE_YANK_DUP(ctx::Push3Context) = return
+CODE_SIZE(s::State) = return
+
+#
+# TODO
+#
+CODE_STACK_DEPTH(s::State) = push!(s.integer, length(s.code))
+
+#
+# TODO
+#
+CODE_SUBST(s::State) = return
+
+CODE_SWAP(s::State) = if length(s.code) >= 2
+  s.code[1], s.code[2] = s.code[2], s.code[1]
+end
+
+#
+# TODO
+#
+CODE_YANK(s::State) = return
+
+#
+# TODO
+#
+CODE_YANK_DUP(s::State) = return
 
 Push3.register("CODE.=",                CODE_EQ)
 Push3.register("CODE.APPEND",           CODE_APPEND)

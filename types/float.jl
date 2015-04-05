@@ -1,111 +1,111 @@
 #
 # TODO
 #
-FLOAT_MOD(ctx::Push3Context) = return
+FLOAT_MOD(s::State) = return
 
-FLOAT_MUL(ctx::Push3Context) = if length(ctx.float) >= 2
-  push!(ctx.float, pop!(ctx.float) * pop!(ctx.float))
+FLOAT_MUL(s::State) = if length(s.float) >= 2
+  push!(s.float, pop!(s.float) * pop!(s.float))
 end
 
-FLOAT_PLUS(ctx::Push3Context) = if length(ctx.float) >= 2
-  push!(ctx.float, pop!(ctx.float) + pop!(ctx.float))
+FLOAT_PLUS(s::State) = if length(s.float) >= 2
+  push!(s.float, pop!(s.float) + pop!(s.float))
 end
 
-FLOAT_SUB(ctx::Push3Context) = if length(ctx.float) >= 2
-  push!(ctx.float, pop!(ctx.float) - pop!(ctx.float))
+FLOAT_SUB(s::State) = if length(s.float) >= 2
+  push!(s.float, pop!(s.float) - pop!(s.float))
 end
 
-FLOAT_DIV(ctx::Push3Context) = if length(ctx.float) >= 2
-  div = peek(ctx.float)
+FLOAT_DIV(s::State) = if length(s.float) >= 2
+  div = peek(s.float)
   if div != zero(Float32)
-    pop!(ctx.float)
-    push!(ctx.float, pop!(ctx.float) / div)
+    pop!(s.float)
+    push!(s.float, pop!(s.float) / div)
   end
 end
 
-FLOAT_LT(ctx::Push3Context) = if length(ctx.float) >= 2
-  push!(ctx.boolean, pop!(ctx.float) > pop!(ctx.float))
+FLOAT_LT(s::State) = if length(s.float) >= 2
+  push!(s.boolean, pop!(s.float) > pop!(s.float))
 end
 
-FLOAT_EQ(ctx::Push3Context) = if length(ctx.float) >= 2
-  push!(ctx.boolean, pop!(ctx.float) == pop!(ctx.float))
+FLOAT_EQ(s::State) = if length(s.float) >= 2
+  push!(s.boolean, pop!(s.float) == pop!(s.float))
 end
 
-FLOAT_GT(ctx::Push3Context) = if length(ctx.float) >= 2
-  push!(ctx.boolean, pop!(ctx.float) < pop!(ctx.float))
+FLOAT_GT(s::State) = if length(s.float) >= 2
+  push!(s.boolean, pop!(s.float) < pop!(s.float))
 end
 
-FLOAT_COS(ctx::Push3Context) = if !isempty(ctx.float)
-  push!(ctx.float, cos(pop!(ctx.float)))
+FLOAT_COS(s::State) = if !isempty(s.float)
+  push!(s.float, cos(pop!(s.float)))
 end
 
-FLOAT_DEFINE(ctx::Push3Context) = if !isempty(ctx.float) && !isempty(ctx.name)
-  register(ctx, pop!(ctx.name), pop!(ctx.float))
+FLOAT_DEFINE(s::State) = if !isempty(s.float) && !isempty(s.name)
+  register(s, pop!(s.name), pop!(s.float))
 end
 
-FLOAT_DUP(ctx::Push3Context) = if !isempty(ctx.float)
-  push!(ctx.float, peek(ctx.float))
+FLOAT_DUP(s::State) = if !isempty(s.float)
+  push!(s.float, peek(s.float))
 end
 
-FLOAT_FLUSH(ctx::Push3Context) = clear!(ctx.float)
+FLOAT_FLUSH(s::State) = clear!(s.float)
 
-FLOAT_FROM_BOOLEAN(ctx::Push3Context) = if !isempty(ctx.boolean)
-  push!(ctx.float, pop!(ctx.boolean) ? one(Float32) : zero(Float32))
+FLOAT_FROM_BOOLEAN(s::State) = if !isempty(s.boolean)
+  push!(s.float, pop!(s.boolean) ? one(Float32) : zero(Float32))
 end
 
-FLOAT_FROM_INTEGER(ctx::Push3Context) = if !isempty(ctx.integer)
-  push!(ctx.float, convert(Float32, pop!(ctx.integer))
+FLOAT_FROM_INTEGER(s::State) = if !isempty(s.integer)
+  push!(s.float, convert(Float32, pop!(s.integer))
 end
 
-FLOAT_MAX(ctx::Push3Context) = if length(ctx.float) >= 2
-  push!(ctx.float, max(pop!(ctx.float), pop!(ctx.float)))
+FLOAT_MAX(s::State) = if length(s.float) >= 2
+  push!(s.float, max(pop!(s.float), pop!(s.float)))
 end
 
-FLOAT_MIN(ctx::Push3Context) = if length(ctx.float) >= 2
-  push!(ctx.float, min(pop!(ctx.float), pop!(ctx.float)))
+FLOAT_MIN(s::State) = if length(s.float) >= 2
+  push!(s.float, min(pop!(s.float), pop!(s.float)))
 end
 
-FLOAT_POP(ctx::Push3Context) = if !isempty(ctx.float)
-  pop!(ctx.float)
-end
-
-#
-# TODO
-#
-FLOAT_RAND(ctx::Push3Context) = return
-
-FLOAT_ROT(ctx::Push3Context) = if length(ctx.float) >= 3
-  ctx.float[1], ctx.float[3] = ctx.float[3], ctx.float[1]
+FLOAT_POP(s::State) = if !isempty(s.float)
+  pop!(s.float)
 end
 
 #
 # TODO
 #
-FLOAT_SHOVE(ctx::Push3Context) = return
+FLOAT_RAND(s::State) = return
 
-FLOAT_SIN(ctx::Push3Context) = if !isempty(ctx.float)
-  push!(ctx.float, sin(pop!(ctx.float)))
-end
-
-FLOAT_STACK_DEPTH(ctx::Push3Context) = push!(ctx.integer, length(ctx.float))
-
-FLOAT_SWAP(ctx::Push3Context) = if length(ctx.float) >= 2
-  ctx.float[1], ctx.float[2] = ctx.float[2], ctx.float[1]
-end
-
-FLOAT_TAN(ctx::Push3Context) = if !isempty(ctx.float)
-  push!(ctx.float, tan(pop!(ctx.float)))
+FLOAT_ROT(s::State) = if length(s.float) >= 3
+  s.float[1], s.float[3] = s.float[3], s.float[1]
 end
 
 #
 # TODO
 #
-FLOAT_YANK(ctx::Push3Context) = return
+FLOAT_SHOVE(s::State) = return
+
+FLOAT_SIN(s::State) = if !isempty(s.float)
+  push!(s.float, sin(pop!(s.float)))
+end
+
+FLOAT_STACK_DEPTH(s::State) = push!(s.integer, length(s.float))
+
+FLOAT_SWAP(s::State) = if length(s.float) >= 2
+  s.float[1], s.float[2] = s.float[2], s.float[1]
+end
+
+FLOAT_TAN(s::State) = if !isempty(s.float)
+  push!(s.float, tan(pop!(s.float)))
+end
 
 #
 # TODO
 #
-FLOAT_YANKDUP(ctx::Push3Context) = return
+FLOAT_YANK(s::State) = return
+
+#
+# TODO
+#
+FLOAT_YANKDUP(s::State) = return
 
 Push3.register("FLOAT.%",           FLOAT_MOD)
 Push3.register("FLOAT.*",           FLOAT_MUL)

@@ -1,54 +1,54 @@
-BOOLEAN_EQUALS(ctx::Push3Context) = if length(ctx.boolean) >= 2
-  push!(ctx.boolean, pop!(ctx.boolean) == pop!(ctx.boolean))
+BOOLEAN_EQUALS(s::State) = if length(s.boolean) >= 2
+  push!(s.boolean, pop!(s.boolean) == pop!(s.boolean))
 end
 
 # Don't bother actually popping and pushing. Edit the top of the stack.
-BOOLEAN_NOT(ctx::Push3Context) = if !isempty(ctx.boolean)
-  ctx.boolean[1] = !ctx.boolean[1]
+BOOLEAN_NOT(s::State) = if !isempty(s.boolean)
+  s.boolean[1] = !s.boolean[1]
 end
 
-BOOLEAN_AND(ctx::Push3Context) = if length(ctx.boolean) >= 2
-  push!(ctx.boolean, pop!(ctx.boolean) && pop!(ctx.boolean))
+BOOLEAN_AND(s::State) = if length(s.boolean) >= 2
+  push!(s.boolean, pop!(s.boolean) && pop!(s.boolean))
 end
 
-BOOLEAN_OR(ctx::Push3Context) = if length(ctx.boolean) >= 2
-  push!(ctx.boolean, pop!(ctx.boolean) || pop!(ctx.boolean))
+BOOLEAN_OR(s::State) = if length(s.boolean) >= 2
+  push!(s.boolean, pop!(s.boolean) || pop!(s.boolean))
 end
 
-BOOLEAN_DEFINE(ctx::Push3Context) = return
+BOOLEAN_DEFINE(s::State) = return
 
-BOOLEAN_DUP(ctx::Push3Context) = if !isempty(ctx.boolean)
-  push!(ctx.boolean, peek(ctx.boolean))
+BOOLEAN_DUP(s::State) = if !isempty(s.boolean)
+  push!(s.boolean, peek(s.boolean))
 end
 
-BOOLEAN_FLUSH(ctx::Push3Context) = if !isempty(ctx.boolean)
-  clear!(ctx.boolean)
+BOOLEAN_FLUSH(s::State) = if !isempty(s.boolean)
+  clear!(s.boolean)
 end
 
-BOOLEAN_FROM_FLOAT(ctx::Push3Context) = if !isempty(ctx.float)
-  push!(ctx.boolean, pop!(ctx.float) != zero(Float32))
+BOOLEAN_FROM_FLOAT(s::State) = if !isempty(s.float)
+  push!(s.boolean, pop!(s.float) != zero(Float32))
 end
 
-BOOLEAN_FROM_INT(ctx::Push3Context) = if !isempty(ctx.int)
-  push!(ctx.boolean, pop!(ctx.int) != zero(Int32))
+BOOLEAN_FROM_INT(s::State) = if !isempty(s.int)
+  push!(s.boolean, pop!(s.int) != zero(Int32))
 end
 
-BOOLEAN_POP(ctx::Push3Context) = pop!(ctx.boolean)
+BOOLEAN_POP(s::State) = pop!(s.boolean)
 
-BOOLEAN_ROT(ctx::Push3Context) = if length(ctx.boolean) >= 3
-  ctx.boolean[1], ctx.boolean[3] = ctx.boolean[3], ctx.boolean[1]
+BOOLEAN_ROT(s::State) = if length(s.boolean) >= 3
+  s.boolean[1], s.boolean[3] = s.boolean[3], s.boolean[1]
 end
 
-BOOLEAN_SHOVE(ctx::Push3Context) = if !isempty(ctx.int)
-  insert_at!(ctx.boolean, pop!(ctx.boolean), pop!(ctx.int))
+BOOLEAN_SHOVE(s::State) = if !isempty(s.int)
+  insert_at!(s.boolean, pop!(s.boolean), pop!(s.int))
 end
 
-BOOLEAN_RAND(ctx::Push3Context) = push!(ctx.boolean, RANDOM_BOOLEAN)
+BOOLEAN_RAND(s::State) = push!(s.boolean, RANDOM_BOOLEAN)
 
-BOOLEAN_STACK_DEPTH(ctx::Push3Context) = push!(ctx.int, length(ctx.boolean))
+BOOLEAN_STACK_DEPTH(s::State) = push!(s.int, length(s.boolean))
 
-BOOLEAN_SWAP(ctx::Push3Context) = if length(ctx.boolean) >= 2
-  ctx.boolean[1], ctx.boolean[2] = ctx.boolean[2], ctx.boolean[1]
+BOOLEAN_SWAP(s::State) = if length(s.boolean) >= 2
+  s.boolean[1], s.boolean[2] = s.boolean[2], s.boolean[1]
 end
 
 # could tell it which stacks we use?

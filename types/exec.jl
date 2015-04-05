@@ -1,61 +1,61 @@
-EXEC_EQ(ctx::Push3Context) = if length(ctx.exec) >= 2
-  push!(ctx.boolean, pop!(ctx.exec) === pop!(ctx.exec))
+EXEC_EQ(s::State) = if length(s.exec) >= 2
+  push!(s.boolean, pop!(s.exec) === pop!(s.exec))
 end
 
 #
 # TODO
 #
-EXEC_DEFINE(ctx::Push3Context) = if !isempty(ctx.name) && !isempty(ctx.exec)
-  register(ctx, pop!(ctx.name), pop!(ctx.exec)) 
+EXEC_DEFINE(s::State) = if !isempty(s.name) && !isempty(s.exec)
+  register(s, pop!(s.name), pop!(s.exec)) 
 end
 
 #
 # TODO
 #
-EXEC_DO_STAR_COUNT(ctx::Push3Context) = return
+EXEC_DO_STAR_COUNT(s::State) = return
 
 #
 # TODO
 #
-EXEC_DO_STAR_RANGE(ctx::Push3Context) = return
+EXEC_DO_STAR_RANGE(s::State) = return
 
 #
 # TODO
 #
-EXEC_DO_STAR_TIMES(ctx::Push3Context) = return
+EXEC_DO_STAR_TIMES(s::State) = return
 
 # What if "EXEC_DUP" is the command being duplicated?
 # Should we allow it to be cloned?
-EXEC_DUP(ctx::Push3Context) = if !isempty(ctx.exec)
-  push!(ctx.exec, peek(ctx.exec))
+EXEC_DUP(s::State) = if !isempty(s.exec)
+  push!(s.exec, peek(s.exec))
 end
 
-EXEC_FLUSH(ctx::Push3Context) = clear!(ctx.exec)
+EXEC_FLUSH(s::State) = clear!(s.exec)
 
-EXEC_IF(ctx::Push3Context) = if !isempty(ctx.boolean) && length(ctx.exec) >= 2
-  a = pop!(ctx.exec)
-  b = pop!(ctx.exec)
-  push!(ctx.exec, pop!(ctx.boolean) ? a : b)
+EXEC_IF(s::State) = if !isempty(s.boolean) && length(s.exec) >= 2
+  a = pop!(s.exec)
+  b = pop!(s.exec)
+  push!(s.exec, pop!(s.boolean) ? a : b)
 end
 
 # What happens when we're dealing with lists?
-EXEC_K(ctx::Push3Context) = if length(ctx.exec) >= 2
-  ctx.exec[1] = pop!(ctx.exec)
+EXEC_K(s::State) = if length(s.exec) >= 2
+  s.exec[1] = pop!(s.exec)
 end
 
-EXEC_POP(ctx::Push3Context) = pop!(ctx.exec)
+EXEC_POP(s::State) = pop!(s.exec)
 
-EXEC_ROT(ctx::Push3Context) = if length(ctx.exec) >= 3
-  ctx.exec[3], ctx.exec[1] = ctx.exec[1], ctx.exec[3]
+EXEC_ROT(s::State) = if length(s.exec) >= 3
+  s.exec[3], s.exec[1] = s.exec[1], s.exec[3]
 end
 
 #
 # TODO
 #
-EXEC_S(ctx::Push3Context) = if length(ctx.exec) >= 3
-  a = pop!(ctx.exec)
-  b = pop!(ctx.exec)
-  c = pop!(ctx.exec)
+EXEC_S(s::State) = if length(s.exec) >= 3
+  a = pop!(s.exec)
+  b = pop!(s.exec)
+  c = pop!(s.exec)
 
   # (B C) C A ?
 end
@@ -63,29 +63,29 @@ end
 #
 # TODO
 #
-EXEC_SHOVE(ctx::Push3Context) = return
+EXEC_SHOVE(s::State) = return
 
-EXEC_STACK_DEPTH(ctx::Push3Context) = push!(ctx.integer, length(ctx.exec))
+EXEC_STACK_DEPTH(s::State) = push!(s.integer, length(s.exec))
 
-EXEC_SWAP(ctx::Push3Context) = if length(ctx.exec) >= 2
-  ctx.exec[1], ctx.exec[2] = ctx.exec[2], ctx.exec[1]
+EXEC_SWAP(s::State) = if length(s.exec) >= 2
+  s.exec[1], s.exec[2] = s.exec[2], s.exec[1]
 end
 
-EXEC_Y(ctx::Push3Context) = if !isempty(ctx.exec)
-  top = pop!(ctx.exec)
+EXEC_Y(s::State) = if !isempty(s.exec)
+  top = pop!(s.exec)
   # (EXEC.Y <top>)
-  push!(ctx.exec, top)
+  push!(s.exec, top)
 end
 
 #
 # TODO
 #
-EXEC_YANK(ctx::Push3Context) = return
+EXEC_YANK(s::State) = return
 
 #
 # TODO
 #
-EXEC_YANK_DUP(ctx::Push3Context) = return
+EXEC_YANK_DUP(s::State) = return
 
 Push3.register("EXEC.=",          EXEC_EQ)
 Push3.register("EXEC.DEFINE",     EXEC_DEFINE)
