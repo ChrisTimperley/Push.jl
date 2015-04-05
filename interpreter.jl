@@ -2,46 +2,37 @@ type Interpreter
 
 end
 
-# Really we want a context...
+# No termination limit for now.
+execute(i::Interpreter, c::Push3Context) = while !isempty(c.exec)
 
-function execute(i::Interpreter, p::PushProgram)
-  push!(i.exec, p)
+  # QUOTE MODE.
 
-  # Keep processing the EXEC stack until all programs have been executed.
-  while !isempty(i.exec)
-    p = pop!(i.exec)
-
-    # NOT JULIA-ESQUE
-    if isa(p, PushInstruction)
-      execute(i, p)
-
-    # Literals are executed by being pushed onto their appropriate stack.
-    elseif isa(p, PushLiteral)
-      push!(i.T, p)
-
-    # The program must be a list, in which case we should push all of its
-    # programs onto the EXEC stack in reverse order (so that they are processed
-    # in their original order).
-    else
-      for it in size(p):-1:1
-        push!(i.exec, it)
-      end
-    end
-  end
+  execute(i, c, pop!(c.exec))
 end
 
-# Push literal's onto their appropriate stack.
-execute(::Interpreter, l::PushLiteral)
-
-# If the given expression is a single instruction, then execute it.
-execute(::Interpreter, ::PushInstruction) = return
-
-# Sequentially execute each program within a given list.
-execute(::Interpreter, lst::Vector{Any}) = for l in lst
-  execute(l)
+# Not too happy about this...
+execute(i::Interpreter, c::Push3Context, v::Vector{Any}) = while !isempty(v)
+  push!(c.exec, pop!(v))
 end
 
+execute(i::Interpreter, c::Push3Context, v::Boolean) =
+  push!(c.boolean, v)
 
-type Lexer
+execute(i::Interpreter, c::Push3Context, v::Int32) =
+  push!(c.integer, v)
+
+# Names?
+function execute(i::Interpreter, c::Push3Context, v::Symbol)
+
+  # Has this name been defined?
+  # Check if this name refers to a "built-in" instruction.
+  #c.instructions = 
+
+  # Check if the name refers to a stored macro.
+  #c.macros
+
+  # If neither of the above, treat the symbol as a literal name
+  # and add it to the NAME stack.
+  push!(ex.name, v)
 
 end

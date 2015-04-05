@@ -5,3 +5,5 @@ type Context
   s_code::Vector{Prog}
   s_exec::Vector{Prog}
 end
+
+# Architecture of programs?
