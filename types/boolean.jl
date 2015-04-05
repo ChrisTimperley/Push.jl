@@ -45,7 +45,7 @@ end
 
 BOOLEAN_RAND(ctx::Push3Context) = push!(ctx.boolean, RANDOM_BOOLEAN)
 
-BOOLEAN_STACKDEPTH(ctx::Push3Context) = push!(ctx.int, length(ctx.boolean))
+BOOLEAN_STACK_DEPTH(ctx::Push3Context) = push!(ctx.int, length(ctx.boolean))
 
 BOOLEAN_SWAP(ctx::Push3Context) = if length(ctx.boolean) >= 2
   ctx.boolean[1], ctx.boolean[2] = ctx.boolean[2], ctx.boolean[1]
@@ -65,5 +65,5 @@ Push3.register("BOOLEAN.POP",         BOOLEAN_POP)
 Push3.register("BOOLEAN.ROT",         BOOLEAN_ROT)
 Push3.register("BOOLEAN.SHOVE",       BOOLEAN_SHOVE)
 Push3.register("BOOLEAN.RAND",        BOOLEAN_RAND)
-Push3.register("BOOLEAN.STACKDEPTH",  BOOLEAN_STACKDEPTH)
+Push3.register("BOOLEAN.STACKDEPTH",  BOOLEAN_STACK_DEPTH)
 Push3.register("BOOLEAN.SWAP",        BOOLEAN_SWAP)
