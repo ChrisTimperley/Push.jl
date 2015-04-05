@@ -36,9 +36,7 @@ end
 BOOLEAN_POP(ctx::Push3Context) = pop!(ctx.boolean)
 
 BOOLEAN_ROT(ctx::Push3Context) = if length(ctx.boolean) >= 3
-  t = ctx.boolean[1]
-  ctx.boolean[1] = ctx.boolean[3]
-  ctx.boolean[3] = t
+  ctx.boolean[1], ctx.boolean[3] = ctx.boolean[3], ctx.boolean[1]
 end
 
 BOOLEAN_SHOVE(ctx::Push3Context) = if !isempty(ctx.int)
@@ -50,9 +48,7 @@ BOOLEAN_RAND(ctx::Push3Context) = push!(ctx.boolean, RANDOM_BOOLEAN)
 BOOLEAN_STACKDEPTH(ctx::Push3Context) = push!(ctx.int, length(ctx.boolean))
 
 BOOLEAN_SWAP(ctx::Push3Context) = if length(ctx.boolean) >= 2
-  t = ctx.boolean[1]
-  ctx.boolean[1] = ctx.boolean[2]
-  ctx.boolean[2] = t
+  ctx.boolean[1], ctx.boolean[2] = ctx.boolean[2], ctx.boolean[1]
 end
 
 # could tell it which stacks we use?
