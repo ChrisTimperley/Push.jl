@@ -21,18 +21,19 @@ execute(i::Interpreter, s::State, v::Bool) =
 execute(i::Interpreter, s::State, v::Int32) =
   push!(s.integer, v)
 
-# Names?
 function execute(i::Interpreter, s::State, v::Symbol)
-
-  # Has this name been defined?
   # Check if this name refers to a "built-in" instruction.
-  #c.instructions = 
+  if haskey(s.instructions, v)
+    s.instructions[v](s)
 
   # Check if the name refers to a stored macro.
   #c.macros
+  #elseif haskey(s.macros, v)
+  #  s.macros[v](s)
 
   # If neither of the above, treat the symbol as a literal name
   # and add it to the NAME stack.
-  push!(s.name, v)
-
+  else
+    push!(s.name, v)
+  end
 end
