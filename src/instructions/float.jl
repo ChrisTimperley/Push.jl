@@ -54,7 +54,7 @@ FLOAT_FROM_BOOLEAN(s::State) = if !isempty(s.boolean)
 end
 
 FLOAT_FROM_INTEGER(s::State) = if !isempty(s.integer)
-  push!(s.float, convert(Float32, pop!(s.integer))
+  push!(s.float, convert(Float32, pop!(s.integer)))
 end
 
 FLOAT_MAX(s::State) = if length(s.float) >= 2

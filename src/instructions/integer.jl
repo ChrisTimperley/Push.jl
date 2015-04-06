@@ -13,7 +13,7 @@ INTEGER_PLUS(s::State) = if length(s.integer) >= 2
   push!(s.integer, pop!(s.integer) + pop!(s.integer))
 end
 
-INTEGER_MINUS(s::State) = if length(s.integer) >= 2
+INTEGER_SUB(s::State) = if length(s.integer) >= 2
   push!(s.integer, - pop!(s.integer) + pop!(s.integer))
 end
 
