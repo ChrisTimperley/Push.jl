@@ -15,7 +15,7 @@ execute(i::Interpreter, s::State, v::Vector{Any}) = while !isempty(v)
   push!(s.exec, pop!(v))
 end
 
-execute(i::Interpreter, s::State, v::Boolean) =
+execute(i::Interpreter, s::State, v::Bool) =
   push!(s.boolean, v)
 
 execute(i::Interpreter, s::State, v::Int32) =
