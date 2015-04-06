@@ -1,4 +1,4 @@
-module Push3
+module Push
   export register
 
   include("parser.jl")
