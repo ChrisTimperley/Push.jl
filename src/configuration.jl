@@ -1,3 +1,9 @@
+#
+# TODO:
+# - Clear excess whitespace.
+# - Configuration validation.
+#
+
 type Configuration
   parameters::Dict{String, String}
   types::Vector{String}
