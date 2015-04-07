@@ -5,7 +5,7 @@ module Push
   include("stack.jl")
   include("parameters.jl")
   include("state.jl")
-  include("interpreter.jl")
+  include("execute.jl")
 
   # Initialise the instruction repository.
   instructions = Dict{Symbol, Function}()
