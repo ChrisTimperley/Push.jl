@@ -21,6 +21,9 @@ execute(i::Interpreter, s::State, v::Bool) =
 execute(i::Interpreter, s::State, v::Int32) =
   push!(s.integer, v)
 
+execute(i::Interpreter, s::State, f::Float32) = 
+  push!(s.float, f)
+
 function execute(i::Interpreter, s::State, v::Symbol)
   # Check if this name refers to a "built-in" instruction.
   if haskey(s.instructions, v)
