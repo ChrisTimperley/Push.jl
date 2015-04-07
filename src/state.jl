@@ -1,5 +1,3 @@
-require("parameters.jl")
-
 type State
   parameters::Parameters
   float::Vector{Float32}
