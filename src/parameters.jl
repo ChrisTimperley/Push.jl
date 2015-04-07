@@ -44,5 +44,13 @@ type Parameters
     new(typemin(Float32), typemax(Float32),
       typemin(Int32), typemax(Int32),
       500, 0.001, 10, 10, true, false)
-    
+
 end
+
+# Adjusts the parameters of a given parameter object using a parameter table.
+set!(p::Parameters, params::Dict{String, String}) = for (k, v) in params
+  set!(p, k, v)
+end
+
+# Adjusts the value of a single parameter, k, to a given value, v.
+set!(p::Parameters, k::String, v::String) = return
