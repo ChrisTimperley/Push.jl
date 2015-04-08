@@ -19,7 +19,7 @@ function load_configuration(f::IOStream)
     ln = strip(ln)
 
     # Ignore comments and empty lines.
-    if !isempty(ln) || ln[1] == '#'
+    if !isempty(ln) && ln[1] != '#'
       k, v = split(ln)
       if k == "type" # Type declaration.
         continue
