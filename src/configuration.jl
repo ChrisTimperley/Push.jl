@@ -4,6 +4,8 @@
 # - Configuration validation.
 #
 
+println("testing")
+
 type Configuration
   parameters::Dict{String, String}
   types::Vector{String}
