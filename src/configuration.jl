@@ -31,7 +31,7 @@ function load_configuration(f::File)
       else # Parameter definition.
         c.parameters[k] = v
       end
-    endW
+    end
   end
   return c
 end
