@@ -182,7 +182,7 @@ CODE_QUOTE(s::State) = s.flag_quote = true
 CODE_RAND(s::State) = return
 
 CODE_ROT(s::State) = if length(s.code) >= 3
-  s.code[1], s.code[3] = s.code[3], s.code[1]
+  s.code[end], s.code[end-2] = s.code[end-2], s.code[end]
 end
 
 #

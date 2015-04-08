@@ -76,7 +76,7 @@ INTEGER_POP(s::State) = !isempty(s.integer) && pop!(s.integer)
 INTEGER_RAND(s::State) = return
 
 INTEGER_ROT(s::State) = if length(s.integer) >= 3
-  s.integer[1], s.integer[3] = s.integer[3], s.integer[1]
+  s.integer[end], s.integer[end-2] = s.integer[end-2], s.integer[end]
 end
 
 # 

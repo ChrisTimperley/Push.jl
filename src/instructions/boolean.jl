@@ -36,7 +36,7 @@ end
 BOOLEAN_POP(s::State) = pop!(s.boolean)
 
 BOOLEAN_ROT(s::State) = if length(s.boolean) >= 3
-  s.boolean[1], s.boolean[3] = s.boolean[3], s.boolean[1]
+  s.boolean[end], s.boolean[end-2] = s.boolean[end-2], s.boolean[end]
 end
 
 BOOLEAN_SHOVE(s::State) = if !isempty(s.int)

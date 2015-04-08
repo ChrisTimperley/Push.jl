@@ -75,7 +75,7 @@ end
 FLOAT_RAND(s::State) = return
 
 FLOAT_ROT(s::State) = if length(s.float) >= 3
-  s.float[1], s.float[3] = s.float[3], s.float[1]
+  s.float[end], s.float[end-2] = s.float[end-2], s.float[end]
 end
 
 #

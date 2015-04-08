@@ -26,7 +26,7 @@ NAME_RAND(s::State) = return
 NAME_RAND_BOUND_NAME(s::State) = return
 
 NAME_ROT(s::State) = if length(s.name) >= 3
-  s.name[1], s.name[3] = s.name[3], s.name[1]
+  s.name[end], s.name[end-2] = s.name[end-2], s.name[end]
 end
 
 #
