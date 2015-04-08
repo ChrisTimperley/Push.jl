@@ -4,6 +4,7 @@ module Push
   include("parser.jl")
   include("parameters.jl")
   include("state.jl")
+  include("configuration.jl")
   include("execute.jl")
 
   # Initialise the instruction repository.

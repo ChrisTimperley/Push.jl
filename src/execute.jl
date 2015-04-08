@@ -1,3 +1,14 @@
+# Top level of the Push interpreter.
+run(p::String, cfg::String) = run(Parser.to_push(p), configure(cfg))
+function run(p::Any, s::State)
+  push!(s.parameters.top_level_push_code ? s.code : s.exec, p)
+  execute(s.exec)
+  if s.parameters.top_level_pop_code
+    pop!(s.code)
+  end
+  return s
+end
+
 # No termination limit for now.
 execute(s::State) = while !isempty(s.exec)
 
