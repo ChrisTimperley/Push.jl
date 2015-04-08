@@ -1,6 +1,7 @@
 module Push
   export register
 
+  include("stack.jl")
   include("parser.jl")
   include("parameters.jl")
   include("state.jl")

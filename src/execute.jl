@@ -20,7 +20,6 @@ execute(s::State) = while !isempty(s.exec)
   execute(s, pop!(s.exec))
 end
 
-# Not too happy about this...
 execute(s::State, v::Vector{Any}) = while !isempty(v)
   push!(s.exec, pop!(v))
 end
