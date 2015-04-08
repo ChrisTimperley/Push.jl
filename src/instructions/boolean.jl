@@ -8,11 +8,11 @@ BOOLEAN_NOT(s::State) = if !isempty(s.boolean)
 end
 
 BOOLEAN_AND(s::State) = if length(s.boolean) >= 2
-  push!(s.boolean, pop!(s.boolean) && pop!(s.boolean))
+  push!(s.boolean, pop!(s.boolean) & pop!(s.boolean))
 end
 
 BOOLEAN_OR(s::State) = if length(s.boolean) >= 2
-  push!(s.boolean, pop!(s.boolean) || pop!(s.boolean))
+  push!(s.boolean, pop!(s.boolean) | pop!(s.boolean))
 end
 
 BOOLEAN_DEFINE(s::State) = return
