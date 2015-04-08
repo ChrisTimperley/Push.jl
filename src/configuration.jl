@@ -3,9 +3,6 @@
 # - Clear excess whitespace.
 # - Configuration validation.
 #
-
-println("testing")
-
 type Configuration
   parameters::Dict{String, String}
   types::Vector{String}
@@ -23,7 +20,7 @@ function load_configuration(f::IOStream)
 
     # Ignore comments and empty lines.
     if !isempty(ln) || ln[1] == '#'
-      k, v = split(s)
+      k, v = split(ln)
       if k == "type" # Type declaration.
         continue
       elseif k == "instruction" # Instruction declaration.
