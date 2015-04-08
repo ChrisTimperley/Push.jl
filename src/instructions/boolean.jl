@@ -22,15 +22,15 @@ BOOLEAN_DUP(s::State) = if !isempty(s.boolean)
 end
 
 BOOLEAN_FLUSH(s::State) = if !isempty(s.boolean)
-  clear!(s.boolean)
+  empty!(s.boolean)
 end
 
 BOOLEAN_FROM_FLOAT(s::State) = if !isempty(s.float)
   push!(s.boolean, pop!(s.float) != zero(Float32))
 end
 
-BOOLEAN_FROM_INT(s::State) = if !isempty(s.int)
-  push!(s.boolean, pop!(s.int) != zero(Int32))
+BOOLEAN_FROM_INT(s::State) = if !isempty(s.integer)
+  push!(s.boolean, pop!(s.integer) != zero(Int32))
 end
 
 BOOLEAN_POP(s::State) = pop!(s.boolean)
