@@ -3,12 +3,13 @@ type State
   float::Vector{Float32}
   integer::Vector{Int32}
   boolean::Vector{Bool}
+  name::Vector{Symbol}
   code::Vector{Any}
   exec::Vector{Any}
   instructions::Dict{Symbol, Function}
   
   State() = new(Parameters(), Float32[], Int32[], Bool[],
-    Any[], Any[], Dict{Symbol, Function}())
+    Any[], Any[], Any[], Dict{Symbol, Function}())
   State(f::Vector{Float32}, i::Vector{Int32}, b::Vector{Int32},
     c::Vector{Any}, e::Vector{Any}, ins::Dict{Symbol, Function}) =
     new(f, i, b, c, e, ins)
