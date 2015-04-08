@@ -30,7 +30,7 @@ EXEC_DUP(s::State) = if !isempty(s.exec)
   push!(s.exec, peek(s.exec))
 end
 
-EXEC_FLUSH(s::State) = clear!(s.exec)
+EXEC_FLUSH(s::State) = empty!(s.exec)
 
 EXEC_IF(s::State) = if !isempty(s.boolean) && length(s.exec) >= 2
   a = pop!(s.exec)

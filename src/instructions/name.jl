@@ -6,7 +6,7 @@ NAME_DUP(s::State) = if !isempty(s.name)
   push!(s.bool, peek(s.name))
 end
 
-NAME_FLUSH(s::State) = clear!(s.name)
+NAME_FLUSH(s::State) = empty!(s.name)
 
 NAME_POP(s::State) = if !isempty(s.name)
   pop!(s.name)

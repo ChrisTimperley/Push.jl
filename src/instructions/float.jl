@@ -47,7 +47,7 @@ FLOAT_DUP(s::State) = if !isempty(s.float)
   push!(s.float, peek(s.float))
 end
 
-FLOAT_FLUSH(s::State) = clear!(s.float)
+FLOAT_FLUSH(s::State) = empty!(s.float)
 
 FLOAT_FROM_BOOLEAN(s::State) = if !isempty(s.boolean)
   push!(s.float, pop!(s.boolean) ? one(Float32) : zero(Float32))

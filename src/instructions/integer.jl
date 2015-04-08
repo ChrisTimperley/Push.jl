@@ -45,7 +45,7 @@ INTEGER_DUP(s::State) = if !isempty(s.integer)
   push!(s.integer, peek(s.integer))
 end
 
-INTEGER_FLUSH(s::State) = clear!(s.integer)
+INTEGER_FLUSH(s::State) = empty!(s.integer)
 
 INTEGER_FROM_BOOLEAN(s::State) = if !isempty(s.boolean)
   push!(s.integer, pop!(s.boolean) ? one(Int32) : zero(Int32))

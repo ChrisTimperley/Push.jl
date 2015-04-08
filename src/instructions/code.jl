@@ -86,7 +86,7 @@ end
 #
 CODE_EXTRACT(s::State) = return
 
-CODE_FLUSH(s::State) = clear!(s.code)
+CODE_FLUSH(s::State) = empty!(s.code)
 
 #
 # TODO
