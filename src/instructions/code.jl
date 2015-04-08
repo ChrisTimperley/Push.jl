@@ -164,9 +164,7 @@ CODE_NTH_CDR(s::State) = return
 #
 CODE_NULL(s::State) = return
 
-CODE_POP(s::State) = if !isempty(s.code)
-  pop!(s.code)
-end
+CODE_POP(s::State) = !isempty(s.code) && pop!(s.code)
 
 #
 # TODO

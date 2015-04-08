@@ -8,9 +8,7 @@ end
 
 NAME_FLUSH(s::State) = empty!(s.name)
 
-NAME_POP(s::State) = if !isempty(s.name)
-  pop!(s.name)
-end
+NAME_POP(s::State) = !isempty(s.name) && pop!(s.name)
 
 #
 # TODO

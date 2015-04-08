@@ -67,9 +67,7 @@ INTEGER_MIN(s::State) = if length(s.integer) >= 2
   push!(s.integer, min(pop!(s.integer), pop!(s.integer)))
 end
 
-INTEGER_POP(s::State) = if !isempty(s.integer)
-  pop!(s.integer)
-end
+INTEGER_POP(s::State) = !isempty(s.integer) && pop!(s.integer)
 
 #
 # TODO:
