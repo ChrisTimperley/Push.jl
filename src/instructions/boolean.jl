@@ -52,7 +52,7 @@ BOOLEAN_SWAP(s::State) = if length(s.boolean) >= 2
 end
 
 # could tell it which stacks we use?
-Push.register("BOOLEAN.=",            BOOLEAN_EQUALS)
+Push.register("BOOLEAN.=",           BOOLEAN_EQUALS)
 Push.register("BOOLEAN.NOT",         BOOLEAN_NOT)
 Push.register("BOOLEAN.AND",         BOOLEAN_AND)
 Push.register("BOOLEAN.OR",          BOOLEAN_OR)

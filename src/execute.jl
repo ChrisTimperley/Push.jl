@@ -1,9 +1,12 @@
 # Top level of the Push interpreter.
-run(p::String, cfg::String) = run(Parser.to_push(p), load_configuration(cfg))
-run(p::String, cfg::Configuration) = run(Parser.to_push(p), configure(cfg))
+run(p::String, cfg::String) = run(p, load_configuration(cfg))
+run(p::ASCIIString, cfg::Configuration) = run(Parser.to_push(p), configure(cfg))
 function run(p::Any, s::State)
-  push!(s.parameters.top_level_push_code ? s.code : s.exec, p)
-  execute(s.exec)
+  if s.parameters.top_level_push_code
+    push!(s.code, p)
+  end
+  push!(s.exec, p)
+  execute(s)
   if s.parameters.top_level_pop_code
     pop!(s.code)
   end
@@ -14,8 +17,7 @@ end
 execute(s::State) = while !isempty(s.exec)
 
   # QUOTE MODE.
-
-  execute(i, s, pop!(s.exec))
+  execute(s, pop!(s.exec))
 end
 
 # Not too happy about this...
