@@ -1,3 +1,5 @@
+require("src/Push.jl")
+
 using Push
 using Base.Test
 
@@ -6,10 +8,10 @@ cfg_path = joinpath(dirname(@__FILE__), "configuration/boolean.cfg")
 cfg = Push.load_configuration(cfg_path)
 
 # EQUALS.
-s = run("(FALSE FALSE BOOLEAN.=)", cfg)
+s = Push.run("(FALSE FALSE BOOLEAN.=)", cfg)
 @test s.boolean == [true]
 
-s = run("(FALSE TRUE BOOLEAN.=)", cfg)
+s = Push.run("(FALSE TRUE BOOLEAN.=)", cfg)
 @test s.boolean == [false]
 
 # Program.
