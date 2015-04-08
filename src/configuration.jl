@@ -16,7 +16,7 @@ end
 
 # Loads a configuration file at a given location.
 load_configuration(f::String) = open(load_configuration, f)
-function load_configuration(f::File)
+function load_configuration(f::IOStream)
   c = Configuration()
   for ln in eachline(f)
     ln = strip(ln)
