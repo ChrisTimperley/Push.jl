@@ -6,7 +6,7 @@
 type Configuration
   parameters::Dict{String, String}
   types::Vector{String}
-  instructions::Vector{Symbol}
+  instructions::Vector{String}
 
   Configuration() = new(Dict{String, Any}(), String[], Symbol[])
 end
@@ -24,7 +24,7 @@ function load_configuration(f::IOStream)
       if k == "type" # Type declaration.
         continue
       elseif k == "instruction" # Instruction declaration.
-        push!(c.instructions, convert(Symbol, v))
+        push!(c.instructions, v)
       else # Parameter definition.
         c.parameters[k] = v
       end
