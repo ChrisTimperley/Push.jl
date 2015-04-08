@@ -1,5 +1,6 @@
 # Top level of the Push interpreter.
-run(p::String, cfg::String) = run(Parser.to_push(p), configure(cfg))
+run(p::String, cfg::String) = run(Parser.to_push(p), load_configuration(cfg))
+run(p::String, cfg::Configuration) = run(Parser.to_push(p), configure(cfg))
 function run(p::Any, s::State)
   push!(s.parameters.top_level_push_code ? s.code : s.exec, p)
   execute(s.exec)
