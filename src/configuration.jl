@@ -22,7 +22,7 @@ function load_configuration(f::IOStream)
     if !isempty(ln) && ln[1] != '#'
       k, v = split(ln)
       if k == "type" # Type declaration.
-        continue
+        push!(c.types, v)
       elseif k == "instruction" # Instruction declaration.
         push!(c.instructions, v)
       else # Parameter definition.
