@@ -52,15 +52,15 @@ BOOLEAN_SWAP(s::State) = if length(s.boolean) >= 2
 end
 
 # could tell it which stacks we use?
-Push.register("BOOLEAN.EQUALS",      BOOLEAN_EQUALS)
+Push.register("BOOLEAN.=",      BOOLEAN_EQUALS)
 Push.register("BOOLEAN.NOT",         BOOLEAN_NOT)
 Push.register("BOOLEAN.AND",         BOOLEAN_AND)
 Push.register("BOOLEAN.OR",          BOOLEAN_OR)
 Push.register("BOOLEAN.DEFINE",      BOOLEAN_DEFINE)
 Push.register("BOOLEAN.DUP",         BOOLEAN_DUP)
 Push.register("BOOLEAN.FLUSH",       BOOLEAN_FLUSH)
-Push.register("BOOLEAN.FROM_FLOAT",  BOOLEAN_FROM_FLOAT)
-Push.register("BOOLEAN.FROM_INT",    BOOLEAN_FROM_INT)
+Push.register("BOOLEAN.FROMFLOAT",  BOOLEAN_FROM_FLOAT)
+Push.register("BOOLEAN.FROMINT",    BOOLEAN_FROM_INT)
 Push.register("BOOLEAN.POP",         BOOLEAN_POP)
 Push.register("BOOLEAN.ROT",         BOOLEAN_ROT)
 Push.register("BOOLEAN.SHOVE",       BOOLEAN_SHOVE)
