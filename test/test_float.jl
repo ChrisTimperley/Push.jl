@@ -181,8 +181,17 @@ s = Push.run("(10.0 20.0 30.0 40.0 50.0 -987 FLOAT.YANKDUP)", cfg)
 @test s.float == [10.0, 20.0, 30.0, 40.0, 50.0, 50.0]
 
 # FLOAT.TAN
+s = Push.run("(90.0 FLOAT.TAN)", cfg)
+@test s.float == [tan(90.0)]
+
 # FLOAT.COS
+s = Push.run("(90.0 FLOAT.COS)", cfg)
+@test s.float == [cos(90.0)]
+
+# FLOAT.SIN
+s = Push.run("(90.0 FLOAT.SIN)", cfg)
+@test s.float == [sin(90.0)]
+
 # FLOAT.DEFINE
 # FLOAT.RAND
 # FLOAT.%
-# FLOAT.SIN
