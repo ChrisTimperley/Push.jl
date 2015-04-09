@@ -16,10 +16,10 @@ FLOAT_SUB(s::State) = if length(s.float) >= 2
 end
 
 FLOAT_DIV(s::State) = if length(s.float) >= 2
-  div = peek(s.float)
-  if div != zero(Float32)
+  divisor = peek(s.float)
+  if divisor != zero(Float32)
     pop!(s.float)
-    push!(s.float, pop!(s.float) / div)
+    push!(s.float, pop!(s.float) / divisor)
   end
 end
 
