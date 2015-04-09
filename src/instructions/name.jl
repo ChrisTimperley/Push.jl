@@ -37,7 +37,7 @@ NAME_SHOVE(s::State) = return
 NAME_STACK_DEPTH(s::State) = push!(s.integer, length(s.name))
 
 NAME_SWAP(s::State) = if length(s.name) >= 2
-  s.name[1], s.name[2] = s.name[2], s.name[1]
+  s.name[end], s.name[end-1] = s.name[end-1], s.name[end]
 end
 
 #

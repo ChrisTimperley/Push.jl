@@ -68,7 +68,7 @@ EXEC_SHOVE(s::State) = return
 EXEC_STACK_DEPTH(s::State) = push!(s.integer, length(s.exec))
 
 EXEC_SWAP(s::State) = if length(s.exec) >= 2
-  s.exec[1], s.exec[2] = s.exec[2], s.exec[1]
+  s.exec[end], s.exec[end-1] = s.exec[end-1], s.exec[end]
 end
 
 EXEC_Y(s::State) = if !isempty(s.exec)

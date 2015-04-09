@@ -92,7 +92,7 @@ end
 INTEGER_STACK_DEPTH(s::State) = push!(s.integer, length(s.integer))
 
 INTEGER_SWAP(s::State) = if length(s.integer) >= 2
-  s.integer[1], s.integer[2] = s.integer[2], s.integer[1]
+  s.integer[end], s.integer[end-1] = s.integer[end-1], s.integer[end]
 end
 
 #

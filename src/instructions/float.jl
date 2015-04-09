@@ -90,7 +90,7 @@ end
 FLOAT_STACK_DEPTH(s::State) = push!(s.integer, length(s.float))
 
 FLOAT_SWAP(s::State) = if length(s.float) >= 2
-  s.float[1], s.float[2] = s.float[2], s.float[1]
+  s.float[end], s.float[end-1] = s.float[end-1], s.float[end]
 end
 
 FLOAT_TAN(s::State) = if !isempty(s.float)

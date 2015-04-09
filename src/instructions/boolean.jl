@@ -48,7 +48,7 @@ BOOLEAN_RAND(s::State) = push!(s.boolean, RANDOM_BOOLEAN)
 BOOLEAN_STACK_DEPTH(s::State) = push!(s.int, length(s.boolean))
 
 BOOLEAN_SWAP(s::State) = if length(s.boolean) >= 2
-  s.boolean[1], s.boolean[2] = s.boolean[2], s.boolean[1]
+  s.boolean[end], s.boolean[end-1] = s.boolean[end-1], s.boolean[end]
 end
 
 # could tell it which stacks we use?

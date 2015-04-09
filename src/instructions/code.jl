@@ -206,7 +206,7 @@ CODE_STACK_DEPTH(s::State) = push!(s.integer, length(s.code))
 CODE_SUBST(s::State) = return
 
 CODE_SWAP(s::State) = if length(s.code) >= 2
-  s.code[1], s.code[2] = s.code[2], s.code[1]
+  s.code[end], s.code[end-1] = s.code[end-1], s.code[end]
 end
 
 #
