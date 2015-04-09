@@ -39,16 +39,24 @@ BOOLEAN_ROT(s::State) = if length(s.boolean) >= 3
   s.boolean[end], s.boolean[end-2] = s.boolean[end-2], s.boolean[end]
 end
 
-BOOLEAN_SHOVE(s::State) = if !isempty(s.int)
-  insert_at!(s.boolean, pop!(s.boolean), pop!(s.int))
+BOOLEAN_SHOVE(s::State) = if !isempty(s.integer)
+  shove!(s.boolean, pop!(s.integer))
 end
 
 BOOLEAN_RAND(s::State) = push!(s.boolean, RANDOM_BOOLEAN)
 
-BOOLEAN_STACK_DEPTH(s::State) = push!(s.int, length(s.boolean))
+BOOLEAN_STACK_DEPTH(s::State) = push!(s.integer, length(s.boolean))
 
 BOOLEAN_SWAP(s::State) = if length(s.boolean) >= 2
   s.boolean[end], s.boolean[end-1] = s.boolean[end-1], s.boolean[end]
+end
+
+BOOLEAN_YANK(s::State) = if !isempty(s.integer)
+  yank!(s.boolean, pop!(s.integer))
+end
+
+BOOLEAN_YANKDUP(s::State) = if !isempty(s.integer)
+  yankdup!(s.boolean, pop!(s.integer))
 end
 
 # could tell it which stacks we use?
@@ -67,3 +75,5 @@ Push.register("BOOLEAN.SHOVE",       BOOLEAN_SHOVE)
 Push.register("BOOLEAN.RAND",        BOOLEAN_RAND)
 Push.register("BOOLEAN.STACKDEPTH",  BOOLEAN_STACK_DEPTH)
 Push.register("BOOLEAN.SWAP",        BOOLEAN_SWAP)
+Push.register("BOOLEAN.YANK",        BOOLEAN_YANK)
+Push.register("BOOLEAN.YANKDUP",     BOOLEAN_YANKDUP)
