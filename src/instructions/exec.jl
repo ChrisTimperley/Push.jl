@@ -1,28 +1,31 @@
-EXEC_EQ(s::State) = if length(s.exec) >= 2
+EXEC_EQ(s::State) = if length(s.exec) > 1
   push!(s.boolean, pop!(s.exec) == pop!(s.exec))
 end
 
-#
-# TODO
-#
-EXEC_DEFINE(s::State) = if !isempty(s.name) && !isempty(s.exec)
-  register(s, pop!(s.name), pop!(s.exec)) 
+EXEC_DEFINE(s::State) = return
+#if !isempty(s.name) && !isempty(s.exec)
+#  register(s, pop!(s.name), pop!(s.exec)) 
+#end
+
+EXEC_DO_STAR_COUNT(s::State) = if !isempty(s.integer) && s.integer[end] >= 0 && !isempty(s.exec)
+  push!(s.integer, 0, pop!(s.integer) - 1)
+  push!(s.exec, pop!(s.exec), convert(Symbol, "EXEC.DO*RANGE"))
 end
 
-#
-# TODO
-#
-EXEC_DO_STAR_COUNT(s::State) = return
+EXEC_DO_STAR_RANGE(s::State) = if !length(s.integer) > 1 && !isempty(s.exec)
+  dest_idx = pop!(s.integer)
+  curr_idx = peek(s.integer)
+  if dest_idx != curr_idx
+    body = pop!(s.exec)
+    curr_idx += dest_idx > curr_idx ? 1 : -1
+    push!(s.exec, {curr_idx, dest_idx, convert(Symbol, "EXEC.DO*RANGE"), body}, body)
+  end
+end
 
-#
-# TODO
-#
-EXEC_DO_STAR_RANGE(s::State) = return
-
-#
-# TODO
-#
-EXEC_DO_STAR_TIMES(s::State) = return
+EXEC_DO_STAR_TIMES(s::State) = if !isempty(s.integer) && s.integer[end] >= 0 && !isempty(s.exec)
+  push!(s.integer, 0, pop!(s.integer) - 1)
+  push!(s.exec, {convert(Symbol, "INTEGER.POP"), pop!(s.exec)}, convert(Symbol, "EXEC.DO*RANGE"))
+end
 
 # What if "EXEC_DUP" is the command being duplicated?
 # Should we allow it to be cloned?
@@ -38,26 +41,21 @@ EXEC_IF(s::State) = if !isempty(s.boolean) && length(s.exec) >= 2
   push!(s.exec, pop!(s.boolean) ? a : b)
 end
 
-# What happens when we're dealing with lists?
-EXEC_K(s::State) = if length(s.exec) >= 2
+EXEC_K(s::State) = if length(s.exec) > 1
   s.exec[1] = pop!(s.exec)
 end
 
 EXEC_POP(s::State) = pop!(s.exec)
 
-EXEC_ROT(s::State) = if length(s.exec) >= 3
+EXEC_ROT(s::State) = if length(s.exec) > 2
   s.exec[end-2], s.exec[end] = s.exec[end], s.exec[end-2]
 end
 
-#
-# TODO
-#
-EXEC_S(s::State) = if length(s.exec) >= 3
+EXEC_S(s::State) = if length(s.exec) > 2
   a = pop!(s.exec)
   b = pop!(s.exec)
   c = pop!(s.exec)
-
-  # (B C) C A ?
+  push!(s.exec, a, copy(c), {b, c})
 end
 
 EXEC_SHOVE(s::State) = if !isempty(s.integer) && !isempty(s.exec)
@@ -66,14 +64,13 @@ end
 
 EXEC_STACK_DEPTH(s::State) = push!(s.integer, length(s.exec))
 
-EXEC_SWAP(s::State) = if length(s.exec) >= 2
+EXEC_SWAP(s::State) = if length(s.exec) > 1
   s.exec[end], s.exec[end-1] = s.exec[end-1], s.exec[end]
 end
 
 EXEC_Y(s::State) = if !isempty(s.exec)
   top = pop!(s.exec)
-  # (EXEC.Y <top>)
-  push!(s.exec, top)
+  push!(s.exec, {:EXEC_Y, copy(top)}, top)
 end
 
 EXEC_YANK(s::State) = if !isempty(s.integer) && !isempty(s.exec)
