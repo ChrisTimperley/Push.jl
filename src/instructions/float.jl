@@ -12,7 +12,7 @@ FLOAT_PLUS(s::State) = if length(s.float) >= 2
 end
 
 FLOAT_SUB(s::State) = if length(s.float) >= 2
-  push!(s.float, pop!(s.float) - pop!(s.float))
+  push!(s.float, - pop!(s.float) + pop!(s.float))
 end
 
 FLOAT_DIV(s::State) = if length(s.float) >= 2
@@ -78,10 +78,9 @@ FLOAT_ROT(s::State) = if length(s.float) >= 3
   s.float[end], s.float[end-2] = s.float[end-2], s.float[end]
 end
 
-#
-# TODO
-#
-FLOAT_SHOVE(s::State) = return
+FLOAT_SHOVE(s::State) = if !isempty(s.integer) && !isempty(s.float)
+  shove!(s.float, pop!(s.integer))
+end
 
 FLOAT_SIN(s::State) = if !isempty(s.float)
   push!(s.float, sin(pop!(s.float)))
@@ -97,15 +96,13 @@ FLOAT_TAN(s::State) = if !isempty(s.float)
   push!(s.float, tan(pop!(s.float)))
 end
 
-#
-# TODO
-#
-FLOAT_YANK(s::State) = return
+FLOAT_YANK(s::State) = if !isempty(s.integer) && !isempty(s.float)
+  yank!(s.float, pop!(s.integer))
+end
 
-#
-# TODO
-#
-FLOAT_YANKDUP(s::State) = return
+FLOAT_YANKDUP(s::State) = if !isempty(s.integer) && !isempty(s.float)
+  yankdup!(s.float, pop!(s.integer))
+end
 
 Push.register("FLOAT.%",           FLOAT_MOD)
 Push.register("FLOAT.*",           FLOAT_MUL)
