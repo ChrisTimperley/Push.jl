@@ -18,10 +18,10 @@ INTEGER_SUB(s::State) = if length(s.integer) >= 2
 end
 
 INTEGER_DIV(s::State) = if length(s.integer) >= 2
-  div = peek(s.integer)
-  if div != zero(Int32)
+  divisor = peek(s.integer)
+  if divisor != zero(Int32)
     pop!(s.integer)
-    push!(s.integer, pop!(s.integer) / div)
+    push!(s.integer, div(pop!(s.integer), divisor))
   end
 end
 
@@ -79,14 +79,8 @@ INTEGER_ROT(s::State) = if length(s.integer) >= 3
   s.integer[end], s.integer[end-2] = s.integer[end-2], s.integer[end]
 end
 
-# 
-# TODO:
-# Look into semantics of SHOVE.
-#
 INTEGER_SHOVE(s::State) = if length(s.integer) >= 2
-  #index = pop!(s.integer)
-#
-  #insert_at!(s.integer, pop!(s.integer), pop!(s.integer))
+  shove!(s.integer, pop!(s.integer))
 end
 
 INTEGER_STACK_DEPTH(s::State) = push!(s.integer, length(s.integer))
@@ -95,15 +89,13 @@ INTEGER_SWAP(s::State) = if length(s.integer) >= 2
   s.integer[end], s.integer[end-1] = s.integer[end-1], s.integer[end]
 end
 
-#
-# TODO
-#
-INTEGER_YANK(s::State) = return
+INTEGER_YANK(s::State) = if length(s.integer) >= 2
+  yank!(s.integer, pop!(s.integer))
+end
 
-#
-# TODO
-#
-INTEGER_YANKDUP(s::State) = return
+INTEGER_YANKDUP(s::State) = if length(s.integer) >= 2
+  yankdup!(s.integer, pop!(s.integer))
+end
 
 Push.register("INTEGER.%",           INTEGER_MOD)
 Push.register("INTEGER.*",           INTEGER_MUL)
