@@ -21,9 +21,9 @@ module Parser
         prog = p2
       elseif t == ")"
         prog = pop!(prog_stack)
-      elseif ismatch(r"^\d+\.\d+$", t)
+      elseif ismatch(r"^\-?\d+\.\d+$", t)
         push!(prog, convert(Float32, float(t)))
-      elseif ismatch(r"^\d+$", t)
+      elseif ismatch(r"^\-?\d+$", t)
         push!(prog, convert(Int32, int(t)))
       elseif t == "FALSE"
         push!(prog, false)
