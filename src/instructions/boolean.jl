@@ -39,7 +39,7 @@ BOOLEAN_ROT(s::State) = if length(s.boolean) >= 3
   s.boolean[end], s.boolean[end-2] = s.boolean[end-2], s.boolean[end]
 end
 
-BOOLEAN_SHOVE(s::State) = if !isempty(s.integer)
+BOOLEAN_SHOVE(s::State) = if !isempty(s.integer) && !isempty(s.boolean)
   shove!(s.boolean, pop!(s.integer))
 end
 
@@ -51,11 +51,11 @@ BOOLEAN_SWAP(s::State) = if length(s.boolean) >= 2
   s.boolean[end], s.boolean[end-1] = s.boolean[end-1], s.boolean[end]
 end
 
-BOOLEAN_YANK(s::State) = if !isempty(s.integer)
+BOOLEAN_YANK(s::State) = if !isempty(s.integer) && !isempty(s.boolean)
   yank!(s.boolean, pop!(s.integer))
 end
 
-BOOLEAN_YANKDUP(s::State) = if !isempty(s.integer)
+BOOLEAN_YANKDUP(s::State) = if !isempty(s.integer) && !isempty(s.boolean)
   yankdup!(s.boolean, pop!(s.integer))
 end
 
