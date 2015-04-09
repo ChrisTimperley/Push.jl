@@ -88,32 +88,20 @@ CODE_EXTRACT(s::State) = return
 
 CODE_FLUSH(s::State) = empty!(s.code)
 
-#
-# TODO
-#
 CODE_FROM_BOOLEAN(s::State) = if !isempty(s.boolean)
-  
+  push!(s.code, pop!(s.boolean))  
 end
 
-#
-# TODO
-#
 CODE_FROM_FLOAT(s::State) = if !isempty(s.float)
-
+  push!(s.code, pop!(s.float))
 end
 
-#
-# TODO
-#
 CODE_FROM_INTEGER(s::State) = if !isempty(s.integer)
-
+  push!(s.code, pop!(s.integer))
 end
 
-#
-# TODO
-#
 CODE_FROM_NAME(s::State) = if !isempty(s.name)
-
+  push!(s.code, pop!(s.name))
 end
 
 CODE_IF(s::State) = if !isempty(s.boolean) && length(s.code) >= 2
