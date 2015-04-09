@@ -1,5 +1,5 @@
 EXEC_EQ(s::State) = if length(s.exec) >= 2
-  push!(s.boolean, pop!(s.exec) === pop!(s.exec))
+  push!(s.boolean, pop!(s.exec) == pop!(s.exec))
 end
 
 #
@@ -60,10 +60,9 @@ EXEC_S(s::State) = if length(s.exec) >= 3
   # (B C) C A ?
 end
 
-#
-# TODO
-#
-EXEC_SHOVE(s::State) = return
+EXEC_SHOVE(s::State) = if !isempty(s.integer) && !isempty(s.exec)
+  shove!(s.exec, pop!(s.integer))
+end
 
 EXEC_STACK_DEPTH(s::State) = push!(s.integer, length(s.exec))
 
@@ -77,15 +76,13 @@ EXEC_Y(s::State) = if !isempty(s.exec)
   push!(s.exec, top)
 end
 
-#
-# TODO
-#
-EXEC_YANK(s::State) = return
+EXEC_YANK(s::State) = if !isempty(s.integer) && !isempty(s.exec)
+  yank!(s.exec, pop!(s.integer))
+end
 
-#
-# TODO
-#
-EXEC_YANK_DUP(s::State) = return
+EXEC_YANK_DUP(s::State) = if !isempty(s.integer) && !isempty(s.exec)
+  yankdup!(s.exec, pop!(s.integer))
+end
 
 Push.register("EXEC.=",          EXEC_EQ)
 Push.register("EXEC.DEFINE",     EXEC_DEFINE)
