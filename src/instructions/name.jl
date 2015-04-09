@@ -1,9 +1,9 @@
 NAME_EQUALS(s::State) = if length(s.name) >= 2
-  push!(s.bool, pop!(s.name) == pop!(s.name))
+  push!(s.boolean, pop!(s.name) == pop!(s.name))
 end
 
 NAME_DUP(s::State) = if !isempty(s.name)
-  push!(s.bool, peek(s.name))
+  push!(s.name, peek(s.name))
 end
 
 NAME_FLUSH(s::State) = empty!(s.name)
@@ -13,7 +13,7 @@ NAME_POP(s::State) = !isempty(s.name) && pop!(s.name)
 #
 # TODO
 #
-NAME_QUOTE(s::State) = s.flag_quote = true
+NAME_QUOTE(s::State) = s.flag_quote_name = true
 
 #
 # TODO
@@ -29,10 +29,9 @@ NAME_ROT(s::State) = if length(s.name) >= 3
   s.name[end], s.name[end-2] = s.name[end-2], s.name[end]
 end
 
-#
-# TODO
-#
-NAME_SHOVE(s::State) = return
+NAME_SHOVE(s::State) = if !isempty(s.integer) && !isempty(s.name)
+  shove!(s.name, pop!(s.integer))
+end
 
 NAME_STACK_DEPTH(s::State) = push!(s.integer, length(s.name))
 
@@ -40,15 +39,13 @@ NAME_SWAP(s::State) = if length(s.name) >= 2
   s.name[end], s.name[end-1] = s.name[end-1], s.name[end]
 end
 
-#
-# TODO
-#
-NAME_YANK(s::State) = return
+NAME_YANK(s::State) = if !isempty(s.integer) && !isempty(s.name)
+  yank!(s.name, pop!(s.integer))
+end
 
-#
-# TODO
-#
-NAME_YANKDUP(s::State) = return
+NAME_YANKDUP(s::State) = if !isempty(s.integer) && !isempty(s.name)
+  yankdup!(s.name, pop!(s.integer))
+end
 
 Push.register("NAME.=",              NAME_EQUALS)
 Push.register("NAME.DUP",            NAME_DUP)
