@@ -1,2 +1,5 @@
 - INT.RANDBETWEEN (generates a random number uniformly from the range given by the top two items on the stack).
 - Ability to undefine aliases and instructions.
+
+
+- Make instruction names symbol friendly.
