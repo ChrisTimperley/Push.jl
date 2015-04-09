@@ -19,8 +19,8 @@ s = Push.run("(1.0 FLOAT.+)", cfg)
 @test s.float == [1.0]
 s = Push.run("(7.0 3.0 2.5 10.25 FLOAT.+)", cfg)
 @test s.float == [7.0, 3.0, 12.75]
-s = Push.run("(7 3 2.75 -10.25 FLOAT.+)", cfg)
-@test s.float == [7.0, 3,0, -8.5]
+s = Push.run("(7.0 3.0 2.75 -10.25 FLOAT.+)", cfg)
+@test s.float == [7.0, 3.0, -7.5]
 
 # FLOAT.-
 s = Push.run("(1.0 FLOAT.-)", cfg)
@@ -31,13 +31,13 @@ s = Push.run("(7.0 3.0 10.0 25.0 FLOAT.-)", cfg)
 @test s.float == [7.0, 3.0, -15.0]
 
 # FLOAT./
-s = Push.run("(1 FLOAT./)", cfg)
+s = Push.run("(1.0 FLOAT./)", cfg)
 @test s.float == [1.0]
 s = Push.run("(7.0 3.0 10.0 2.0 FLOAT./)", cfg)
 @test s.float == [7.0, 3.0, 5.0]
-s = Push.run("(7 3 -10 4 FLOAT./)", cfg)
+s = Push.run("(7.0 3.0 -10.0 4.0 FLOAT./)", cfg)
 @test s.float == [7.0, 3.0, -2.5]
-s = Push.run("(7 3 -10 0 FLOAT./)", cfg)
+s = Push.run("(7.0 3.0 -10.0 0.0 FLOAT./)", cfg)
 @test s.float == [7.0, 3.0, -10.0, 0.0]
 
 # FLOAT.<
@@ -115,16 +115,16 @@ s = Push.run("(0.0 10.0 20.0 30.0 FLOAT.ROT)", cfg)
 # FLOAT.SHOVE
 s = Push.run("(1.0 FLOAT.SHOVE)", cfg)
 @test s.float == [1.0]
-s = Push.run("(2.0 0.0 FLOAT.SHOVE)", cfg)
+s = Push.run("(2.0 0 FLOAT.SHOVE)", cfg)
 @test s.float == [2.0]
-s = Push.run("(2.0 9000.0 FLOAT.SHOVE)", cfg)
+s = Push.run("(2.0 9000 FLOAT.SHOVE)", cfg)
 @test s.float == [2.0]
 s = Push.run("(1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 900.0 -20 FLOAT.SHOVE)", cfg)
 @test s.float == [1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,900.0]
 s = Push.run("(1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 900.0 0 FLOAT.SHOVE)", cfg)
-@test s.float == [1.0,2.0,3.0,4.0,5.0,6.0,7.0.0,8.0,900.0]
+@test s.float == [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 900.0]
 s = Push.run("(1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 900.0 1 FLOAT.SHOVE)", cfg)
-@test s.float == [1.0,2.0,3.0,4.0,5.0,6.0,7.0,900.0,8.0]
+@test s.float == [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 900.0, 8.0]
 s = Push.run("(1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 900.0 2 FLOAT.SHOVE)", cfg)
 @test s.float == [1.0,2.0,3.0,4.0,5.0,6.0,900.0,7.0,8.0]
 s = Push.run("(1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 900.0 9 FLOAT.SHOVE)", cfg)
@@ -182,15 +182,15 @@ s = Push.run("(10.0 20.0 30.0 40.0 50.0 -987 FLOAT.YANKDUP)", cfg)
 
 # FLOAT.TAN
 s = Push.run("(90.0 FLOAT.TAN)", cfg)
-@test s.float == [tan(90.0)]
+@test s.float == Float32[tan(90.0)]
 
 # FLOAT.COS
 s = Push.run("(90.0 FLOAT.COS)", cfg)
-@test s.float == [cos(90.0)]
+@test s.float == Float32[cos(90.0)]
 
 # FLOAT.SIN
 s = Push.run("(90.0 FLOAT.SIN)", cfg)
-@test s.float == [sin(90.0)]
+@test s.float == Float32[sin(90.0)]
 
 # FLOAT.DEFINE
 # FLOAT.RAND
