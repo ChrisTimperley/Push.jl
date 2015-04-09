@@ -15,8 +15,8 @@ end
 
 # No termination limit for now.
 execute(s::State) = while !isempty(s.exec)
+  # Code quoting.
 
-  # QUOTE MODE.
   execute(s, pop!(s.exec))
 end
 
@@ -34,8 +34,14 @@ execute(s::State, f::Float32) =
   push!(s.float, f)
 
 function execute(s::State, v::Symbol)
+
+  # If name quoting is enabled, push this name onto the NAME stack and disable quoting.
+  if s.flag_quote_name
+    s.flag_quote_name = false
+    push!(s.name, v)
+
   # Check if this name refers to a "built-in" instruction.
-  if haskey(s.instructions, v)
+  elseif haskey(s.instructions, v)
     s.instructions[v](s)
 
   # Check if the name refers to a stored macro.
