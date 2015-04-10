@@ -12,13 +12,13 @@ EXEC_DO_STAR_COUNT(s::State) = if !isempty(s.integer) && s.integer[end] >= 0 && 
   push!(s.exec, pop!(s.exec), convert(Symbol, "EXEC.DO*RANGE"))
 end
 
-EXEC_DO_STAR_RANGE(s::State) = if !length(s.integer) > 1 && !isempty(s.exec)
+EXEC_DO_STAR_RANGE(s::State) = if length(s.integer) > 1 && !isempty(s.exec)
   dest_idx = pop!(s.integer)
   curr_idx = peek(s.integer)
   if dest_idx != curr_idx
     body = pop!(s.exec)
-    curr_idx += dest_idx > curr_idx ? 1 : -1
-    push!(s.exec, {curr_idx, dest_idx, convert(Symbol, "EXEC.DO*RANGE"), body}, body)
+    curr_idx::Int32 = curr_idx + (dest_idx > curr_idx ? one(Int32) : -one(Int32))
+    push!(s.exec, {curr_idx, dest_idx, convert(Symbol, "EXEC.DO*RANGE"), copy(body)}, body)
   end
 end
 
