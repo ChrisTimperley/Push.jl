@@ -53,12 +53,19 @@ s = Push.run("(CODE.QUOTE (FALSE) CODE.ATOM)", cfg)
 @test isempty(s.code) && s.boolean == [false]
 
 # CODE.CAR
+#
+#
+# WHAT IS CAR OF AN EMPTY LIST?
+#
+#
 s = Push.run("(CODE.QUOTE X CODE.CAR)", cfg)
 @test s.code == {:X}
 s = Push.run("(CODE.CAR)", cfg)
 @test isempty(s.code)
-s = Push.run("(CODE.QUOTE X CODE.QUOTE (1 2 3 4 5) CODE.CAR)")
+s = Push.run("(CODE.QUOTE X CODE.QUOTE (1 2 3 4 5) CODE.CAR)", cfg)
 @test s.code == {:X, 1}
+s = Push.run("(CODE.QUOTE () CODE.CAR)", cfg)
+@test s.code == {{}}
 
 # CODE.CDR
 s = Push.run("(CODE.CDR)", cfg)
@@ -71,7 +78,7 @@ s = Push.run("(CODE.QUOTE (X Y Z) CODE.CDR)", cfg)
 @test s.code == {{:Y, :Z}}
 
 # CODE.CONS
-s = Push.run("(CODE.QUOTE Z CODE.QUOTE (X, Y) CODE.CONS", cfg)
+s = Push.run("(CODE.QUOTE Z CODE.QUOTE (X Y) CODE.CONS", cfg)
 @test s.code == {{:Z, :X, :Y}}
 s = Push.run("(CODE.QUOTE Z CODE.CONS)", cfg)
 @test s.code == {:Z}
@@ -215,6 +222,10 @@ s = Push.run("(1 CODE.NOOP 5)", cfg)
 # CODE.NTH
 s = Push.run("(CODE.NTH)", cfg)
 @test isempty(s.code)
+s = Push.run("(0 CODE.QUOTE X CODE.NTH)", cfg)
+@test s.code == {:X}
+s = Push.run("(919 CODE.QUOTE X CODE.NTH)", cfg)
+@test s.code == {:X}
 s = Push.run("(98 CODE.QUOTE () CODE.NTH)", cfg)
 @test s.code == {{}}
 s = Push.run("(CODE.QUOTE (1 2 3) CODE.NTH)", cfg)

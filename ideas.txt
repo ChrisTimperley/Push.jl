@@ -6,3 +6,5 @@
 - Make instruction names symbol friendly.
 
 - How should negative indices operate?
+
+- Testing for DO*COUNT and DO*TIMES with negative numbers and zero.

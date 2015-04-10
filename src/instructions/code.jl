@@ -2,31 +2,30 @@ CODE_EQ(s::State) = if length(s.code) > 1
   push!(s.boolean, pop!(s.code) === pop!(s.code))
 end
 
-#
-# TODO
-#
-CODE_APPEND(s::State) = return
+CODE_APPEND(s::State) = if length(s.code) > 1
+  first = pop!(s.code)
+  second = peek(s.code)
+  s.code[end] = vcat(isa(first, Vector) ? first : {first},
+    isa(second, Vector) ? second : {second})
+end
 
-#
-# TODO
-#
-CODE_ATOM(s::State) = return
-# push!(s.boolean, isa(pop!(s.exec), Vector))
+CODE_ATOM(s::State) = if !isempty(s.code)
+  push!(s.boolean, !isa(pop!(s.code), Vector))
+end
 
-#
-# TODO
-#
-CODE_CAR(s::State) = return
+CODE_CAR(s::State) = if !isempty(s.code) && isa(s.code[end], Vector)
+  s.code[end] = isempty(s.code[end]) ? {} : s.code[end][1]
+end
 
 #
 # TODO
 #
 CODE_CDR(s::State) = return
 
-#
-# TODO
-#
-CODE_CONS(s::State) = return
+CODE_CONS(s::State) = if length(s.code) > 1
+  top = pop!(s.code)
+  s.code[end] = vcat({peek(s.code)}, isa(top, Vector) ? top : {top})
+end
 
 #
 # TODO
@@ -53,30 +52,25 @@ CODE_DEFINITION(s::State) = return
 #
 CODE_DISCREPANCY(s::State) = return
 
-#
-# TODO
-#
-CODE_DO(s::State) = return
+CODE_DO(s::State) = if !isempty(s.code)
+  push!(s.exec, convert(Symbol, "CODE.POP"), peek(s.code))
+end
 
-#
-# TODO
-#
-CODE_DO_STAR(s::State) = return
+CODE_DO_STAR(s::State) = if !isempty(s.code)
+  push!(s.exec, pop!(s.code))
+end
 
-#
-# TODO
-#
-CODE_DO_STAR_COUNT(s::State) = return
+CODE_DO_STAR_COUNT(s::State) = if !isempty(s.code) && !isempty(s.integer) && s.integer[end] > 0
+  push!(s.exec, pop!(s.code), convert(Symbol, "EXEC.DO*COUNT"))
+end
 
-#
-# TODO
-#
-CODE_DO_STAR_RANGE(s::State) = return
+CODE_DO_STAR_TIMES(s::State) = if !isempty(s.code) && !isempty(s.integer) && s.integer[end] > 0
+  push!(s.exec, pop!(s.code), convert(Symbol, "EXEC.DO*TIMES"))
+end
 
-#
-# TODO
-#
-CODE_DO_STAR_TIMES(s::State) = return
+CODE_DO_STAR_RANGE(s::State) = if !isempty(s.code) && length(s.integer) > 1
+  push!(s.exec, pop!(s.code), convert(Symbol, "EXEC.DO*RANGE"))
+end
 
 CODE_DUP(s::State) = if !isempty(s.code)
   push!(s.code, peek(s.code))
@@ -106,8 +100,8 @@ CODE_FROM_NAME(s::State) = if !isempty(s.name)
 end
 
 CODE_IF(s::State) = if !isempty(s.boolean) && length(s.code) > 1
-  a = pop!(s.boolean)
-  b = pop!(s.boolean)
+  a = pop!(s.code)
+  b = pop!(s.code)
   push!(s.exec, pop!(s.boolean) ? b : a)
 end
 
@@ -121,15 +115,14 @@ CODE_INSERT(s::State) = return
 #
 CODE_INSTRUCTIONS(s::State) = return
 
-#
-# TODO
-#
-CODE_LENGTH(s::State) = return
+CODE_LENGTH(s::State) = if !isempty(s.code)
+  top = pop!(s.code)
+  push!(s.integer, isa(top, Vector) ? length(top) : 1)
+end
 
-#
-# TODO
-#
-CODE_LIST(s::State) = return
+CODE_LIST(s::State) = if length(s.code) > 1
+  s.code[end] = {pop!(s.code), peek(s.code)}
+end
 
 #
 # TODO
@@ -138,20 +131,19 @@ CODE_MEMBER(s::State) = return
 
 CODE_NOOP(s::State) = return
 
-#
-# TODO
-#
-CODE_NTH(s::State) = return
+CODE_NTH(s::State) = if !isempty(s.integer) && !isempty(s.code) && isa(s.code[end], Vector)
+  s.code[end] = s.code[end][1 + (abs(pop!(s.integer)) % length(peek(s.code)))]
+end
 
 #
 # TODO
 #
 CODE_NTH_CDR(s::State) = return
 
-#
-# TODO
-#
-CODE_NULL(s::State) = return
+CODE_NULL(s::State) = if !isempty(s.code)
+  top = pop!(s.code)
+  push!(s.boolean, isa(top, Vector) && isempty(top))
+end
 
 CODE_POP(s::State) = !isempty(s.code) && pop!(s.code)
 
