@@ -117,7 +117,19 @@ s = Push.run("(EXEC.S A B C D)", cfg)
 @test s.name == [:B, :C, :C, :A, :D]
 
 # EXEC.DO*COUNT
+s = Push.run("(10 EXEC.DO*COUNT A)", cfg)
+@test s.name == [:A, :A, :A, :A, :A, :A, :A, :A, :A, :A] && s.integer == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
 # EXEC.DO*RANGE
+s = Push.run("(0 EXEC.DO*RANGE A)", cfg)
+@test s.name == [:A]
+s = Push.run("(0 9 EXEC.DO*RANGE A)", cfg)
+@test s.name == [:A, :A, :A, :A, :A, :A, :A, :A, :A, :A] && s.integer == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+s = Push.run("(9 0 EXEC.DO*RANGE A)", cfg)
+@test s.name == [:A, :A, :A, :A, :A, :A, :A, :A, :A, :A] && s.integer == [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+
 # EXEC.DO*TIMES
+s = Push.run("(10 EXEC.DO*TIMES A)", cfg)
+@test s.name == [:A, :A, :A, :A, :A, :A, :A, :A, :A, :A] && isempty(s.integer)
 
 # EXEC.DEFINE
