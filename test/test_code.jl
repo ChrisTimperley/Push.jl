@@ -324,6 +324,46 @@ s = Push.run("(3 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.YANKDU
 s = Push.run("(78 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.YANKDUP)", cfg)
 @test s.code == {:A, :B, :C, :D, :A}
 
+# CODE.DO
+s = Push.run("((CODE.DUP CODE.=) CODE.DO)", cfg)
+@test isempty(s.code) && s.boolean == {true}
+s = Push.run("(CODE.QUOTE (X Y Z) CODE.DO)", cfg)
+@test isempty(s.code) && s.name == {:X, :Y, :Z}
+s = Push.run("(CODE.QUOTE (1 2 3 INTEGER.+ INTEGER.+) CODE.DO)", cfg)
+@test isempty(s.code) && s.integer == {6}
+
+# CODE.DO*
+s = Push.run("((CODE.DUP CODE.=) CODE.DO*)", cfg)
+@test isempty(s.code) && isempty(s.boolean)
+s = Push.run("(CODE.QUOTE (X Y Z) CODE.DO*)", cfg)
+@test isempty(s.code) && s.name == {:X, :Y, :Z}
+s = Push.run("(CODE.QUOTE (1 2 3 INTEGER.+ INTEGER.+) CODE.DO*)", cfg)
+@test isempty(s.code) && s.integer == {6}
+
+# CODE.DO*COUNT
+s = Push.run("(CODE.QUOTE (2 INTEGER.*) CODE.DO*COUNT)", cfg)
+@test s.code == {{2, convert(Symbol, "CODE.*")}} && isempty(s.integer)
+s = Push.run("(6 CODE.QUOTE (2 INTEGER.*) CODE.DO*COUNT)", cfg)
+@test s.integer == {2, 4, 6, 8, 10, 12}
+
+# CODE.DO*RANGE
+s = Push.run("(CODE.QUOTE (X) CODE.DO*RANGE)", cfg)
+@test s.code == {:X} && isempty(s.name)
+s = Push.run("(0 CODE.QUOTE (X) CODE.DO*RANGE)", cfg)
+@test s.code == {:X} && isempty(s.name) && s.integer == {0}
+s = Push.run("(0 4 CODE.QUOTE (X) CODE.DO*RANGE)", cfg)
+@test s.name == {:X, :X, :X, :X, :X}
+
+# CODE.DO*TIMES
+s = Push.run("(CODE.QUOTE (INTEGER.DUP) CODE.DO*TIMES)", cfg)
+@test s.code == {convert(Symbol, "INTEGER.DUP")} && isempty(s.integer)
+s = Push.run("(6 CODE.QUOTE (INTEGER.DUP) CODE.DO*TIMES)", cfg)
+@test isempty(s.code) && isempty(s.integer)
+s = Push.run("(0 4 CODE.QUOTE (1 INTEGER.+) CODE.DO*TIMES)", cfg)
+@test isempty(s.code) && s.integer== {5}
+s = Push.run("(-1 4 CODE.QUOTE (INTEGER.DUP 1 INTEGER.+) CODE.DO*TIMES)", cfg)
+@test isempty(s.code) && s.integer== {0, 1, 2, 3, 4, 5}
+
 # CODE.SUBST
 #
 #
@@ -350,12 +390,6 @@ s = Push.run("(78 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.YANKD
 # CODE.INSERT
 
 # CODE.CONTAINER
-
-# CODE.DO
-# CODE.DO*
-# CODE.DO*COUNT
-# CODE.DO*RANGE
-# CODE.DO*TIMES
 
 # CODE.DISCREPANCY
 
