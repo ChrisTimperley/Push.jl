@@ -8,9 +8,10 @@ type State
   exec::Vector{Any}
   instructions::Dict{Symbol, Function}
   flag_quote_name::Bool
+  flag_quote_code::Bool
   
   State() = new(Parameters(), Float32[], Int32[], Bool[],
-    Any[], Any[], Any[], Dict{Symbol, Function}(), false)
+    Any[], Any[], Any[], Dict{Symbol, Function}(), false, false)
 end
 
 function pp_stacks(s::State)
