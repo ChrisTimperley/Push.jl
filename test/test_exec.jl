@@ -102,8 +102,19 @@ s = Push.run("(-86 EXEC.YANKDUP A B C D)", cfg)
 @test s.name == [:A, :A, :B, :C, :D]
 
 # EXEC.K
-# EXEC.S
+s = Push.run("(EXEC.K A B C)", cfg)
+@test s.name == [:A, :C]
+s = Push.run("(EXEC.K A)", cfg)
+@test s.name == [:A]
+
 # EXEC.Y
+# Test: count from 0 to 10
+s = Push.run("(0 EXEC.Y (INTEGER.DUP 1 INTEGER.+ INTEGER.DUP 10 INTEGER.< EXEC.IF () EXEC.POP))", cfg)
+@test s.integer == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+# EXEC.S
+s = Push.run("(EXEC.S A B C D)", cfg)
+@test s.name == [:B, :C, :C, :A, :D]
 
 # EXEC.DO*COUNT
 # EXEC.DO*RANGE
