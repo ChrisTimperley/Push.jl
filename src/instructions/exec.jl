@@ -48,7 +48,8 @@ end
 EXEC_POP(s::State) = pop!(s.exec)
 
 EXEC_ROT(s::State) = if length(s.exec) > 2
-  s.exec[end-2], s.exec[end] = s.exec[end], s.exec[end-2]
+  s.exec[end], s.exec[end-1], s.exec[end-2] =
+    s.exec[end-2], s.exec[end], s.exec[end-1]
 end
 
 EXEC_S(s::State) = if length(s.exec) > 2

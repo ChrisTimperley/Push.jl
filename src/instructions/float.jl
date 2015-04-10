@@ -74,8 +74,9 @@ end
 #
 FLOAT_RAND(s::State) = return
 
-FLOAT_ROT(s::State) = if length(s.float) >= 3
-  s.float[end], s.float[end-2] = s.float[end-2], s.float[end]
+FLOAT_ROT(s::State) = if length(s.float) > 2
+  s.float[end], s.float[end-1], s.float[end-2] =
+    s.float[end-2], s.float[end], s.float[end-1]
 end
 
 FLOAT_SHOVE(s::State) = if !isempty(s.integer) && !isempty(s.float)
