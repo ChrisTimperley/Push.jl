@@ -244,15 +244,91 @@ s = Push.run("(CODE.QUOTE 1 CODE.NULL)", cfg)
 s = Push.run("(CODE.QUOTE X CODE.QUOTE Y CODE.POP)", cfg)
 @test s.code == {:X}
 
-# CODE.RAND
 # CODE.ROT
+s = Push.run("(CODE.QUOTE A CODE.QUOTE B CODE.ROT)", cfg)
+@test s.code == {:A, :B}
+s = Push.run("(CODE.QUOTE Z CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.ROT)", cfg)
+@test s.code == {:Z, :C, :B, :A}
+
 # CODE.SHOVE
+s = Push.run("(CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.SHOVE)", cfg)
+@test s.code == {:A, :B, :C, :D}
+s = Push.run("(-98 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.SHOVE)", cfg)
+@test s.code == {:A, :B, :C, :D}
+s = Push.run("(0 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.SHOVE)", cfg)
+@test s.code == {:A, :B, :C, :D}
+s = Push.run("(1 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.SHOVE)", cfg)
+@test s.code == {:A, :B, :D, :C}
+s = Push.run("(2 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.SHOVE)", cfg)
+@test s.code == {:A, :D, :B, :C}
+s = Push.run("(3 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.SHOVE)", cfg)
+@test s.code == {:D, :A, :B, :C}
+s = Push.run("(78 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.SHOVE)", cfg)
+@test s.code == {:D, :A, :B, :C}
+
 # CODE.SIZE
+s = Push.run("(CODE.QUOTE X CODE.SIZE)", cfg)
+@test isempty(s.code) && s.integer == {1}
+s = Push.run("(CODE.QUOTE (X) CODE.SIZE)", cfg)
+@test isempty(s.code) && s.integer == {2}
+s = Push.run("(CODE.QUOTE (X Y Z) CODE.SIZE)", cfg)
+@test isempty(s.code) && s.integer == {4}
+s = Push.run("(CODE.QUOTE ((X) (Y Z)) CODE.SIZE)", cfg)
+@test isempty(s.code) && s.integer == {6}
+s = Push.run("(CODE.SIZE)", cfg)
+@test isempty(s.code) && isempty(s.integer)
+
 # CODE.STACKDEPTH
-# CODE.SUBST
+s = Push.run("(CODE.STACKDEPTH)", cfg)
+@test s.integer == {0}
+s = Push.run("(CODE.QUOTE X CODE.STACKDEPTH)", cfg)
+@test s.integer == {1}
+s = Push.run("(CODE.QUOTE X CODE.QUOTE 3 CODE.STACKDEPTH)", cfg)
+@test s.integer == {2}
+
 # CODE.SWAP
+s = Push.run("(CODE.QUOTE A CODE.SWAP)", cfg)
+@test s.code == {:A}
+s = Push.run("(CODE.QUOTE Z CODE.QUOTE A CODE.QUOTE B CODE.SWAP)", cfg)
+@test s.code == {:Z, :B, :A}
+
 # CODE.YANK
+s = Push.run("(CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.YANK)", cfg)
+@test s.code == {:A, :B, :C, :D}
+s = Push.run("(0 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.YANK)", cfg)
+@test s.code == {:A, :B, :C, :D}
+s = Push.run("(-871 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.YANK)", cfg)
+@test s.code == {:A, :B, :C, :D}
+s = Push.run("(1 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.YANK)", cfg)
+@test s.code == {:A, :B, :D, :C}
+s = Push.run("(2 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.YANK)", cfg)
+@test s.code == {:A, :C, :D, :B}
+s = Push.run("(3 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.YANK)", cfg)
+@test s.code == {:B, :C, :D, :A}
+s = Push.run("(78 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.YANK)", cfg)
+@test s.code == {:B, :C, :D, :A}
+
 # CODE.YANKDUP
+s = Push.run("(CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.YANKDUP)", cfg)
+@test s.code == {:A, :B, :C, :D}
+s = Push.run("(0 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.YANKDUP)", cfg)
+@test s.code == {:A, :B, :C, :D, :D}
+s = Push.run("(-871 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.YANKDUP)", cfg)
+@test s.code == {:A, :B, :C, :D, :D}
+s = Push.run("(1 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.YANKDUP)", cfg)
+@test s.code == {:A, :B, :C, :D, :C}
+s = Push.run("(2 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.YANKDUP)", cfg)
+@test s.code == {:A, :B, :C, :D, :B}
+s = Push.run("(3 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.YANKDUP)", cfg)
+@test s.code == {:A, :B, :C, :D, :A}
+s = Push.run("(78 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.YANKDUP)", cfg)
+@test s.code == {:A, :B, :C, :D, :A}
+
+# CODE.SUBST
+#
+#
+#
+#
 
 # CODE.NTHCDR
 #
