@@ -57,29 +57,120 @@ s = Push.run("(CODE.QUOTE (X Y Z) CODE.CDR)", cfg)
 @test s.code == {{:Y, :Z}}
 
 # CODE.CONS
+s = Push.run("(CODE.QUOTE Z CODE.QUOTE (X, Y) CODE.CONS", cfg)
+@test s.code == {{:Z, :X, :Y}}
+s = Push.run("(CODE.QUOTE Z CODE.CONS)", cfg)
+@test s.code == {:Z}
+s = Push.run("(CODE.QUOTE (Z) CODE.QUOTE (X, Y) CODE.CONS)", cfg)
+@test s.code == {{{:Z}, :X, :Y}}
+s = Push.run("(CODE.QUOTE B CODE.QUOTE A CODE.CONS", cfg)
+@test s.code == {{:B, :A}}
+s = Push.run("(CODE.QUOTE (B) CODE.QUOTE A CODE.CONS", cfg)
+@test s.code == {{{:B}, :A}}
 
-
-# CODE.CONTAINER
 # CODE.CONTAINS
-# CODE.DEFINE
-# CODE.DEFINITION
-# CODE.DISCREPANCY
-# CODE.DO
-# CODE.DO*
-# CODE.DO*COUNT
-# CODE.DO*RANGE
-# CODE.DO*TIMES
+s = Push.run("(CODE.QUOTE (1 2 3) CODE.QUOTE 1 CODE.CONTAINS)", cfg)
+@test isempty(s.code) && s.boolean == [true]
+s = Push.run("(CODE.QUOTE (1 2 3) CODE.QUOTE 4 CODE.CONTAINS)", cfg)
+@test isempty(s.code) && s.boolean == [false]
+s = Push.run("(CODE.QUOTE 1 CODE.QUOTE 1 CODE.CONTAINS)", cfg)
+@test isempty(s.code) && s.boolean == [true]
+s = Push.run("(CODE.QUOTE () CODE.QUOTE 1 CODE.CONTAINS)", cfg)
+@test isempty(s.code) && s.boolean == [false]
+s = Push.run("(CODE.QUOTE () CODE.QUOTE () CODE.CONTAINS)", cfg)
+@test isempty(s.code) && s.boolean == [false]
+s = Push.run("(CODE.QUOTE 1 CODE.QUOTE () CODE.CONTAINS)", cfg)
+@test isempty(s.code) && s.boolean == [false]
+s = Push.run("(CODE.QUOTE () CODE.QUOTE () CODE.CONTAINS)", cfg)
+@test isempty(s.code) && s.boolean == [false]
+s = Push.run("(CODE.QUOTE ((1 2) 3) CODE.QUOTE (1 2) CODE.CONTAINS)", cfg)
+@test isempty(s.code) && s.boolean == [true
+s = Push.run("(CODE.QUOTE (((2 1) 9 8) 2 3) CODE.QUOTE 1 CODE.CONTAINS)", cfg)
+@test isempty(s.code) && s.boolean == [true
+
 # CODE.DUP
+s = Push.run("(CODE.DUP)", cfg)
+@test isempty(s.code)
+s = Push.run("(CODE.QUOTE X CODE.DUP)", cfg)
+@test s.code == {:X, :X}
+
 # CODE.EXTRACT
+s = Push.run("(CODE.EXTRACT)", cfg)
+@test isempty(s.code)
+s = Push.run("(CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
+@test s.code == {:A. :B, :C, :D}
+s = Push.run("(0 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
+@test s.code == {{:A. :B, :C, :D}}
+s = Push.run("(1 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
+@test s.code == {:A}
+s = Push.run("(2 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
+@test s.code == {:B}
+s = Push.run("(3 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
+@test s.code == {:C}
+s = Push.run("(4 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
+@test s.code == {:D}
+s = Push.run("(5 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
+@test s.code == {:A}
+s = Push.run("(-1 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
+@test s.code == {:A}
+s = Push.run("(-2 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
+@test s.code == {:B}
+s = Push.run("(-5 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
+@test s.code == {:A}
+
 # CODE.FLUSH
+s = Push.run("(CODE.QUOTE 76 CODE.QUOTE (A B C D) CODE.FLUSH)", cfg)
+@test s.code == {}
+s = Push.run("(CODE.FLUSH)", cfg)
+@test s.code == {}
+
 # CODE.FROMBOOLEAN
+s = Push.run("(A CODE.FROMBOOLEAN)", cfg)
+@test s.name == {:A} && isempty(s.code)
+s = Push.run("(FALSE FALSE TRUE CODE.FROMBOOLEAN)", cfg)
+@test s.code == {true} && s.boolean == {false, false}
+s = Push.run("(TRUE TRUE FALSE CODE.FROMBOOLEAN)", cfg)
+@test s.code == {false} && s.boolean == {true, true}
+
 # CODE.FROMINTEGER
+s = Push.run("(7 CODE.FROMINTEGER)", cfg)
+@test s.integer == {7} && isempty(s.code)
+s = Push.run("(1 2 3 CODE.FROMINTEGER)", cfg)
+@test s.integer == {1, 2} && s.code == {3}
+s = Push.run("(3 2 1 CODE.FROMINTEGER)", cfg)
+@test s.integer == {3, 2} && s.code == {1}
+
 # CODE.FROMNAME
+s = Push.run("(CODE.FROMNAME)", cfg)
+@test isempty(s.code)
+s = Push.run("(A B C CODE.FROMNAME)", cfg)
+@test s.name == {:A, :B} && s.code == {:C}
+s = Push.run("(3 2 1 CODE.FROMNAME)", cfg)
+@test s.name == {:C, :B} && s.code == {:A}
+
 # CODE.IF
-# CODE.INSERT
-# CODE.INSTRUCTIONS
+s = Push.run("(CODE.QUOTE X CODE.QUOTE Y CODE.IF)", cfg)
+@test s.code == {:X, :Y}
+s = Push.run("(TRUE CODE.QUOTE X CODE.IF)", cfg)
+@test s.code == {:X} && s.boolean == {true}
+s = Push.run("(TRUE CODE.QUOTE (A B C) CODE.QUOTE (X Y Z) CODE.IF)", cfg)
+@test s.name == {:A, :B, :C} && isempty(s.code) && isempty(s.boolean)
+s = Push.run("(TRUE CODE.QUOTE (A B C) CODE.QUOTE (X Y Z) CODE.IF)", cfg)
+@test s.name == {:X, :Y, :Z} && isempty(s.code) && isempty(s.boolean)
+
 # CODE.LENGTH
+s = Push.run("(CODE.LENGTH)", cfg)
+@test isempty(s.integer)
+s = Push.run("(CODE.QUOTE X CODE.LENGTH)", cfg)
+@test s.integer == {1}
+s = Push.run("(CODE.QUOTE (X) CODE.LENGTH)", cfg)
+@test s.integer == {1}
+s = Push.run("(CODE.QUOTE (X Y Z) CODE.LENGTH)", cfg)
+@test s.integer == {3}
+
 # CODE.LIST
+
+
 # CODE.MEMBER
 # CODE.NOOP
 # CODE.NTH
@@ -97,3 +188,22 @@ s = Push.run("(CODE.QUOTE (X Y Z) CODE.CDR)", cfg)
 # CODE.SWAP
 # CODE.YANK
 # CODE.YANKDUP
+
+
+# CODE.INSTRUCTIONS
+
+# CODE.INSERT
+
+# CODE.CONTAINER
+
+# CODE.DO
+# CODE.DO*
+# CODE.DO*COUNT
+# CODE.DO*RANGE
+# CODE.DO*TIMES
+
+# CODE.DISCREPANCY
+
+# CODE.DEFINE
+
+# CODE.DEFINITION
