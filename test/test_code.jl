@@ -6,6 +6,20 @@ using Base.Test
 cfg_path = joinpath(dirname(@__FILE__), "configuration/code.cfg")
 cfg = Push.load_configuration(cfg_path)
 
+# CODE.QUOTE
+s = Push.run("(CODE.QUOTE X)", cfg)
+@test s.code == {:X}
+s = Push.run("(CODE.QUOTE -12)", cfg)
+@test s.code == {-12}
+s = Push.run("(CODE.QUOTE -5.1)", cfg)
+@test s.code == {-5.1}
+s = Push.run("(CODE.QUOTE TRUE)", cfg)
+@test s.code == {true}
+s = Push.run("(CODE.QUOTE CODE.QUOTE)", cfg)
+@test s.code == {convert(Symbol, "CODE.QUOTE")}
+s = Push.run("(CODE.QUOTE A CODE.QUOTE (X Y Z))", cfg)
+@test s.code == {:A, {:X, :Y, :Z}}
+
 # CODE.=
 s = Push.run("(CODE.QUOTE X CODE.QUOTE X CODE.=)", cfg)
 @test s.boolean == [true] && isempty(s.code)
@@ -169,16 +183,67 @@ s = Push.run("(CODE.QUOTE (X Y Z) CODE.LENGTH)", cfg)
 @test s.integer == {3}
 
 # CODE.LIST
-
+s = Push.run("(CODE.QUOTE A CODE.LIST)", cfg)
+@test s.code == {:A}
+s = Push.run("(CODE.QUOTE Z CODE.QUOTE A CODE.QUOTE B CODE.LIST)", cfg)
+@test s.code == {:Z, {:B, :A}}
+s = Push.run("(CODE.QUOTE Z CODE.QUOTE (1 2 3 4) CODE.QUOTE (A B C) CODE.LIST)", cfg)
+@test s.code == {:Z, {{:A, :B, :C}, {1, 2, 3, 4}}}
+s = Push.run("(CODE.QUOTE Z CODE.QUOTE (1 2 3 4) CODE.QUOTE A CODE.LIST)", cfg)
+@test s.code == {:Z, {:A, {1, 2, 3, 4}}}
 
 # CODE.MEMBER
+s = Push.run("(CODE.QUOTE (A B C) CODE.MEMBER)", cfg)
+@test s.code == {:A, :B, :C} && isempty(s.boolean)
+s = Push.run("(CODE.QUOTE A CODE.QUOTE (A B C) CODE.MEMBER)", cfg)
+@test isempty(s.code) && s.boolean == [true]
+s = Push.run("(CODE.QUOTE (A) CODE.QUOTE (A B C) CODE.MEMBER)", cfg)
+@test isempty(s.code) && s.boolean == [false]
+s = Push.run("(CODE.QUOTE A CODE.QUOTE B CODE.MEMBER)", cfg)
+@test isempty(s.code) && s.boolean == [false]
+s = Push.run("(CODE.QUOTE A CODE.QUOTE A CODE.MEMBER)", cfg)
+@test isempty(s.code) && s.boolean == [true]
+s = Push.run("(CODE.QUOTE A CODE.QUOTE ((A) B C) CODE.MEMBER)", cfg)
+@test isempty(s.code) && s.boolean == [false]
+
 # CODE.NOOP
+s = Push.run("(CODE.NOOP)", cfg)
+@test isempty(s.code) && isempty(s.boolean) && isempty(s.integer) && isempty(s.float) && isempty(s.name) && isempty(s.exec)
+s = Push.run("(1 CODE.NOOP 5)", cfg)
+@test isempty(s.code) && isempty(s.boolean) && s.integer == {1, 5} && isempty(s.float) && isempty(s.name) && isempty(s.exec)
+
 # CODE.NTH
-# CODE.NTHCDR
+s = Push.run("(CODE.NTH)", cfg)
+@test isempty(s.code)
+s = Push.run("(98 CODE.QUOTE () CODE.NTH)", cfg)
+@test s.code == {{}}
+s = Push.run("(CODE.QUOTE (1 2 3) CODE.NTH)", cfg)
+@test s.code == {{1, 2, 3}}
+s = Push.run("(0 CODE.QUOTE (1 2 3) CODE.NTH)", cfg)
+@test s.code == {1}
+s = Push.run("(1 CODE.QUOTE (1 2 3) CODE.NTH)", cfg)
+@test s.code == {2}
+s = Push.run("(2 CODE.QUOTE (1 2 3) CODE.NTH)", cfg)
+@test s.code == {3}
+s = Push.run("(3 CODE.QUOTE (1 2 3) CODE.NTH)", cfg)
+@test s.code == {1}
+s = Push.run("(-1 CODE.QUOTE (1 2 3) CODE.NTH)", cfg)
+@test s.code == {2}
+
 # CODE.NULL
+s = Push.run("(CODE.NULL)", cfg)
+@test isempty(s.code) && isempty(s.boolean)
+s = Push.run("(CODE.QUOTE () CODE.NULL)", cfg)
+@test isempty(s.code) && s.boolean == [true]
+s = Push.run("(CODE.QUOTE (1 2 3) CODE.NULL)", cfg)
+@test isempty(s.code) && s.boolean == [false]
+s = Push.run("(CODE.QUOTE 1 CODE.NULL)", cfg)
+@test isempty(s.code) && s.boolean == [false]
+
 # CODE.POP
-# CODE.POSITION
-# CODE.QUOTE
+s = Push.run("(CODE.QUOTE X CODE.QUOTE Y CODE.POP)", cfg)
+@test s.code == {:X}
+
 # CODE.RAND
 # CODE.ROT
 # CODE.SHOVE
@@ -189,6 +254,20 @@ s = Push.run("(CODE.QUOTE (X Y Z) CODE.LENGTH)", cfg)
 # CODE.YANK
 # CODE.YANKDUP
 
+# CODE.NTHCDR
+#
+# - Is the 0th CDR the identity?
+#
+#
+
+# CODE.RAND
+
+# CODE.POSITION
+#
+#
+#
+#
+#
 
 # CODE.INSTRUCTIONS
 
