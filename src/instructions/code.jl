@@ -1,4 +1,4 @@
-CODE_EQ(s::State) = if length(s.code) >= 2
+CODE_EQ(s::State) = if length(s.code) > 1
   push!(s.boolean, pop!(s.code) === pop!(s.code))
 end
 
@@ -11,6 +11,7 @@ CODE_APPEND(s::State) = return
 # TODO
 #
 CODE_ATOM(s::State) = return
+# push!(s.boolean, isa(pop!(s.exec), Vector))
 
 #
 # TODO
@@ -104,7 +105,7 @@ CODE_FROM_NAME(s::State) = if !isempty(s.name)
   push!(s.code, pop!(s.name))
 end
 
-CODE_IF(s::State) = if !isempty(s.boolean) && length(s.code) >= 2
+CODE_IF(s::State) = if !isempty(s.boolean) && length(s.code) > 1
   a = pop!(s.boolean)
   b = pop!(s.boolean)
   push!(s.exec, pop!(s.boolean) ? b : a)
@@ -159,18 +160,11 @@ CODE_POP(s::State) = !isempty(s.code) && pop!(s.code)
 #
 CODE_POSITION(s::State) = return
 
-#
-# TODO
-#
-CODE_QUOTE(s::State) = s.flag_quote = true
+CODE_QUOTE(s::State) = s.flag_quote_code = true
 
-#
-# TODO
-#
-CODE_RAND(s::State) = return
-
-CODE_ROT(s::State) = if length(s.code) >= 3
-  s.code[end], s.code[end-2] = s.code[end-2], s.code[end]
+CODE_ROT(s::State) = if length(s.code) > 2
+  s.code[end], s.code[end-1], s.code[end-2] =
+    s.code[end-2], s[end], s[end-1]
 end
 
 #
@@ -206,6 +200,8 @@ CODE_YANK(s::State) = return
 # TODO
 #
 CODE_YANK_DUP(s::State) = return
+
+CODE_RAND(s::State) = return
 
 Push.register("CODE.=",                CODE_EQ)
 Push.register("CODE.APPEND",           CODE_APPEND)
