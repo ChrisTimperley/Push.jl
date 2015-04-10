@@ -42,7 +42,7 @@ EXEC_IF(s::State) = if !isempty(s.boolean) && length(s.exec) >= 2
 end
 
 EXEC_K(s::State) = if length(s.exec) > 1
-  s.exec[1] = pop!(s.exec)
+  s.exec[end] = pop!(s.exec)
 end
 
 EXEC_POP(s::State) = pop!(s.exec)
@@ -69,8 +69,8 @@ EXEC_SWAP(s::State) = if length(s.exec) > 1
 end
 
 EXEC_Y(s::State) = if !isempty(s.exec)
-  top = pop!(s.exec)
-  push!(s.exec, {convert(Symbol, "EXEC.Y"), copy(top)}, top)
+  body = pop!(s.exec)
+  push!(s.exec, {convert(Symbol, "EXEC.Y"), copy(body)}, body)
 end
 
 EXEC_YANK(s::State) = if !isempty(s.integer) && !isempty(s.exec)
