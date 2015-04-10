@@ -1,0 +1,112 @@
+require("src/Push.jl")
+
+using Push
+using Base.Test
+
+cfg_path = joinpath(dirname(@__FILE__), "configuration/exec.cfg")
+cfg = Push.load_configuration(cfg_path)
+
+# EQUALS.
+# What are the semantics of comparison on the CODE stack?
+s = Push.run("(EXEC.= 3 3)", cfg)
+@test s.boolean == [true]
+s = Push.run("(EXEC.= 3 3.0)", cfg)
+@test s.boolean == [true] # Should this be true or false?
+s = Push.run("(EXEC.= 3)", cfg)
+@test s.boolean == []
+
+# EXEC.DUP
+s = Push.run("(EXEC.DUP 3 INTEGER.+)", cfg)
+@test s.integer == [6]
+
+# EXEC.FLUSH
+s = Push.run("(EXEC.FLUSH TRUE FALSE 3 6)", cfg)
+@test isempty(s.integer) && isempty(s.boolean)
+
+# EXEC.POP
+s = Push.run("(EXEC.POP 5 2 INTEGER.+)", cfg)
+@test s.integer == [2]
+s = Push.run("(EXEC.POP EXEC.POP 3)", cfg)
+@test s.integer == [3]
+s = Push.run("(EXEC.POP 1)", cfg)
+@test isempty(s.integer)
+
+# EXEC.IF
+s = Push.run("(EXEC.IF 3 2)", cfg)
+@test s.integer == [3, 2]
+s = Push.run("(TRUE EXEC.IF 5 10)", cfg)
+@test isempty(s.boolean) && s.integer == [5]
+s = Push.run("(FALSE EXEC.IF 5 10)", cfg)
+@test isempty(s.boolean) && s.integer == [10]
+
+# EXEC.ROT
+s = Push.run("(EXEC.ROT A B C)", cfg)
+@test s.name == [:C, :B, :A]
+s = Push.run("(EXEC.ROT C B A)", cfg)
+@test s.name == [:A, :B, :C]
+
+# EXEC.SHOVE
+s = Push.run("(0 EXEC.SHOVE A B C D)", cfg)
+@test isempty(s.integer) && s.name == [:A, :B, :C, :D]
+s = Push.run("(1 EXEC.SHOVE A B C D)", cfg)
+@test isempty(s.integer) && s.name == [:B, :A, :C, :D]
+s = Push.run("(2 EXEC.SHOVE A B C D)", cfg)
+@test isempty(s.integer) && s.name == [:B, :C, :A, :D]
+s = Push.run("(3 EXEC.SHOVE A B C D)", cfg)
+@test isempty(s.integer) && s.name == [:B, :C, :D, :A]
+s = Push.run("(98 EXEC.SHOVE A B C D)", cfg)
+@test isempty(s.integer) && s.name == [:B, :C, :D, :A]
+s = Push.run("(-65 EXEC.SHOVE A B C D)", cfg)
+@test isempty(s.integer) && s.name == [:A, :B, :C, :D]
+
+# EXEC.STACKDEPTH
+s = Push.run("(EXEC.STACKDEPTH A B C D)", cfg)
+@test s.integer == [4]
+
+# EXEC.SWAP
+s = Push.run("(EXEC.SWAP A B C D)", cfg)
+@test s.name == [:B, :A, :C, :D]
+s = Push.run("(EXEC.SWAP A)", cfg)
+@test s.name == [:A]
+
+# EXEC.YANK
+s = Push.run("(EXEC.YANK A B C D)", cfg)
+@test s.name == [:A, :B, :C, :D]
+s = Push.run("(0 EXEC.YANK A B C D)", cfg)
+@test s.name == [:A, :B, :C, :D]
+s = Push.run("(1 EXEC.YANK A B C D)", cfg)
+@test s.name == [:B, :A, :C, :D]
+s = Push.run("(2 EXEC.YANK A B C D)", cfg)
+@test s.name == [:C, :A, :B, :D]
+s = Push.run("(3 EXEC.YANK A B C D)", cfg)
+@test s.name == [:D, :A, :B, :C]
+s = Push.run("(98 EXEC.YANK A B C D)", cfg)
+@test s.name == [:D, :A, :B, :C]
+s = Push.run("(-86 EXEC.YANK A B C D)", cfg)
+@test s.name == [:A, :B, :C, :D]
+
+# EXEC.YANKDUP
+s = Push.run("(EXEC.YANKDUP A B C D)", cfg)
+@test s.name == [:A, :B, :C, :D]
+s = Push.run("(0 EXEC.YANKDUP A B C D)", cfg)
+@test s.name == [:A, :A, :B, :C, :D]
+s = Push.run("(1 EXEC.YANKDUP A B C D)", cfg)
+@test s.name == [:B, :A, :B, :C, :D]
+s = Push.run("(2 EXEC.YANKDUP A B C D)", cfg)
+@test s.name == [:C, :A, :B, :C, :D]
+s = Push.run("(3 EXEC.YANKDUP A B C D)", cfg)
+@test s.name == [:D, :A, :B, :C, :D]
+s = Push.run("(98 EXEC.YANKDUP A B C D)", cfg)
+@test s.name == [:D, :A, :B, :C, :D]
+s = Push.run("(-86 EXEC.YANKDUP A B C D)", cfg)
+@test s.name == [:A, :A, :B, :C, :D]
+
+# EXEC.K
+# EXEC.S
+# EXEC.Y
+
+# EXEC.DO*COUNT
+# EXEC.DO*RANGE
+# EXEC.DO*TIMES
+
+# EXEC.DEFINE
