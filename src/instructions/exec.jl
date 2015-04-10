@@ -70,7 +70,7 @@ end
 
 EXEC_Y(s::State) = if !isempty(s.exec)
   top = pop!(s.exec)
-  push!(s.exec, {:EXEC_Y, copy(top)}, top)
+  push!(s.exec, {convert(Symbol, "EXEC.Y"), copy(top)}, top)
 end
 
 EXEC_YANK(s::State) = if !isempty(s.integer) && !isempty(s.exec)
