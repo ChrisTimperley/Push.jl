@@ -76,10 +76,9 @@ CODE_DUP(s::State) = if !isempty(s.code)
   push!(s.code, peek(s.code))
 end
 
-#
-# TODO
-#
-CODE_EXTRACT(s::State) = return
+CODE_EXTRACT(s::State) = if !isempty(s.code) && !isempty(s.integer)
+  
+end
 
 CODE_FLUSH(s::State) = empty!(s.code)
 

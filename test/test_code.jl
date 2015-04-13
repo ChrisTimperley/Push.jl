@@ -139,6 +139,17 @@ s = Push.run("(-2 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
 s = Push.run("(-5 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
 @test s.code == {:A}
 
+#
+#
+#
+# What should this do?
+# {:A} or :A?
+#
+#
+#
+s = Push.run("(0 CODE.QUOTE A CODE.EXTRACT)", cfg)
+@test s.code == {:A}
+
 # CODE.FLUSH
 s = Push.run("(CODE.QUOTE 76 CODE.QUOTE (A B C D) CODE.FLUSH)", cfg)
 @test s.code == {}
