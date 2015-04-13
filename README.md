@@ -1,2 +1,2 @@
-# JuliaPush
-A Julia implementation of Lee Spector's stack-based Push language, designed for (auto-constructive) genetic programming.
+# Push.jl
+A Julia implementation of the stack-based Push 3 language, designed for (auto-constructive) genetic programming.
