@@ -20,3 +20,13 @@ end
 
 # If the haystack isn't a vector, then return an empty list.
 container(haystack::Any, needle::Any) = {}
+
+# Calculates the number of points in a given Push expression.
+function num_points(expr::Vector{Any})
+  points = 1
+  for sub in expr
+    points += num_points(sub)
+  end
+  return points
+end 
+num_points(expr::Any) = 1
