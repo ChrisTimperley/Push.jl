@@ -1,0 +1,4 @@
+- Does CODE.CONTAINER return the smallest matching list, or the shallowest?
+- Does CODE.CONTAINER push an empty list if the 1st CODE item is not a list?
+- How do negative indices work in general? Do we always calculate their absolute value?
+- How does CODE.EXTRACT operate when CODE item is not a list?
