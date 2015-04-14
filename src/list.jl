@@ -3,7 +3,7 @@
 function container(haystack::Vector{Any}, needle::Any)
   q = {haystack}
   while !isempty(q)
-    container = pop!(q)
+    container = shift!(q)
 
     if in(needle, container)
       return container
