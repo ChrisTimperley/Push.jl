@@ -39,10 +39,20 @@ CODE_CONTAINS(s::State) = if length(s.code) > 1
   s.code[end] = !isempty(container(pop!(s.code), peek(s.code)))
 end
 
-#
-# TODO
-#
-CODE_DISCREPANCY(s::State) = return
+CODE_DISCREPANCY(s::State) = if length(s.code) > 1
+  a = pop!(s.code)
+  b = pop!(s.code)
+  dis = zero(Int32)
+
+  for v in setdiff(a, b)
+    dis += count(x -> x == v, a)
+  end
+  for v in setdiff(b, a)
+    dis += count(x -> x == v, b)
+  end
+
+  push!(s.integer, dis)
+end
 
 CODE_DO(s::State) = if !isempty(s.code)
   push!(s.exec, convert(Symbol, "CODE.POP"), peek(s.code))
