@@ -7,7 +7,6 @@ cfg_path = joinpath(dirname(@__FILE__), "configuration/name.cfg")
 cfg = Push.load_configuration(cfg_path)
 
 # NAME.QUOTE
-# - Check against Push specification.
 s = Push.run("(NAME.QUOTE NAME.QUOTE)", cfg)
 @test s.name == [convert(Symbol, "NAME.QUOTE")]
 
