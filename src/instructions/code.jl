@@ -79,7 +79,40 @@ CODE_DUP(s::State) = if !isempty(s.code)
 end
 
 CODE_EXTRACT(s::State) = if !isempty(s.code) && !isempty(s.integer)
-  
+  index = abs(pop!(s.integer))
+  code = peek(s.code)
+
+  # Do nothing (other than pop from the INTEGER stack) if the top of the CODE
+  # stack is an atom. 
+  if !isa(code, Vector)
+    return
+  end
+
+  # Calculate the index modulo the number of points in the given expression.
+  index %= num_points(index)
+
+  # Depth-first search for the given index.
+  q = {code}
+  j = 0
+  while !isempty(q)
+    expr = pop!(q)
+
+    # Put the extracted sub-expression on top of the CODE stack.
+    if j == index
+      s.code[end] = expr
+      break
+    end
+
+    # Add sub-expressions to the front of the processing queue, from
+    # left to right.
+    if isa(Vector, expr)
+      for k in length(i):-1:1
+        push!(expr[k], expr[k])
+      end
+    end
+
+    j += 1
+  end
 end
 
 CODE_FLUSH(s::State) = empty!(s.code)
