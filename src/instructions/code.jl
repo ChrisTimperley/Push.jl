@@ -17,20 +17,54 @@ CODE_CAR(s::State) = if !isempty(s.code) && isa(s.code[end], Vector)
   s.code[end] = isempty(s.code[end]) ? {} : s.code[end][1]
 end
 
-#
-# TODO
-#
-CODE_CDR(s::State) = return
+CODE_CDR(s::State) = if !isempty(s.code)
+  top = peek(s.code)
+  if !isa(top, Vector) || length(top) < 2
+    s.code[end] = {}
+  else
+    shift!(top[2:end])
+  end
+end
 
 CODE_CONS(s::State) = if length(s.code) > 1
   top = pop!(s.code)
   s.code[end] = vcat({peek(s.code)}, isa(top, Vector) ? top : {top})
 end
 
-#
-# TODO
-#
-CODE_CONTAINER(s::State) = return
+# Pushes the container of the 2nd CODE item within the 1st CODE item onto the stack, or
+# an empty list if no such container can be found.
+CODE_CONTAINER(s::State) = if length(s.code) > 1
+  haystack = pop!(s.code)
+  needle = peek(s.code)
+
+  # If the haystack isn't a list, then push an empty list onto the CODE stack.
+  if !isa(haystack, Vector)
+    s.code[end] = {}
+    return
+  end
+
+  # Perform a breadth-first recursive search of the haystack, from left to right.
+  found = false
+  q = {haystack}
+  while !isempty(q)
+    container = pop!(q)
+
+    # Search for the needle in the container.
+    if in(needle, container)
+      found = true
+      break
+    end
+
+    # Add sub-lists onto end of search queue.
+    for subcontainer in container
+      push!(q, subcontainer)
+    end
+  end
+
+  # Replace the needle at the top of the CODE stack with its container, or if no
+  # container was found, replace with an empty list.
+  s.code[end] = found ? container : {}
+end
 
 #
 # TODO
