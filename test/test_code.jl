@@ -12,7 +12,7 @@ s = Push.run("(CODE.QUOTE X)", cfg)
 s = Push.run("(CODE.QUOTE -12)", cfg)
 @test s.code == {-12}
 s = Push.run("(CODE.QUOTE -5.1)", cfg)
-@test s.code == {-5.1}
+@test s.code == {convert(Float32, -5.1)}
 s = Push.run("(CODE.QUOTE TRUE)", cfg)
 @test s.code == {true}
 s = Push.run("(CODE.QUOTE CODE.QUOTE)", cfg)
@@ -36,7 +36,7 @@ s = Push.run("(CODE.QUOTE (X Y) CODE.QUOTE Z CODE.APPEND)", cfg)
 s = Push.run("(CODE.QUOTE A CODE.QUOTE B CODE.APPEND)", cfg)
 @test s.code == {{:B, :A}} && isempty(s.name)
 s = Push.run("(CODE.QUOTE A CODE.APPEND)", cfg)
-@test s.code == {{:A}} && isempty(s.name)
+@test s.code == {:A} && isempty(s.name)
 
 # CODE.ATOM
 s = Push.run("(CODE.ATOM)", cfg)
