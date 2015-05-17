@@ -139,16 +139,15 @@ s = Push.run("(-2 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
 s = Push.run("(-5 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
 @test s.code == {:A}
 
-#
-#
-#
-# What should this do?
-# {:A} or :A?
-#
-#
-#
+# CODE.EXTRACT
 s = Push.run("(0 CODE.QUOTE A CODE.EXTRACT)", cfg)
 @test s.code == {:A}
+s = Push.run("(1 CODE.QUOTE ((A B C) (D E) (F)) CODE.EXTRACT)", cfg)
+@test s.code == {{:A, :B, :C}}
+s = Push.run("(2 CODE.QUOTE ((A B C) (D E) (F)) CODE.EXTRACT)", cfg)
+@test s.code == {:A}
+s = Push.run("(6 CODE.QUOTE ((A B C) (D E) (F)) CODE.EXTRACT)", cfg)
+@test s.code == {:D}
 
 # CODE.FLUSH
 s = Push.run("(CODE.QUOTE 76 CODE.QUOTE (A B C D) CODE.FLUSH)", cfg)
