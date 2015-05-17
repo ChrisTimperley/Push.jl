@@ -418,6 +418,31 @@ s = Push.run("(99 CODE.QUOTE (A B C D E) CODE.NTHCDR)", cfg)
 # CODE.INSTRUCTIONS
 
 # CODE.INSERT
+# Pushes the result of inserting the second item of the CODE stack into the
+# first item, at the position indexed by the item at the top of the INTEGER
+# stack. Indexing is computed as in CODE.EXTRACT.
+s = Push.run("(CODE.QUOTE D CODE.QUOTE (A B C) CODE.INSERT)", cfg)
+@test s.code == {:D, {:A, :B, :C}} 
+s = Push.run("(0 CODE.QUOTE D CODE.QUOTE (A B C) CODE.INSERT)", cfg)
+@test s.code == {:D} && isempty(s.integer)
+s = push.run("(1 code.quote x code.quote ((a b c) (d e) (f)) code.insert)", cfg)
+@test s.code == {{:X, {:D, :E}, {:F}}} && isempty(s.integer)
+s = push.run("(-1 code.quote x code.quote ((a b c) (d e) (f)) code.insert)", cfg)
+@test s.code == {{:X, {:D, :E}, {:F}}} && isempty(s.integer)
+s = Push.run("(2 CODE.QUOTE X CODE.QUOTE ((A B C) (D E) (F)) CODE.INSERT)", cfg)
+@test s.code == {{{:X, :B, :C}, {:D, :E}, {:F}}} && isempty(s.integer)
+s = Push.run("(-2 CODE.QUOTE X CODE.QUOTE ((A B C) (D E) (F)) CODE.INSERT)", cfg)
+@test s.code == {{{:X, :B, :C}, {:D, :E}, {:F}}} && isempty(s.integer)
+s = Push.run("(5 CODE.QUOTE X CODE.QUOTE ((A B C) (D E) (F)) CODE.INSERT)", cfg)
+@test s.code == {{{:A, :B, :C}, :X, {:F}} && isempty(s.integer)
+s = Push.run("(-5 CODE.QUOTE X CODE.QUOTE ((A B C) (D E) (F)) CODE.INSERT)", cfg)
+@test s.code == {{{:A, :B, :C}, :X, {:F}} && isempty(s.integer)
+s = Push.run("(4 CODE.QUOTE X CODE.QUOTE (A B C) CODE.INSERT)", cfg)
+@test s.code == {{:X}} && isempty(s.integer)
+s = Push.run("(6 CODE.QUOTE X CODE.QUOTE (A B C) CODE.INSERT)", cfg)
+@test s.code == {{:A, :X, :C}} && isempty(s.integer)
+s = Push.run("(-6 CODE.QUOTE X CODE.QUOTE (A B C) CODE.INSERT)", cfg)
+@test s.code == {{:A, :X, :C}} && isempty(s.integer)
 
 # CODE.CONTAINER
 
