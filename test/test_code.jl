@@ -459,6 +459,10 @@ s = Push.run("(CODE.QUOTE X CODE.QUOTE ((A X) B C X) CODE.CONTAINER)", cfg)
 @test s.code == {{:A, :X}}
 
 # CODE.DISCREPANCY
+s = Push.run("(CODE.QUOTE X CODE.QUOTE X CODE.DISCREPANCY)", cfg)
+@test s.integer == {0}
+s = Push.run("(CODE.QUOTE X CODE.QUOTE Y CODE.DISCREPANCY)", cfg)
+@test s.integer == {1}
 
 # CODE.DEFINE
 

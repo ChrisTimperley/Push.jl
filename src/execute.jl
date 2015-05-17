@@ -15,9 +15,12 @@ end
 
 # No termination limit for now.
 execute(s::State) = while !isempty(s.exec)
-  # Code quoting.
-
-  execute(s, pop!(s.exec))
+  if s.flag_quote_code
+    s.flag_quote_code = false
+    push!(s.code, pop!(s.exec))
+  else
+    execute(s, pop!(s.exec))
+  end
 end
 
 execute(s::State, v::Vector{Any}) = while !isempty(v)
