@@ -54,24 +54,24 @@ end
 
 # Adjusts the value of a single parameter, k, to a given value, v.
 set!(p::Parameters, k::String, v::String) =
-  if k == "MAX_RANDOM_FLOAT"
-    p.max_random_float = convert(Float32, v)
-  elseif k == "MIN_RANDOM_FLOAT"
-    p.min_random_float = convert(Float32, v)
-  elseif k == "MAX_RANDOM_INTEGER"
-    p.max_random_integer = convert(Int32, v)
-  elseif k == "MIN_RANDOM_INTEGER"
-    p.min_random_integer = convert(Int32, v)
-  elseif k == "EVAL_PUSH_LIMIT"
-    p.eval_push_limit = convert(Int32, v)
-  elseif k == "NEW_ERC_NAME_PROBABILITY"
-    p.new_erc_name_probability = convert(Float32, v)
-  elseif k == "MAX_POINTS_IN_RANDOM_EXPRESSIONS"
-    p.max_points_in_random_expressions = convert(Int32, v)
-  elseif k == "MAX_POINTS_IN_PROGRAM"
-    p.max_points_in_program = convert(Int32, v)
-  elseif k == "TOP_LEVEL_PUSH_CODE"
+  if k == "MAX-RANDOM-FLOAT"
+    p.max_random_float = convert(Float32, float(v))
+  elseif k == "MIN-RANDOM-FLOAT"
+    p.min_random_float = convert(Float32, float(v))
+  elseif k == "MAX-RANDOM-INTEGER"
+    p.max_random_integer = convert(Int32, int(v))
+  elseif k == "MIN-RANDOM-INTEGER"
+    p.min_random_integer = convert(Int32, int(v))
+  elseif k == "EVAL-PUSH-LIMIT"
+    p.eval_push_limit = convert(Int32, int(v))
+  elseif k == "NEW-ERC-NAME-PROBABILITY"
+    p.new_erc_name_probability = convert(Float32, float(v))
+  elseif k == "MAX-POINTS-IN-RANDOM-EXPRESSIONS"
+    p.max_points_in_random_expressions = convert(Int32, int(v))
+  elseif k == "MAX-POINTS-IN-PROGRAM"
+    p.max_points_in_program = convert(Int32, int(v))
+  elseif k == "TOP-LEVEL-PUSH-CODE"
     p.top_level_push_code = v == "TRUE"
-  elseif k == "TOP_LEVEL_POP_CODE"
+  elseif k == "TOP-LEVEL-POP-CODE"
     p.top_level_pop_code = v == "TRUE"
   end
