@@ -78,15 +78,15 @@ s = Push.run("(CODE.QUOTE (X Y Z) CODE.CDR)", cfg)
 @test s.code == {{:Y, :Z}}
 
 # CODE.CONS
-s = Push.run("(CODE.QUOTE Z CODE.QUOTE (X Y) CODE.CONS", cfg)
+s = Push.run("(CODE.QUOTE Z CODE.QUOTE (X Y) CODE.CONS)", cfg)
 @test s.code == {{:Z, :X, :Y}}
 s = Push.run("(CODE.QUOTE Z CODE.CONS)", cfg)
 @test s.code == {:Z}
-s = Push.run("(CODE.QUOTE (Z) CODE.QUOTE (X, Y) CODE.CONS)", cfg)
+s = Push.run("(CODE.QUOTE (Z) CODE.QUOTE (X Y) CODE.CONS)", cfg)
 @test s.code == {{{:Z}, :X, :Y}}
-s = Push.run("(CODE.QUOTE B CODE.QUOTE A CODE.CONS", cfg)
+s = Push.run("(CODE.QUOTE B CODE.QUOTE A CODE.CONS)", cfg)
 @test s.code == {{:B, :A}}
-s = Push.run("(CODE.QUOTE (B) CODE.QUOTE A CODE.CONS", cfg)
+s = Push.run("(CODE.QUOTE (B) CODE.QUOTE A CODE.CONS)", cfg)
 @test s.code == {{{:B}, :A}}
 
 # CODE.CONTAINS
