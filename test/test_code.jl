@@ -445,6 +445,18 @@ s = Push.run("(-6 CODE.QUOTE X CODE.QUOTE (A B C) CODE.INSERT)", cfg)
 @test s.code == {{:A, :X, :C}} && isempty(s.integer)
 
 # CODE.CONTAINER
+# Pushes the "container" of the 2nd CODE stack item within the first CODE
+# stack item onto the CODE stack. If second item contains the first
+# anywhere (i.e. in any nested list) then the container is the smallest
+# sub-list that contains but is not equal to the first instance.
+s = Push.run("(CODE.QUOTE X CODE.QUOTE (A B C) CODE.CONTAINER)", cfg)
+@test s.code == {{}}
+s = Push.run("(CODE.QUOTE X CODE.QUOTE (X A B) CODE.CONTAINER)", cfg)
+@test s.code == {{:X, :A, :B}}
+s = Push.run("(CODE.QUOTE X CODE.QUOTE (A ((B C) X D) E) CODE.CONTAINER)", cfg)
+@test s.code == {{{:B, :C}, :X, :D}}
+s = Push.run("(CODE.QUOTE X CODE.QUOTE ((A X) B C X) CODE.CONTAINER)", cfg)
+@test s.code == {{:A, :X}}
 
 # CODE.DISCREPANCY
 
