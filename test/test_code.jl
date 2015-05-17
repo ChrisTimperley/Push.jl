@@ -386,16 +386,25 @@ s = Push.run("(-1 4 CODE.QUOTE (INTEGER.DUP 1 INTEGER.+) CODE.DO*TIMES)", cfg)
 @test isempty(s.code) && s.integer== {0, 1, 2, 3, 4, 5}
 
 # CODE.SUBST
-#
-#
-#
-#
+# -- LEFT OUT FOR NOW
 
 # CODE.NTHCDR
-#
-# - Is the 0th CDR the identity?
-#
-#
+s = Push.run("(CODE.QUOTE (A B C) CODE.NTHCDR)", cfg)
+@test s.code == {{:A, :B, :C}}
+s = Push.run("(0 CODE.QUOTE () CODE.NTHCDR)", cfg)
+@test s.code == {{}} && isempty(s.integer)
+s = Push.run("(1 CODE.QUOTE (A B C D E) CODE.NTHCDR)", cfg)
+@test s.code == {{:B, :C, :D, :E}} && isempty(s.integer)
+s = Push.run("(-1 CODE.QUOTE (A B C D E) CODE.NTHCDR)", cfg)
+@test s.code == {{:B, :C, :D, :E}} && isempty(s.integer)
+s = Push.run("(0 CODE.QUOTE (A B C D E) CODE.NTHCDR)", cfg)
+@test s.code == {{:A, :B, :C, :D, :E}} && isempty(s.integer)
+s = Push.run("(4 CODE.QUOTE (A B C D E) CODE.NTHCDR)", cfg)
+@test s.code == {{:E}} && isempty(s.integer)
+s = Push.run("(-4 CODE.QUOTE (A B C D E) CODE.NTHCDR)", cfg)
+@test s.code == {{:E}} && isempty(s.integer)
+s = Push.run("(99 CODE.QUOTE (A B C D E) CODE.NTHCDR)", cfg)
+@test s.code == {{}} && isempty(s.integer)
 
 # CODE.RAND
 
