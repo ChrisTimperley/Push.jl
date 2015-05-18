@@ -139,10 +139,16 @@ CODE_IF(s::State) = if !isempty(s.boolean) && length(s.code) > 1
   push!(s.exec, pop!(s.boolean) ? b : a)
 end
 
-#
-# TODO
-#
-CODE_INSERT(s::State) = return
+CODE_INSERT(s::State) = if !isempty(s.integer) && length(s.code) > 1
+  cntr = pop!(s.code)
+  item = pop!(s.code)
+  
+  # Calculate the insertion point.
+  i = abs(pop!(s.integer)) % num_points(cntr)
+
+  # Push the modified container back onto the stack.
+  push!(s.code, insert_at_point!(cntr, item, i))
+end
 
 #
 # TODO
