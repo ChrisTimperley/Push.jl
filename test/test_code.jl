@@ -470,11 +470,7 @@ s = Push.run("(CODE.QUOTE (((2 1) 9 8) 2 3) CODE.QUOTE 1 CODE.CONTAINS)", cfg)
 # CODE.RAND
 
 # CODE.POSITION
-#
-#
-#
-#
-#
+# Does this operate like EXTRACT, or like MEMBER?
 
 # CODE.INSTRUCTIONS
 

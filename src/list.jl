@@ -57,3 +57,6 @@ function insert_at_point!(v::Vector{Any}, r::Any, pt::Integer, i::Integer)
   end
   return i
 end
+
+function position(haystack::Vector{Any}, needle::Any)
+end
