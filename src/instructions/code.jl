@@ -227,10 +227,9 @@ CODE_YANK(s::State) = if !isempty(s.integer) && !isempty(s.code)
   yank!(s.code, pop!(s.integer))
 end
 
-#
-# TODO
-#
-CODE_YANK_DUP(s::State) = return
+CODE_YANK_DUP(s::State) = if !isempty(s.integer) && !isempty(s.code)
+  yankdup!(s.code, pop!(s.integer))
+end
 
 CODE_RAND(s::State) = return
 
