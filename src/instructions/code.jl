@@ -40,8 +40,8 @@ CODE_CONTAINS(s::State) = if length(s.code) > 1
 end
 
 CODE_DISCREPANCY(s::State) = if length(s.code) > 1
-  a = pop!(s.code)
-  b = pop!(s.code)
+  a = isa(peek(s.code), Vector) ? pop!(s.code) : {pop!(s.code)}
+  b = isa(peek(s.code), Vector) ? pop!(s.code) : {pop!(s.code)}
   dis = zero(Int32)
 
   for v in setdiff(a, b)
