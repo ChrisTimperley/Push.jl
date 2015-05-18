@@ -164,10 +164,10 @@ CODE_LIST(s::State) = if length(s.code) > 1
   s.code[end] = {pop!(s.code), peek(s.code)}
 end
 
-#
-# TODO
-#
-CODE_MEMBER(s::State) = return
+CODE_MEMBER(s::State) = if length(s.code) > 1
+  first = isa(peek(s.code), Vector) ? pop!(s.code) : {pop!(s.code)}
+  push!(s.boolean, in(pop!(s.code), first))
+end
 
 CODE_NOOP(s::State) = return
 
