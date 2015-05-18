@@ -36,7 +36,9 @@ CODE_CONTAINER(s::State) = if length(s.code) > 1
 end
 
 CODE_CONTAINS(s::State) = if length(s.code) > 1
-  push!(s.boolean, !isempty(container(pop!(s.code), peek(s.code))))
+  first = pop!(s.code)
+  second = pop!(s.code)
+  push!(s.boolean, !isempty(container(second, first)))
 end
 
 CODE_DISCREPANCY(s::State) = if length(s.code) > 1
