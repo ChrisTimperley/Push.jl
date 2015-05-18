@@ -475,5 +475,7 @@ s = Push.run("(CODE.QUOTE (((2 1) 9 8) 2 3) CODE.QUOTE 1 CODE.CONTAINS)", cfg)
 # CODE.INSTRUCTIONS
 
 # CODE.DEFINE
+s = Push.run("(ADD CODE.QUOTE (5 3 INTEGER.+) CODE.DEFINE ADD)", cfg)
+@test isempty(s.code) && isempty(s.name) && s.integer == {8}
 
 # CODE.DEFINITION
