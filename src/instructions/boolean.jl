@@ -15,7 +15,9 @@ BOOLEAN_OR(s::State) = if length(s.boolean) >= 2
   push!(s.boolean, pop!(s.boolean) | pop!(s.boolean))
 end
 
-BOOLEAN_DEFINE(s::State) = return
+BOOLEAN_DEFINE(s::State) = if !isempty(s.boolean) && !isempty(s.name)
+  s.definitions[pop!(s.name)] = pop!(s.boolean)
+end
 
 BOOLEAN_DUP(s::State) = if !isempty(s.boolean)
   push!(s.boolean, peek(s.boolean))
