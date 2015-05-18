@@ -1,4 +1,5 @@
 type State
+  rng::AbstractRNG
   parameters::Parameters
   float::Vector{Float32}
   integer::Vector{Int32}
@@ -11,7 +12,7 @@ type State
   flag_quote_name::Bool
   flag_quote_code::Bool
   
-  State() = new(Parameters(), Float32[], Int32[], Bool[],
+  State() = new(MersenneTwister(), Parameters(), Float32[], Int32[], Bool[],
     Any[], Any[], Any[], Dict{Symbol, Function}(), Dict{Symbol, Any}(), false, false)
 end
 
