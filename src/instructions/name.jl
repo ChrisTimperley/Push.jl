@@ -27,7 +27,7 @@ NAME_RAND_BOUND_NAME(s::State) = return
 
 NAME_ROT(s::State) = if length(s.name) > 2
   s.name[end], s.name[end-1], s.name[end-2] =
-    s.name[end-2], s.name[end], s.name[end-1]
+    s.name[end-1], s.name[end-2], s.name[end]
 end
 
 NAME_SHOVE(s::State) = if !isempty(s.integer) && !isempty(s.name)

@@ -77,7 +77,7 @@ INTEGER_RAND(s::State) = return
 
 INTEGER_ROT(s::State) = if length(s.integer) > 2
   s.integer[end], s.integer[end-1], s.integer[end-2] =
-    s.integer[end-2], s.integer[end], s.integer[end-1]
+    s.integer[end-1], s.integer[end-2], s.integer[end]
 end
 
 INTEGER_SHOVE(s::State) = if length(s.integer) >= 2
