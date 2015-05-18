@@ -202,10 +202,9 @@ end
 #
 CODE_SHOVE(s::State) = return
 
-#
-# TODO
-#
-CODE_SIZE(s::State) = return
+CODE_SIZE(s::State) = if !isempty(s.code)
+  push!(s.integer, num_points(pop!(s.code)))
+end
 
 #
 # TODO
