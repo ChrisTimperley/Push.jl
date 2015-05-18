@@ -40,7 +40,7 @@ FLOAT_COS(s::State) = if !isempty(s.float)
 end
 
 FLOAT_DEFINE(s::State) = if !isempty(s.float) && !isempty(s.name)
-  register(s, pop!(s.name), pop!(s.float))
+  s.definition[pop!(s.name)] = pop!(s.float)
 end
 
 FLOAT_DUP(s::State) = if !isempty(s.float)
