@@ -31,20 +31,26 @@ function num_points(expr::Vector{Any})
 end 
 num_points(expr::Any) = 1
 
-function insert_at_point!(v::Any, pt::Integer, r::Any) =
+function insert_at_point!(v::Any, r::Any, pt::Integer)
   pt = abs(pt) % num_points(v)
-  pt == 0 ? r : insert_at_point!(v, pt, r, 0)
+  if pt == 0
+    return r
+  else
+    insert_at_point!(v, r, pt, 0)
+    return v
+  end
 end
 
-function insert_at_point!(v::Vector{Any}, pt::Integer, r::Any, i::Integer)
+function insert_at_point!(v::Vector{Any}, r::Any, pt::Integer, i::Integer)
   j = 0
-  while i < pt
+  l = length(v)
+  while i < pt && j < l
     j += 1
     i += 1
     if i == pt
-      vec[j] = replacement
-    elseif isa(vec[j], Vector)
-      i = insert_at_point!(vec[j], pt, r, i)
+      v[j] = r
+    elseif isa(v[j], Vector)
+      i = insert_at_point!(v[j], r, pt, i)
     end
   end
   return i
