@@ -2,10 +2,9 @@ EXEC_EQ(s::State) = if length(s.exec) > 1
   push!(s.boolean, pop!(s.exec) == pop!(s.exec))
 end
 
-EXEC_DEFINE(s::State) = return
-#if !isempty(s.name) && !isempty(s.exec)
-#  register(s, pop!(s.name), pop!(s.exec)) 
-#end
+EXEC_DEFINE(s::State) = if !isempty(s.exec) && !isempty(s.name)
+  s.definitions[pop!(s.name)] = deepcopy(pop!(s.exec))
+end
 
 EXEC_DO_STAR_COUNT(s::State) = if !isempty(s.integer) && s.integer[end] >= 0 && !isempty(s.exec)
   push!(s.integer, 0, pop!(s.integer) - 1)
