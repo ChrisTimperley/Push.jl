@@ -38,7 +38,7 @@ INTEGER_GT(s::State) = if length(s.integer) >= 2
 end
 
 INTEGER_DEFINE(s::State) = if !isempty(s.integer) && !isempty(s.name)
-  register(s, pop!(s.name), pop!(s.integer))
+  s.definitions[pop!(s.name)] = pop!(s.integer)
 end
 
 INTEGER_DUP(s::State) = if !isempty(s.integer)
