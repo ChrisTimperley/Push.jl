@@ -173,10 +173,17 @@ CODE_NTH(s::State) = if !isempty(s.integer) && !isempty(s.code) && isa(s.code[en
   end
 end
 
-#
-# TODO
-#
-CODE_NTH_CDR(s::State) = return
+# Zeroth CDR is the first CDR in this implementation.
+# Seems to be implied by the Push 3.0 language reference.
+CODE_NTH_CDR(s::State) = if !isempty(s.code) && !isempty(s.integer)  
+  i = pop!(s.integer)
+  if !isa(peek(s.code), Vector) || isempty(peek(s.code))
+    s.code[end] = {}
+  else
+    i = abs(i) % length(peek(s.code))
+    deleteat!(s.code[end], 1:i+1)
+  end
+end
 
 CODE_NULL(s::State) = if !isempty(s.code)
   top = pop!(s.code)

@@ -309,6 +309,30 @@ s = Push.run("(0 5 CODE.QUOTE (1 INTEGER.+) CODE.DO*TIMES)", cfg)
 s = Push.run("(0 5 CODE.QUOTE (INTEGER.DUP 1 INTEGER.+) CODE.DO*TIMES)", cfg)
 @test isempty(s.code) && s.integer == {0, 1, 2, 3, 4, 5}
 
+# CODE.NTHCDR
+s = Push.run("(CODE.QUOTE (A B C) CODE.NTHCDR)", cfg)
+@test s.code == {{:A, :B, :C}}
+s = Push.run("(0 CODE.QUOTE () CODE.NTHCDR)", cfg)
+@test s.code == {{}} && isempty(s.integer)
+s = Push.run("(10 CODE.QUOTE X CODE.NTHCDR)", cfg)
+@test s.code == {{}} && isempty(s.integer)
+s = Push.run("(0 CODE.QUOTE (A B C D E) CODE.NTHCDR)", cfg)
+@test s.code == {{:B, :C, :D, :E}} && isempty(s.integer)
+s = Push.run("(-1 CODE.QUOTE (A B C D E) CODE.NTHCDR)", cfg)
+@test s.code == {{:C, :D, :E}} && isempty(s.integer)
+s = Push.run("(3 CODE.QUOTE (A B C D E) CODE.NTHCDR)", cfg)
+@test s.code == {{:E}} && isempty(s.integer)
+s = Push.run("(-3 CODE.QUOTE (A B C D E) CODE.NTHCDR)", cfg)
+@test s.code == {{:E}} && isempty(s.integer)
+s = Push.run("(4 CODE.QUOTE (A B C D E) CODE.NTHCDR)", cfg)
+@test s.code == {{}} && isempty(s.integer)
+s = Push.run("(-4 CODE.QUOTE (A B C D E) CODE.NTHCDR)", cfg)
+@test s.code == {{}} && isempty(s.integer)
+s = Push.run("(5 CODE.QUOTE (A B C D E) CODE.NTHCDR)", cfg)
+@test s.code == {{:B, :C, :D, :E}} && isempty(s.integer)
+s = Push.run("(-5 CODE.QUOTE (A B C D E) CODE.NTHCDR)", cfg)
+@test s.code == {{:B, :C, :D, :E}} && isempty(s.integer)
+
 # CODE.CONTAINS
 s = Push.run("(CODE.QUOTE (1 2 3) CODE.QUOTE 1 CODE.CONTAINS)", cfg)
 @test isempty(s.code) && s.boolean == [true]
@@ -379,24 +403,6 @@ s = Push.run("(78 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.YANKD
 
 # CODE.SUBST
 # -- LEFT OUT FOR NOW
-
-# CODE.NTHCDR
-s = Push.run("(CODE.QUOTE (A B C) CODE.NTHCDR)", cfg)
-@test s.code == {{:A, :B, :C}}
-s = Push.run("(0 CODE.QUOTE () CODE.NTHCDR)", cfg)
-@test s.code == {{}} && isempty(s.integer)
-s = Push.run("(1 CODE.QUOTE (A B C D E) CODE.NTHCDR)", cfg)
-@test s.code == {{:B, :C, :D, :E}} && isempty(s.integer)
-s = Push.run("(-1 CODE.QUOTE (A B C D E) CODE.NTHCDR)", cfg)
-@test s.code == {{:B, :C, :D, :E}} && isempty(s.integer)
-s = Push.run("(0 CODE.QUOTE (A B C D E) CODE.NTHCDR)", cfg)
-@test s.code == {{:A, :B, :C, :D, :E}} && isempty(s.integer)
-s = Push.run("(4 CODE.QUOTE (A B C D E) CODE.NTHCDR)", cfg)
-@test s.code == {{:E}} && isempty(s.integer)
-s = Push.run("(-4 CODE.QUOTE (A B C D E) CODE.NTHCDR)", cfg)
-@test s.code == {{:E}} && isempty(s.integer)
-s = Push.run("(99 CODE.QUOTE (A B C D E) CODE.NTHCDR)", cfg)
-@test s.code == {{}} && isempty(s.integer)
 
 # CODE.RAND
 
