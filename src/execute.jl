@@ -23,8 +23,9 @@ execute(s::State) = while !isempty(s.exec)
   end
 end
 
-execute(s::State, v::Vector{Any}) = while !isempty(v)
-  push!(s.exec, pop!(v))
+# Could be made faster...
+execute(s::State, v::Vector{Any}) = for elem in reverse(v)
+  push!(s.exec, elem)
 end
 
 execute(s::State, v::Bool) =
