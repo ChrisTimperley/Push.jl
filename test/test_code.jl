@@ -283,6 +283,20 @@ s = Push.run("(CODE.QUOTE (1 2 3 INTEGER.+ INTEGER.+) CODE.DO*)", cfg)
 s = Push.run("(CODE.QUOTE (CODE.STACKDEPTH) CODE.DO*)", cfg)
 @test isempty(s.code) && s.integer == {0}
 
+# CODE.DO*RANGE
+s = Push.run("(CODE.QUOTE (X) CODE.DO*RANGE)", cfg)
+@test s.code == {{:X}} && isempty(s.name)
+s = Push.run("(0 CODE.QUOTE (X) CODE.DO*RANGE)", cfg)
+@test s.code == {{:X}} && isempty(s.name) && s.integer == {0}
+s = Push.run("(0 4 CODE.QUOTE (X) CODE.DO*RANGE)", cfg)
+@test s.name == {:X, :X, :X, :X, :X}
+
+# CODE.DO*COUNT
+s = Push.run("(CODE.QUOTE (2 INTEGER.*) CODE.DO*COUNT)", cfg)
+@test s.code == {{2, convert(Symbol, "INTEGER.*")}} && isempty(s.integer)
+s = Push.run("(6 CODE.QUOTE (2 INTEGER.*) CODE.DO*COUNT)", cfg)
+@test s.integer == {0, 2, 4, 6, 8, 10}
+
 # CODE.CONTAINS
 s = Push.run("(CODE.QUOTE (1 2 3) CODE.QUOTE 1 CODE.CONTAINS)", cfg)
 @test isempty(s.code) && s.boolean == [true]
@@ -350,12 +364,6 @@ s = Push.run("(3 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.YANKDU
 @test s.code == {:A, :B, :C, :D, :A}
 s = Push.run("(78 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.YANKDUP)", cfg)
 @test s.code == {:A, :B, :C, :D, :A}
-
-# CODE.DO*COUNT
-s = Push.run("(CODE.QUOTE (2 INTEGER.*) CODE.DO*COUNT)", cfg)
-@test s.code == {{2, convert(Symbol, "CODE.*")}} && isempty(s.integer)
-s = Push.run("(6 CODE.QUOTE (2 INTEGER.*) CODE.DO*COUNT)", cfg)
-@test s.integer == {2, 4, 6, 8, 10, 12}
 
 # CODE.DO*RANGE
 s = Push.run("(CODE.QUOTE (X) CODE.DO*RANGE)", cfg)
