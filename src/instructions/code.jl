@@ -206,9 +206,6 @@ CODE_SIZE(s::State) = if !isempty(s.code)
   push!(s.integer, num_points(pop!(s.code)))
 end
 
-#
-# TODO
-#
 CODE_STACK_DEPTH(s::State) = push!(s.integer, length(s.code))
 
 #
