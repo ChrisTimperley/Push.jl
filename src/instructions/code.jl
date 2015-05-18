@@ -22,7 +22,7 @@ CODE_CDR(s::State) = if !isempty(s.code)
   if !isa(top, Vector) || length(top) < 2
     s.code[end] = {}
   else
-    shift!(top[2:end])
+    s.code[end] = top[2:end]
   end
 end
 
@@ -36,7 +36,7 @@ CODE_CONTAINER(s::State) = if length(s.code) > 1
 end
 
 CODE_CONTAINS(s::State) = if length(s.code) > 1
-  s.code[end] = !isempty(container(pop!(s.code), peek(s.code)))
+  push!(s.boolean, !isempty(container(pop!(s.code), peek(s.code))))
 end
 
 CODE_DISCREPANCY(s::State) = if length(s.code) > 1
@@ -89,7 +89,7 @@ CODE_EXTRACT(s::State) = if !isempty(s.code) && !isempty(s.integer)
   end
 
   # Calculate the index modulo the number of points in the given expression.
-  index %= num_points(index)
+  index %= num_points(code)
 
   # Depth-first search for the given index.
   q = {code}
@@ -105,9 +105,9 @@ CODE_EXTRACT(s::State) = if !isempty(s.code) && !isempty(s.integer)
 
     # Add sub-expressions to the front of the processing queue, from
     # left to right.
-    if isa(Vector, expr)
-      for k in length(i):-1:1
-        push!(expr[k], expr[k])
+    if isa(expr, Vector)
+      for k in length(expr):-1:1
+        push!(q, expr[k])
       end
     end
 
