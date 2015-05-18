@@ -204,10 +204,9 @@ CODE_ROT(s::State) = if length(s.code) > 2
     s.code[end-1], s.code[end-2], s.code[end]
 end
 
-#
-# TODO
-#
-CODE_SHOVE(s::State) = return
+CODE_SHOVE(s::State) = if !isempty(s.integer) && !isempty(s.code)
+  shove!(s.code, pop!(s.integer))
+end
 
 CODE_SIZE(s::State) = if !isempty(s.code)
   push!(s.integer, num_points(pop!(s.code)))

@@ -333,6 +333,22 @@ s = Push.run("(5 CODE.QUOTE (A B C D E) CODE.NTHCDR)", cfg)
 s = Push.run("(-5 CODE.QUOTE (A B C D E) CODE.NTHCDR)", cfg)
 @test s.code == {{:B, :C, :D, :E}} && isempty(s.integer)
 
+# CODE.SHOVE
+s = Push.run("(CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.SHOVE)", cfg)
+@test s.code == {:A, :B, :C, :D}
+s = Push.run("(-98 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.SHOVE)", cfg)
+@test s.code == {:A, :B, :C, :D}
+s = Push.run("(0 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.SHOVE)", cfg)
+@test s.code == {:A, :B, :C, :D}
+s = Push.run("(1 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.SHOVE)", cfg)
+@test s.code == {:A, :B, :D, :C}
+s = Push.run("(2 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.SHOVE)", cfg)
+@test s.code == {:A, :D, :B, :C}
+s = Push.run("(3 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.SHOVE)", cfg)
+@test s.code == {:D, :A, :B, :C}
+s = Push.run("(78 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.SHOVE)", cfg)
+@test s.code == {:D, :A, :B, :C}
+
 # CODE.CONTAINS
 s = Push.run("(CODE.QUOTE (1 2 3) CODE.QUOTE 1 CODE.CONTAINS)", cfg)
 @test isempty(s.code) && s.boolean == [true]
@@ -352,22 +368,6 @@ s = Push.run("(CODE.QUOTE ((1 2) 3) CODE.QUOTE (1 2) CODE.CONTAINS)", cfg)
 @test isempty(s.code) && s.boolean == [true
 s = Push.run("(CODE.QUOTE (((2 1) 9 8) 2 3) CODE.QUOTE 1 CODE.CONTAINS)", cfg)
 @test isempty(s.code) && s.boolean == [true
-
-# CODE.SHOVE
-s = Push.run("(CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.SHOVE)", cfg)
-@test s.code == {:A, :B, :C, :D}
-s = Push.run("(-98 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.SHOVE)", cfg)
-@test s.code == {:A, :B, :C, :D}
-s = Push.run("(0 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.SHOVE)", cfg)
-@test s.code == {:A, :B, :C, :D}
-s = Push.run("(1 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.SHOVE)", cfg)
-@test s.code == {:A, :B, :D, :C}
-s = Push.run("(2 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.SHOVE)", cfg)
-@test s.code == {:A, :D, :B, :C}
-s = Push.run("(3 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.SHOVE)", cfg)
-@test s.code == {:D, :A, :B, :C}
-s = Push.run("(78 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.SHOVE)", cfg)
-@test s.code == {:D, :A, :B, :C}
 
 # CODE.YANK
 s = Push.run("(CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.YANK)", cfg)
