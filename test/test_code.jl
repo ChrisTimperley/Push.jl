@@ -89,8 +89,51 @@ s = Push.run("(CODE.QUOTE B CODE.QUOTE A CODE.CONS)", cfg)
 s = Push.run("(CODE.QUOTE (B) CODE.QUOTE A CODE.CONS)", cfg)
 @test s.code == {{{:B}, :A}}
 
+# CODE.DUP
+s = Push.run("(CODE.DUP)", cfg)
+@test isempty(s.code)
+s = Push.run("(CODE.QUOTE X CODE.DUP)", cfg)
+@test s.code == {:X, :X}
+
+# CODE.EXTRACT
+s = Push.run("(CODE.EXTRACT)", cfg)
+@test isempty(s.code)
+s = Push.run("(CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
+@test s.code == {{:A, :B, :C, :D}}
+s = Push.run("(0 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
+@test s.code == {{:A, :B, :C, :D}}
+s = Push.run("(1 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
+@test s.code == {:A}
+s = Push.run("(2 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
+@test s.code == {:B}
+s = Push.run("(3 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
+@test s.code == {:C}
+s = Push.run("(4 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
+@test s.code == {:D}
+s = Push.run("(5 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
+@test s.code == {{:A, :B, :C, :D}}
+s = Push.run("(6 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
+@test s.code == {:A}
+s = Push.run("(-1 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
+@test s.code == {:A}
+s = Push.run("(-2 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
+@test s.code == {:B}
+s = Push.run("(-5 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
+@test s.code == {{:A, :B, :C, :D}}
+s = Push.run("(-6 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
+@test s.code == {:A}
+s = Push.run("(0 CODE.QUOTE A CODE.EXTRACT)", cfg)
+@test s.code == {:A}
+s = Push.run("(1 CODE.QUOTE ((A B C) (D E) (F)) CODE.EXTRACT)", cfg)
+@test s.code == {{:A, :B, :C}}
+s = Push.run("(2 CODE.QUOTE ((A B C) (D E) (F)) CODE.EXTRACT)", cfg)
+@test s.code == {:A}
+s = Push.run("(6 CODE.QUOTE ((A B C) (D E) (F)) CODE.EXTRACT)", cfg)
+@test s.code == {:D}
+
 # CODE.CONTAINS
 s = Push.run("(CODE.QUOTE (1 2 3) CODE.QUOTE 1 CODE.CONTAINS)", cfg)
+Push.pp_stacks(s)
 @test isempty(s.code) && s.boolean == [true]
 s = Push.run("(CODE.QUOTE (1 2 3) CODE.QUOTE 4 CODE.CONTAINS)", cfg)
 @test isempty(s.code) && s.boolean == [false]
@@ -108,46 +151,6 @@ s = Push.run("(CODE.QUOTE ((1 2) 3) CODE.QUOTE (1 2) CODE.CONTAINS)", cfg)
 @test isempty(s.code) && s.boolean == [true
 s = Push.run("(CODE.QUOTE (((2 1) 9 8) 2 3) CODE.QUOTE 1 CODE.CONTAINS)", cfg)
 @test isempty(s.code) && s.boolean == [true
-
-# CODE.DUP
-s = Push.run("(CODE.DUP)", cfg)
-@test isempty(s.code)
-s = Push.run("(CODE.QUOTE X CODE.DUP)", cfg)
-@test s.code == {:X, :X}
-
-# CODE.EXTRACT
-s = Push.run("(CODE.EXTRACT)", cfg)
-@test isempty(s.code)
-s = Push.run("(CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
-@test s.code == {:A. :B, :C, :D}
-s = Push.run("(0 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
-@test s.code == {{:A. :B, :C, :D}}
-s = Push.run("(1 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
-@test s.code == {:A}
-s = Push.run("(2 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
-@test s.code == {:B}
-s = Push.run("(3 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
-@test s.code == {:C}
-s = Push.run("(4 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
-@test s.code == {:D}
-s = Push.run("(5 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
-@test s.code == {:A}
-s = Push.run("(-1 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
-@test s.code == {:A}
-s = Push.run("(-2 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
-@test s.code == {:B}
-s = Push.run("(-5 CODE.QUOTE (A B C D) CODE.EXTRACT)", cfg)
-@test s.code == {:A}
-
-# CODE.EXTRACT
-s = Push.run("(0 CODE.QUOTE A CODE.EXTRACT)", cfg)
-@test s.code == {:A}
-s = Push.run("(1 CODE.QUOTE ((A B C) (D E) (F)) CODE.EXTRACT)", cfg)
-@test s.code == {{:A, :B, :C}}
-s = Push.run("(2 CODE.QUOTE ((A B C) (D E) (F)) CODE.EXTRACT)", cfg)
-@test s.code == {:A}
-s = Push.run("(6 CODE.QUOTE ((A B C) (D E) (F)) CODE.EXTRACT)", cfg)
-@test s.code == {:D}
 
 # CODE.FLUSH
 s = Push.run("(CODE.QUOTE 76 CODE.QUOTE (A B C D) CODE.FLUSH)", cfg)
