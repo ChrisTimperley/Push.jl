@@ -1,20 +1,22 @@
 # Searches for the (sub-)list containing a given needle within a provided list.
 # If no such container can be found, an empty list is returned.
 function container(haystack::Vector{Any}, needle::Any)
-  q = {haystack}
-  while !isempty(q)
-    container = shift!(q)
-
-    if in(needle, container)
-      return container
-    end
-
-    for subcontainer in container
-      if isa(subcontainer, Vector)
-        push!(q, subcontainer)
-      end
+  # Search all sub-containers for the needle, recursively.
+  cnt = {}
+  for sub in haystack
+    cnt = container(sub, needle)
+    if !isempty(cnt)
+      return cnt
     end
   end
+
+  # Once we've finished searching the bottom of the haystack,
+  # look at the container we're in.
+  if in(needle, haystack)
+    return haystack
+  end
+
+  # If we can't find the needle, then return the empty list. 
   return {}
 end
 
