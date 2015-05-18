@@ -241,15 +241,13 @@ end
 
 CODE_RAND(s::State) = return
 
-#
-# TODO
-#
-CODE_DEFINE(s::State) = return
+CODE_DEFINE(s::State) = if !isempty(s.code) && !isempty(s.name)
+  s.definitions[pop!(s.name)] = pop!(s.code)
+end
 
-#
-# TODO
-#
-CODE_DEFINITION(s::State) = return
+CODE_DEFINITION(s::State) = if !isempty(s.name) && haskey(s.definitions, pop!(s.name))
+  push!(s.code, deepcopy(s.definitions[pop!(s.name)]))
+end
 
 Push.register("CODE.=",                CODE_EQ)
 Push.register("CODE.APPEND",           CODE_APPEND)
