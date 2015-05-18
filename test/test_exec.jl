@@ -129,7 +129,7 @@ s = Push.run("(9 0 EXEC.DO*RANGE A)", cfg)
 @test s.name == [:A, :A, :A, :A, :A, :A, :A, :A, :A, :A] && s.integer == [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
 
 # EXEC.DO*TIMES
-s = Push.run("(10 EXEC.DO*TIMES A)", cfg)
+s = Push.run("(10 EXEC.DO*TIMES (A))", cfg)
 @test s.name == [:A, :A, :A, :A, :A, :A, :A, :A, :A, :A] && isempty(s.integer)
 
 # EXEC.DEFINE
