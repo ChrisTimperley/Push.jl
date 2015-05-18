@@ -41,9 +41,9 @@ s = Push.run("(FALSE EXEC.IF 5 10)", cfg)
 
 # EXEC.ROT
 s = Push.run("(EXEC.ROT A B C)", cfg)
-@test s.name == {:C, :A, :B}
+@test s.name == {:B, :C, :A}
 s = Push.run("(EXEC.ROT C B A)", cfg)
-@test s.name == {:A, :C, :B}
+@test s.name == {:B, :A, :C}
 
 # EXEC.SHOVE
 s = Push.run("(0 EXEC.SHOVE A B C D)", cfg)
