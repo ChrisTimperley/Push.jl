@@ -297,6 +297,18 @@ s = Push.run("(CODE.QUOTE (2 INTEGER.*) CODE.DO*COUNT)", cfg)
 s = Push.run("(6 CODE.QUOTE (2 INTEGER.*) CODE.DO*COUNT)", cfg)
 @test s.integer == {0, 2, 4, 6, 8, 10}
 
+# CODE.DO*TIMES
+s = Push.run("(CODE.QUOTE (INTEGER.DUP) CODE.DO*TIMES)", cfg)
+@test s.code == {{convert(Symbol, "INTEGER.DUP")}} && isempty(s.integer)
+s = Push.run("(6 CODE.QUOTE (INTEGER.DUP) CODE.DO*TIMES)", cfg)
+@test isempty(s.code) && isempty(s.integer)
+s = Push.run("(5 CODE.QUOTE (X) CODE.DO*TIMES)", cfg)
+@test s.name == {:X, :X, :X, :X, :X}
+s = Push.run("(0 5 CODE.QUOTE (1 INTEGER.+) CODE.DO*TIMES)", cfg)
+@test isempty(s.code) && s.integer == {5}
+s = Push.run("(0 5 CODE.QUOTE (INTEGER.DUP 1 INTEGER.+) CODE.DO*TIMES)", cfg)
+@test isempty(s.code) && s.integer == {0, 1, 2, 3, 4, 5}
+
 # CODE.CONTAINS
 s = Push.run("(CODE.QUOTE (1 2 3) CODE.QUOTE 1 CODE.CONTAINS)", cfg)
 @test isempty(s.code) && s.boolean == [true]
@@ -364,24 +376,6 @@ s = Push.run("(3 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.YANKDU
 @test s.code == {:A, :B, :C, :D, :A}
 s = Push.run("(78 CODE.QUOTE A CODE.QUOTE B CODE.QUOTE C CODE.QUOTE D CODE.YANKDUP)", cfg)
 @test s.code == {:A, :B, :C, :D, :A}
-
-# CODE.DO*RANGE
-s = Push.run("(CODE.QUOTE (X) CODE.DO*RANGE)", cfg)
-@test s.code == {:X} && isempty(s.name)
-s = Push.run("(0 CODE.QUOTE (X) CODE.DO*RANGE)", cfg)
-@test s.code == {:X} && isempty(s.name) && s.integer == {0}
-s = Push.run("(0 4 CODE.QUOTE (X) CODE.DO*RANGE)", cfg)
-@test s.name == {:X, :X, :X, :X, :X}
-
-# CODE.DO*TIMES
-s = Push.run("(CODE.QUOTE (INTEGER.DUP) CODE.DO*TIMES)", cfg)
-@test s.code == {convert(Symbol, "INTEGER.DUP")} && isempty(s.integer)
-s = Push.run("(6 CODE.QUOTE (INTEGER.DUP) CODE.DO*TIMES)", cfg)
-@test isempty(s.code) && isempty(s.integer)
-s = Push.run("(0 4 CODE.QUOTE (1 INTEGER.+) CODE.DO*TIMES)", cfg)
-@test isempty(s.code) && s.integer== {5}
-s = Push.run("(-1 4 CODE.QUOTE (INTEGER.DUP 1 INTEGER.+) CODE.DO*TIMES)", cfg)
-@test isempty(s.code) && s.integer== {0, 1, 2, 3, 4, 5}
 
 # CODE.SUBST
 # -- LEFT OUT FOR NOW
