@@ -166,7 +166,11 @@ CODE_MEMBER(s::State) = return
 CODE_NOOP(s::State) = return
 
 CODE_NTH(s::State) = if !isempty(s.integer) && !isempty(s.code) && isa(s.code[end], Vector)
-  s.code[end] = s.code[end][1 + (abs(pop!(s.integer)) % length(peek(s.code)))]
+  if isempty(peek(s.code))
+    s.code[end] = {}
+  else
+    s.code[end] = s.code[end][1 + (abs(pop!(s.integer)) % length(peek(s.code)))]
+  end
 end
 
 #
