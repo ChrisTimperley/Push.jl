@@ -38,7 +38,6 @@ execute(s::State, f::Float32) =
   push!(s.float, f)
 
 function execute(s::State, v::Symbol)
-
   # If name quoting is enabled, push this name onto the NAME stack and disable quoting.
   if s.flag_quote_name
     s.flag_quote_name = false
@@ -48,10 +47,9 @@ function execute(s::State, v::Symbol)
   elseif haskey(s.instructions, v)
     s.instructions[v](s)
 
-  # Check if the name refers to a stored macro.
-  #c.macros
-  #elseif haskey(s.macros, v)
-  #  s.macros[v](s)
+  # Check if the name refers to a stored definition.
+  elseif haskey(s.definitions, v)
+    push!(s.exec, s.definitions[v])
 
   # If neither of the above, treat the symbol as a literal name
   # and add it to the NAME stack.
