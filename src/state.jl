@@ -7,11 +7,12 @@ type State
   code::Vector{Any}
   exec::Vector{Any}
   instructions::Dict{Symbol, Function}
+  definitions::Dict{Symbol, Any}
   flag_quote_name::Bool
   flag_quote_code::Bool
   
   State() = new(Parameters(), Float32[], Int32[], Bool[],
-    Any[], Any[], Any[], Dict{Symbol, Function}(), false, false)
+    Any[], Any[], Any[], Dict{Symbol, Function}(), Dict{Symbol, Any}(), false, false)
 end
 
 function pp_stacks(s::State)
