@@ -450,7 +450,7 @@ s = Push.run("(CODE.QUOTE (1 2 3) CODE.QUOTE 1 CODE.CONTAINS)", cfg)
 s = Push.run("(CODE.QUOTE (1 2 3) CODE.QUOTE 4 CODE.CONTAINS)", cfg)
 @test isempty(s.code) && s.boolean == [false]
 s = Push.run("(CODE.QUOTE 1 CODE.QUOTE 1 CODE.CONTAINS)", cfg)
-@test isempty(s.code) && s.boolean == [true]
+@test isempty(s.code) && s.boolean == [false]
 s = Push.run("(CODE.QUOTE () CODE.QUOTE 1 CODE.CONTAINS)", cfg)
 @test isempty(s.code) && s.boolean == [false]
 s = Push.run("(CODE.QUOTE () CODE.QUOTE () CODE.CONTAINS)", cfg)
@@ -460,9 +460,9 @@ s = Push.run("(CODE.QUOTE 1 CODE.QUOTE () CODE.CONTAINS)", cfg)
 s = Push.run("(CODE.QUOTE () CODE.QUOTE () CODE.CONTAINS)", cfg)
 @test isempty(s.code) && s.boolean == [false]
 s = Push.run("(CODE.QUOTE ((1 2) 3) CODE.QUOTE (1 2) CODE.CONTAINS)", cfg)
-@test isempty(s.code) && s.boolean == [true
+@test isempty(s.code) && s.boolean == [true]
 s = Push.run("(CODE.QUOTE (((2 1) 9 8) 2 3) CODE.QUOTE 1 CODE.CONTAINS)", cfg)
-@test isempty(s.code) && s.boolean == [true
+@test isempty(s.code) && s.boolean == [true]
 
 # CODE.SUBST
 # -- LEFT OUT FOR NOW
