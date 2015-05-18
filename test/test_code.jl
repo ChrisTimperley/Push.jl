@@ -422,6 +422,28 @@ s = Push.run("(CODE.QUOTE X CODE.QUOTE (A ((B C) X D) E) CODE.CONTAINER)", cfg)
 s = Push.run("(CODE.QUOTE X CODE.QUOTE ((A X) B C X) CODE.CONTAINER)", cfg)
 @test s.code == {{:A, :X}}
 
+# CODE.DISCREPANCY
+s = Push.run("(CODE.QUOTE X CODE.QUOTE X CODE.DISCREPANCY)", cfg)
+@test s.integer == {0}
+s = Push.run("(CODE.QUOTE X CODE.QUOTE Y CODE.DISCREPANCY)", cfg)
+@test s.integer == {2}
+s = Push.run("(CODE.QUOTE (X Y Z) CODE.QUOTE (X Y A B) CODE.DISCREPANCY)", cfg)
+@test s.integer == {3}
+
+# CODE.MEMBER
+s = Push.run("(CODE.QUOTE (A B C) CODE.MEMBER)", cfg)
+@test s.code == {{:A, :B, :C}} && isempty(s.boolean)
+s = Push.run("(CODE.QUOTE A CODE.QUOTE (A B C) CODE.MEMBER)", cfg)
+@test isempty(s.code) && s.boolean == [true]
+s = Push.run("(CODE.QUOTE (A) CODE.QUOTE (A B C) CODE.MEMBER)", cfg)
+@test isempty(s.code) && s.boolean == [false]
+s = Push.run("(CODE.QUOTE A CODE.QUOTE B CODE.MEMBER)", cfg)
+@test isempty(s.code) && s.boolean == [false]
+s = Push.run("(CODE.QUOTE A CODE.QUOTE A CODE.MEMBER)", cfg)
+@test isempty(s.code) && s.boolean == [true]
+s = Push.run("(CODE.QUOTE A CODE.QUOTE ((A) B C) CODE.MEMBER)", cfg)
+@test isempty(s.code) && s.boolean == [false]
+
 # CODE.CONTAINS
 s = Push.run("(CODE.QUOTE (1 2 3) CODE.QUOTE 1 CODE.CONTAINS)", cfg)
 @test isempty(s.code) && s.boolean == [true]
@@ -456,28 +478,6 @@ s = Push.run("(CODE.QUOTE (((2 1) 9 8) 2 3) CODE.QUOTE 1 CODE.CONTAINS)", cfg)
 
 # CODE.INSTRUCTIONS
 
-# CODE.DISCREPANCY
-s = Push.run("(CODE.QUOTE X CODE.QUOTE X CODE.DISCREPANCY)", cfg)
-@test s.integer == {0}
-s = Push.run("(CODE.QUOTE X CODE.QUOTE Y CODE.DISCREPANCY)", cfg)
-@test s.integer == {1}
-
 # CODE.DEFINE
 
 # CODE.DEFINITION
-
-# CODE.MEMBER
-s = Push.run("(CODE.QUOTE (A B C) CODE.MEMBER)", cfg)
-@test s.code == {{:A, :B, :C}} && isempty(s.boolean)
-s = Push.run("(CODE.QUOTE A CODE.QUOTE (A B C) CODE.MEMBER)", cfg)
-@test isempty(s.code) && s.boolean == [true]
-s = Push.run("(CODE.QUOTE (A) CODE.QUOTE (A B C) CODE.MEMBER)", cfg)
-@test isempty(s.code) && s.boolean == [false]
-s = Push.run("(CODE.QUOTE A CODE.QUOTE B CODE.MEMBER)", cfg)
-@test isempty(s.code) && s.boolean == [false]
-s = Push.run("(CODE.QUOTE A CODE.QUOTE A CODE.MEMBER)", cfg)
-@test isempty(s.code) && s.boolean == [true]
-s = Push.run("(CODE.QUOTE A CODE.QUOTE ((A) B C) CODE.MEMBER)", cfg)
-@test isempty(s.code) && s.boolean == [false]
-
-
