@@ -7,6 +7,7 @@ module Push
   include("state.jl")
   include("configuration.jl")
   include("execute.jl")
+  include("list.jl")
 
   # Initialise the instruction repository.
   instructions = Dict{Symbol, Function}()
