@@ -32,7 +32,7 @@ s = Push.run("(X Y Z NAME.POP)", cfg)
 s = Push.run("(Y Z NAME.ROT)", cfg)
 @test s.name == [:Y, :Z]
 s = Push.run("(A X Y Z NAME.ROT)", cfg)
-@test s.name == [:A, :Z, :Y, :X]
+@test s.name == [:A, :Z, :X, :Y]
 
 # NAME.SHOVE
 s = Push.run("(A B C D 0 NAME.SHOVE)", cfg)

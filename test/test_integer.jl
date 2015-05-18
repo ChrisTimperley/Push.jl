@@ -108,7 +108,7 @@ s = Push.run("(10 20 30 INTEGER.POP)", cfg)
 s = Push.run("(1 INTEGER.ROT)", cfg)
 @test s.integer == [1]
 s = Push.run("(0 10 20 30 INTEGER.ROT)", cfg)
-@test s.integer == [0, 30, 20, 10]
+@test s.integer == [0, 30, 10, 20]
 
 # INTEGER.SHOVE
 s = Push.run("(1 INTEGER.SHOVE)", cfg)

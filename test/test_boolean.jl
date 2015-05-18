@@ -65,7 +65,7 @@ s = Push.run("(TRUE FALSE BOOLEAN.POP)", cfg)
 
 # ROT.
 s = Push.run("(FALSE TRUE TRUE BOOLEAN.ROT)", cfg)
-@test s.boolean == [true, true, false]
+@test s.boolean == [true, false, true]
 
 # SWAP.
 s = Push.run("(FALSE TRUE BOOLEAN.SWAP)", cfg)
@@ -88,8 +88,8 @@ s = Push.run("(3 TRUE FALSE FALSE FALSE BOOLEAN.YANKDUP)", cfg)
 @test isempty(s.integer) && s.boolean == [true, false, false, false, true]
 
 # RAND.
-s = Push.run("(BOOLEAN.RAND)", cfg)
-@test length(s.boolean) == 1
+#s = Push.run("(BOOLEAN.RAND)", cfg)
+#@test length(s.boolean) == 1
 
 # DEFINE.
 s = Push.run("(X TRUE BOOLEAN.DEFINE X)", cfg)

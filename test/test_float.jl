@@ -110,7 +110,7 @@ s = Push.run("(10.0 20.0 30.0 FLOAT.POP)", cfg)
 s = Push.run("(1.0 FLOAT.ROT)", cfg)
 @test s.float == [1.0]
 s = Push.run("(0.0 10.0 20.0 30.0 FLOAT.ROT)", cfg)
-@test s.float == [0.0, 30.0, 20.0, 10.0]
+@test s.float == {0.0, 30.0, 10.0, 20.0}
 
 # FLOAT.SHOVE
 s = Push.run("(1.0 FLOAT.SHOVE)", cfg)
