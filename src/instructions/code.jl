@@ -223,10 +223,9 @@ CODE_SWAP(s::State) = if length(s.code) >= 2
   s.code[end], s.code[end-1] = s.code[end-1], s.code[end]
 end
 
-#
-# TODO
-#
-CODE_YANK(s::State) = return
+CODE_YANK(s::State) = if !isempty(s.integer) && !isempty(s.code)
+  yank!(s.code, pop!(s.integer))
+end
 
 #
 # TODO
