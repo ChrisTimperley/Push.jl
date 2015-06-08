@@ -179,6 +179,10 @@ s = Push.run("(10 20 30 40 50 -987 INTEGER.YANKDUP)", cfg)
 @test s.integer == [10, 20, 30, 40, 50, 50]
 
 # INTEGER.DEFINE
+s = Push.run("(X INTEGER.DEFINE X)", cfg)
+@test isempty(s.integer) && s.name == [:X, :X]
+s = Push.run("(3 X INTEGER.DEFINE X)", cfg)
+@test isempty(s.name) && s.integer == [3]
 
 # INTEGER.RAND
 s = Push.run("(INTEGER.RAND)", cfg)
