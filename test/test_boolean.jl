@@ -92,5 +92,7 @@ s = Push.run("(BOOLEAN.RAND)", cfg)
 @test length(s.boolean) == 1
 
 # DEFINE.
+s = Push.run("(X BOOLEAN.DEFINE X)", cfg)
+@test isempty(s.boolean) && s.name == [:X, :X]
 s = Push.run("(X TRUE BOOLEAN.DEFINE X)", cfg)
 @test s.boolean == [true]
