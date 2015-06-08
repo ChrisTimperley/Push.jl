@@ -193,6 +193,10 @@ s = Push.run("(90.0 FLOAT.SIN)", cfg)
 @test s.float == Float32[sin(90.0)]
 
 # FLOAT.DEFINE
+s = Push.run("(X FLOAT.DEFINE X)", cfg)
+@test isempty(s.float) && s.name == [:X, :X]
+s = Push.run("(3.0 X FLOAT.DEFINE X)", cfg)
+@test isempty(s.name) && s.float == [3.0]
 
 # FLOAT.RAND
 s = Push.run("(FLOAT.RAND)", cfg)
