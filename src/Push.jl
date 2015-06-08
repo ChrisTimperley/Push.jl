@@ -7,6 +7,7 @@ module Push
   include("state.jl")
   include("configuration.jl")
   include("execute.jl")
+  include("random.jl")
   include("list.jl")
 
   # Initialise the instruction repository.

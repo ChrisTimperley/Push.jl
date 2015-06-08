@@ -69,7 +69,7 @@ end
 
 INTEGER_POP(s::State) = !isempty(s.integer) && pop!(s.integer)
 
-INTEGER_RAND(s::State) = push!(s.integer, rand_integer(s))
+INTEGER_RAND(s::State) = push!(s.integer, random_integer(s))
 
 INTEGER_ROT(s::State) = if length(s.integer) > 2
   s.integer[end], s.integer[end-1], s.integer[end-2] =

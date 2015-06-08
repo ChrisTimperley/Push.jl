@@ -193,5 +193,9 @@ s = Push.run("(90.0 FLOAT.SIN)", cfg)
 @test s.float == Float32[sin(90.0)]
 
 # FLOAT.DEFINE
+
 # FLOAT.RAND
+s = Push.run("(FLOAT.RAND)", cfg)
+@test length(s.float) == 1
+
 # FLOAT.%

@@ -181,5 +181,7 @@ s = Push.run("(10 20 30 40 50 -987 INTEGER.YANKDUP)", cfg)
 # INTEGER.DEFINE
 
 # INTEGER.RAND
+s = Push.run("(INTEGER.RAND)", cfg)
+@test length(s.integer) == 1
 
 # INTEGER.%
