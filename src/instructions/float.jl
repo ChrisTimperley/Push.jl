@@ -69,10 +69,7 @@ FLOAT_POP(s::State) = if !isempty(s.float)
   pop!(s.float)
 end
 
-#
-# TODO
-#
-FLOAT_RAND(s::State) = return
+FLOAT_RAND(s::State) = push!(s.float, rand_float(s))
 
 FLOAT_ROT(s::State) = if length(s.float) > 2
   s.float[end], s.float[end-1], s.float[end-2] =

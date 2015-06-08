@@ -46,7 +46,7 @@ BOOLEAN_SHOVE(s::State) = if !isempty(s.integer) && !isempty(s.boolean)
   shove!(s.boolean, pop!(s.integer))
 end
 
-BOOLEAN_RAND(s::State) = push!(s.boolean, RANDOM_BOOLEAN)
+BOOLEAN_RAND(s::State) = push!(s.boolean, random_bool(s))
 
 BOOLEAN_STACK_DEPTH(s::State) = push!(s.integer, length(s.boolean))
 
