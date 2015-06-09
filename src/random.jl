@@ -40,6 +40,6 @@ end
 
 function decompose(i::Integer, mx::Integer)
   (i == 1 || mx == 1) && return [1]
-  this_part = rand(1:num-1)
+  this_part = rand(1:i - 1)
   push!(decompose(i - this_part, mx - 1), this_part)
 end
