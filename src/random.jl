@@ -16,12 +16,16 @@ random_name(s::State, ins::Vector{Symbol}) =
 random_bound_name(s::State) =
   random_name(s, list_instructions(s))
 
-function random_erc(s::State)
-  choice = rand()
-  choice <= 0.25  && return random_bool(s)
-  choice <= 0.5   && return random_integer(s)
-  choice <= 0.75  && return random_float(s)
-  return random_name(s)
+# Generates a random atom for `random_code`.
+# If the atom is an ERC instruction, then a new ERC is generated and returned
+# instead.
+function random_atom(s::State)
+  atom = random_bound_name(s)
+  atom == symbol("FLOAT.ERC") && return random_float(s)
+  atom == symbol("INTEGER.ERC") && return random_integer(s)
+  atom == symbol("BOOLEAN.ERC") && return random_bool(s)
+  atom == symbol("NAME.ERC") && return random_name(s)
+  return atom
 end
 
 # Very inefficient.
@@ -32,11 +36,8 @@ random_code(s::State, mx::Integer) =
   random_code_with_size(s, rand(1:mx), mx)
 random_code_with_size(s::State, ln::Integer, mx::Integer) =
   random_code_with_size(s, ln, mx, s.parameters.erc_probability)
-
-function random_code_with_size(s::State, ln::Integer, mx::Integer, p_erc::FloatingPoint)
-  ln == 1 && return rand() <= p_erc ? random_erc(s) : random_bound_name(s)
-  [random_code_with_size(s, i, mx) for i in decompose(ln, mx)]
-end
+random_code_with_size(s::State, ln::Integer, mx::Integer, p_erc::FloatingPoint) =
+  ln == 1 ? random_atom(s) : [random_code_with_size(s, i, mx) for i in decompose(ln, mx)]
 
 function decompose(i::Integer, mx::Integer)
   (i == 1 || mx == 1) && return [1]
