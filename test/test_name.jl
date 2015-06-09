@@ -89,4 +89,9 @@ s = Push.run("(A B C D 10 NAME.YANKDUP)", cfg)
 @test s.name == [:A, :B, :C, :D, :A]
 
 # NAME.RAND
+s = Push.run("(NAME.RAND)", cfg)
+@test length(s.name) == 1
+
 # NAME.RANDBOUNDNAME
+s = Push.run("(NAME.RANDBOUNDNAME)", cfg)
+@test length(s.name) == 1 && in(s.name[1], Push.list_instructions(s))

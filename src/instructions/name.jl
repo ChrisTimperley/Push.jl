@@ -10,20 +10,11 @@ NAME_FLUSH(s::State) = empty!(s.name)
 
 NAME_POP(s::State) = !isempty(s.name) && pop!(s.name)
 
-#
-# TODO
-#
 NAME_QUOTE(s::State) = s.flag_quote_name = true
 
-#
-# TODO
-#
-NAME_RAND(s::State) = return
+NAME_RAND(s::State) = push!(s.name, random_name(s))
 
-#
-# TODO
-#
-NAME_RAND_BOUND_NAME(s::State) = return
+NAME_RAND_BOUND_NAME(s::State) = push!(s.name, random_bound_name(s))
 
 NAME_ROT(s::State) = if length(s.name) > 2
   s.name[end], s.name[end-1], s.name[end-2] =

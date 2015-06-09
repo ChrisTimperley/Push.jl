@@ -31,6 +31,12 @@ type Parameters
   # If this parameter is set to -1, then no such limit is enforced.
   max_points_in_program::Int32
 
+  # The minimum length of a string produced by NAME.RAND.
+  min_random_name_length::Int32
+
+  # The maximum length of a string produced by NAME.RAND.
+  max_random_name_length::Int32
+
   # When this flag is set to true, all code passed to the top level of the
   # interpreter will be pushed onto the CODE stack prior to execution.
   top_level_push_code::Bool
@@ -43,7 +49,7 @@ type Parameters
   Parameters() =
     new(typemin(Float32), typemax(Float32),
       typemin(Int32), typemax(Int32),
-      500, 0.001, 10, 10, true, false)
+      500, 0.001, 10, 10, 1, 10, true, false)
 
 end
 
@@ -72,6 +78,10 @@ set!(p::Parameters, k::String, v::String) =
     p.max_points_in_program = convert(Int32, int(v))
   elseif k == "TOP-LEVEL-PUSH-CODE"
     p.top_level_push_code = v == "TRUE"
+  elseif k == "MIN-RANDOM-NAME-LENGTH"
+    p.min_random_string_length = convert(Int32, int(v))
+  elseif k == "MAX-RANDOM-NAME-LENGTH"
+    p.max_random_string_length = convert(Int32, int(v))
   elseif k == "TOP-LEVEL-POP-CODE"
     p.top_level_pop_code = v == "TRUE"
   end

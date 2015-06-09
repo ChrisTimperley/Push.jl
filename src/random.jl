@@ -7,10 +7,14 @@ random_integer(s::State) =
 random_float(s::State) =
   rand(s.parameters.min_random_float:eps(Float32):s.parameters.max_random_float)
 
-random_instruction(s::State) =
-  random_instruction(s, instructions(s))
-random_instruction(s::State, ins::Vector{ASCIIString}) =
+random_name(s::State) =
+  random_name(s, s.parameters.new_erc_name_probability, s.parameters.min_random_name_length, s.parameters.max_random_name_length)
+random_name(s::State, p_new::FloatingPoint, minl::Integer, maxl::Integer) =  
+  rand() <= p_new ? randstring(rand(minl:maxl)) : random_bound_name(s)
+random_name(s::State, ins::Vector{Symbol}) =
   ins[rand(1:end)]
+random_bound_name(s::State) =
+  random_name(s, list_instructions(s))
 
 # UNDER CONSTRUCTION.
 random_code(s::State) =

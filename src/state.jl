@@ -29,3 +29,8 @@ end
 # by inserting it into the instruction table of a given state.
 enable_instruction!(s::State, i::String) = enable_instruction!(s, convert(Symbol, i))
 enable_instruction!(s::State, i::Symbol) = s.instructions[i] = fetch_instruction(i)
+
+# Returns a list with all enabled instructions and definitions within
+# a given state.
+list_instructions(s::State) =
+  vcat(collect(keys(s.instructions)), collect(keys(s.definitions)))
