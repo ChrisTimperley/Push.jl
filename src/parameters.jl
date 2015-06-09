@@ -23,6 +23,9 @@ type Parameters
   # an existing name.
   new_erc_name_probability::Float32
 
+  # The probability that an ERC will be produced when generating a new atom.
+  erc_probability::Float32
+
   # The maximum number of points in an expression produced by CODE.RAND.
   max_points_in_random_expressions::Int32
 
@@ -49,7 +52,7 @@ type Parameters
   Parameters() =
     new(typemin(Float32), typemax(Float32),
       typemin(Int32), typemax(Int32),
-      500, 0.001, 10, 10, 1, 10, true, false)
+      500, 0.001, 0.1, 10, 10, 1, 10, true, false)
 
 end
 
@@ -82,6 +85,8 @@ set!(p::Parameters, k::String, v::String) =
     p.min_random_string_length = convert(Int32, int(v))
   elseif k == "MAX-RANDOM-NAME-LENGTH"
     p.max_random_string_length = convert(Int32, int(v))
+  elseif k == "ERC-PROBABILITY"
+    p.erc_probability = convert(Float32, float(v))
   elseif k == "TOP-LEVEL-POP-CODE"
     p.top_level_pop_code = v == "TRUE"
   end

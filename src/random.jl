@@ -24,16 +24,22 @@ function random_erc(s::State)
   return random_name(s)
 end
 
-# UNDER CONSTRUCTION.
+# Very inefficient.
+# Should implement an iterative version without overheads and type issues.
 random_code(s::State) =
   random_code(s, s.parameters.max_points)
 random_code(s::State, mx::Integer) =
-  random_code_with_size(1:mx)
+  random_code_with_size(s, rand(1:mx), mx)
+random_code_with_size(s::State, ln::Integer, mx::Integer) =
+  random_code_with_size(s, ln, mx, s.parameters.erc_probability)
 
-function random_code_with_size(s::State, ln::Integer)
-  ln == 1 && return something ? random_erc(s) : random_instruction(s)
+function random_code_with_size(s::State, ln::Integer, mx::Integer, p_erc::FloatingPoint)
+  ln == 1 && return rand() <= p_erc ? random_erc(s) : random_instruction(s)
+  [random_code_with_size(s, i, mx) for i in decompose(ln, mx)]
 end
 
-function decompose(s::State, ln::Integer, mx::Integer)
-  (ln == 1 || mx == 1) && return [ln]
+function decompose(i::Integer, mx::Integer)
+  (i == 1 || mx == 1) && return [1]
+  this_part = rand(1:num-1)
+  push!(decompose(i - this_part, mx - 1), this_part)
 end
