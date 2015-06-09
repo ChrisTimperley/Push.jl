@@ -239,7 +239,7 @@ CODE_YANK_DUP(s::State) = if !isempty(s.integer) && !isempty(s.code)
   yankdup!(s.code, pop!(s.integer))
 end
 
-CODE_RAND(s::State) = return
+CODE_RAND(s::State) = push!(s.code, random_code(s))
 
 CODE_DEFINE(s::State) = if !isempty(s.code) && !isempty(s.name)
   s.definitions[pop!(s.name)] = pop!(s.code)
