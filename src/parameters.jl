@@ -49,7 +49,7 @@ type Parameters
   Parameters() =
     new(typemin(Float32), typemax(Float32),
       typemin(Int32), typemax(Int32),
-      500, 0.001, 0.1, 10, 10, 1, 10, true, false)
+      500, 0.001, 10, 10, 1, 10, true, false)
 
 end
 
