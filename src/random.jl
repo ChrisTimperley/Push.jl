@@ -30,7 +30,6 @@ random_code(s::State) =
 random_code(s::State, mx::Integer) =
   random_code_with_size(1:mx)
 
-
 function random_code_with_size(s::State, ln::Integer)
   ln == 1 && return something ? random_erc(s) : random_instruction(s)
 end

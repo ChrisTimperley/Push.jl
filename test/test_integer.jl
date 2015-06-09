@@ -1,5 +1,3 @@
-require("src/Push.jl")
-
 using Push
 using Base.Test
 
