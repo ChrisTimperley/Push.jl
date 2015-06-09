@@ -27,7 +27,7 @@ end
 # Very inefficient.
 # Should implement an iterative version without overheads and type issues.
 random_code(s::State) =
-  random_code(s, s.parameters.max_points)
+  random_code(s, s.parameters.max_points_in_random_expressions)
 random_code(s::State, mx::Integer) =
   random_code_with_size(s, rand(1:mx), mx)
 random_code_with_size(s::State, ln::Integer, mx::Integer) =
