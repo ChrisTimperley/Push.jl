@@ -35,8 +35,6 @@ random_code(s::State) =
 random_code(s::State, mx::Integer) =
   random_code_with_size(s, rand(1:mx), mx)
 random_code_with_size(s::State, ln::Integer, mx::Integer) =
-  random_code_with_size(s, ln, mx, s.parameters.erc_probability)
-random_code_with_size(s::State, ln::Integer, mx::Integer, p_erc::FloatingPoint) =
   ln == 1 ? random_atom(s) : [random_code_with_size(s, i, mx) for i in decompose(ln, mx)]
 
 function decompose(i::Integer, mx::Integer)
