@@ -34,7 +34,7 @@ random_code_with_size(s::State, ln::Integer, mx::Integer) =
   random_code_with_size(s, ln, mx, s.parameters.erc_probability)
 
 function random_code_with_size(s::State, ln::Integer, mx::Integer, p_erc::FloatingPoint)
-  ln == 1 && return rand() <= p_erc ? random_erc(s) : random_instruction(s)
+  ln == 1 && return rand() <= p_erc ? random_erc(s) : random_bound_name(s)
   [random_code_with_size(s, i, mx) for i in decompose(ln, mx)]
 end
 
