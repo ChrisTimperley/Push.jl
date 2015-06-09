@@ -1,5 +1,5 @@
 module Push
-  export register
+  export register, run
 
   include("stack.jl")
   include("parser.jl")
@@ -27,4 +27,7 @@ module Push
   include("instructions/float.jl")
   include("instructions/integer.jl")
   include("instructions/name.jl")
+
+  # Load and store the default configuration.
+  default_configuration = load_configuration(joinpath(dirname(@__FILE__), "default.cfg"))
 end
