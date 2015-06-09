@@ -62,6 +62,8 @@ BOOLEAN_YANKDUP(s::State) = if !isempty(s.integer) && !isempty(s.boolean)
   yankdup!(s.boolean, pop!(s.integer))
 end
 
+BOOLEAN_ERC(s::State) = return
+
 # could tell it which stacks we use?
 Push.register("BOOLEAN.=",           BOOLEAN_EQUALS)
 Push.register("BOOLEAN.NOT",         BOOLEAN_NOT)
@@ -80,3 +82,4 @@ Push.register("BOOLEAN.STACKDEPTH",  BOOLEAN_STACK_DEPTH)
 Push.register("BOOLEAN.SWAP",        BOOLEAN_SWAP)
 Push.register("BOOLEAN.YANK",        BOOLEAN_YANK)
 Push.register("BOOLEAN.YANKDUP",     BOOLEAN_YANKDUP)
+Push.register("BOOLEAN.ERC",         BOOLEAN_ERC)

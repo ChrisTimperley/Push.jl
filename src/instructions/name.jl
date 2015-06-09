@@ -39,6 +39,8 @@ NAME_YANKDUP(s::State) = if !isempty(s.integer) && !isempty(s.name)
   yankdup!(s.name, pop!(s.integer))
 end
 
+NAME_ERC(s::State) = return
+
 Push.register("NAME.=",              NAME_EQUALS)
 Push.register("NAME.DUP",            NAME_DUP)
 Push.register("NAME.FLUSH",          NAME_FLUSH)
@@ -52,3 +54,4 @@ Push.register("NAME.STACKDEPTH",     NAME_STACK_DEPTH)
 Push.register("NAME.SWAP",           NAME_SWAP)
 Push.register("NAME.YANK",           NAME_YANK)
 Push.register("NAME.YANKDUP",        NAME_YANKDUP)
+Push.register("NAME.ERC",            NAME_ERC)

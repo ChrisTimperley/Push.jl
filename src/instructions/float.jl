@@ -102,6 +102,8 @@ FLOAT_YANKDUP(s::State) = if !isempty(s.integer) && !isempty(s.float)
   yankdup!(s.float, pop!(s.integer))
 end
 
+FLOAT_ERC(s::State) = return
+
 Push.register("FLOAT.%",           FLOAT_MOD)
 Push.register("FLOAT.*",           FLOAT_MUL)
 Push.register("FLOAT.+",           FLOAT_PLUS)
@@ -128,3 +130,4 @@ Push.register("FLOAT.SWAP",        FLOAT_SWAP)
 Push.register("FLOAT.TAN",         FLOAT_TAN)
 Push.register("FLOAT.YANK",        FLOAT_YANK)
 Push.register("FLOAT.YANKDUP",     FLOAT_YANKDUP)
+Push.register("FLOAT.ERC",         FLOAT_ERC)

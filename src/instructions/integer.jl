@@ -94,6 +94,8 @@ INTEGER_YANKDUP(s::State) = if length(s.integer) >= 2
   yankdup!(s.integer, pop!(s.integer))
 end
 
+INTEGER_ERC(s::State) = return
+
 Push.register("INTEGER.%",           INTEGER_MOD)
 Push.register("INTEGER.*",           INTEGER_MUL)
 Push.register("INTEGER.+",           INTEGER_PLUS)
@@ -117,3 +119,4 @@ Push.register("INTEGER.STACKDEPTH",  INTEGER_STACK_DEPTH)
 Push.register("INTEGER.SWAP",        INTEGER_SWAP)
 Push.register("INTEGER.YANK",        INTEGER_YANK)
 Push.register("INTEGER.YANKDUP",     INTEGER_YANKDUP)
+Push.register("INTEGER.ERC",         INTEGER_ERC)
