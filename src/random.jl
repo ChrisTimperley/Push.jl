@@ -16,14 +16,23 @@ random_name(s::State, ins::Vector{Symbol}) =
 random_bound_name(s::State) =
   random_name(s, list_instructions(s))
 
+function random_erc(s::State)
+  choice = rand()
+  choice <= 0.25  && return random_bool(s)
+  choice <= 0.5   && return random_integer(s)
+  choice <= 0.75  && return random_float(s)
+  return random_name(s)
+end
+
 # UNDER CONSTRUCTION.
 random_code(s::State) =
   random_code(s, s.parameters.max_points)
 random_code(s::State, mx::Integer) =
   random_code_with_size(1:mx)
 
+
 function random_code_with_size(s::State, ln::Integer)
-  ln == 1 && return something ? random_erc() : random_instruction(s)
+  ln == 1 && return something ? random_erc(s) : random_instruction(s)
 end
 
 function decompose(s::State, ln::Integer, mx::Integer)
