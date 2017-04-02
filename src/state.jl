@@ -12,7 +12,7 @@ type State
   flag_quote_name::Bool
   flag_quote_code::Bool
   
-  State() = new(MersenneTwister(), Parameters(), Float32[], Int32[], Bool[],
+  State() = new(MersenneTwister(0), Parameters(), Float32[], Int32[], Bool[],
     Any[], Any[], Any[], Dict{Symbol, Function}(), Dict{Symbol, Any}(), false, false)
 end
 
