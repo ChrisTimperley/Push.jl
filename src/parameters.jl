@@ -1,10 +1,10 @@
 # Convenience data structure for holding all global parameters
 # in a single container.
-type Parameters
+mutable struct Parameters
 
   # The minimum value produced by a call to FLOAT.RAND.
   min_random_float::Float32
-  
+
   # The maximum value produced by a call to FLOAT.RAND.
   max_random_float::Float32
 
@@ -61,27 +61,27 @@ end
 # Adjusts the value of a single parameter, k, to a given value, v.
 set!(p::Parameters, k::String, v::String) =
   if k == "MAX-RANDOM-FLOAT"
-    p.max_random_float = convert(Float32, float(v))
+    p.max_random_float = parse(Float32, v)
   elseif k == "MIN-RANDOM-FLOAT"
-    p.min_random_float = convert(Float32, float(v))
+    p.min_random_float = parse(Float32, v)
   elseif k == "MAX-RANDOM-INTEGER"
-    p.max_random_integer = convert(Int32, int(v))
+    p.max_random_integer = parse(Int32, v)
   elseif k == "MIN-RANDOM-INTEGER"
-    p.min_random_integer = convert(Int32, int(v))
+    p.min_random_integer = parse(Int32, v)
   elseif k == "EVAL-PUSH-LIMIT"
-    p.eval_push_limit = convert(Int32, int(v))
+    p.eval_push_limit = parse(Int32, v)
   elseif k == "NEW-ERC-NAME-PROBABILITY"
-    p.new_erc_name_probability = convert(Float32, float(v))
+    p.new_erc_name_probability = parse(Float32, v)
   elseif k == "MAX-POINTS-IN-RANDOM-EXPRESSIONS"
-    p.max_points_in_random_expressions = convert(Int32, int(v))
+    p.max_points_in_random_expressions = parse(Int32, v)
   elseif k == "MAX-POINTS-IN-PROGRAM"
-    p.max_points_in_program = convert(Int32, int(v))
+    p.max_points_in_program = parse(Int32, v)
   elseif k == "TOP-LEVEL-PUSH-CODE"
     p.top_level_push_code = v == "TRUE"
   elseif k == "MIN-RANDOM-NAME-LENGTH"
-    p.min_random_string_length = convert(Int32, int(v))
+    p.min_random_string_length = parse(Int32, v)
   elseif k == "MAX-RANDOM-NAME-LENGTH"
-    p.max_random_string_length = convert(Int32, int(v))
+    p.max_random_string_length = parse(Int32, v)
   elseif k == "TOP-LEVEL-POP-CODE"
     p.top_level_pop_code = v == "TRUE"
   end

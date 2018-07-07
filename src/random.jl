@@ -1,5 +1,5 @@
 random_bool(s::State) =
-  randbool()
+  rand(Bool)
 
 random_integer(s::State) =
   rand(s.parameters.min_random_integer:s.parameters.max_random_integer)
@@ -9,7 +9,7 @@ random_float(s::State) =
 
 random_name(s::State) =
   random_name(s, s.parameters.new_erc_name_probability, s.parameters.min_random_name_length, s.parameters.max_random_name_length)
-random_name(s::State, p_new::FloatingPoint, minl::Integer, maxl::Integer) =  
+random_name(s::State, p_new::AbstractFloat, minl::Integer, maxl::Integer) =
   rand() <= p_new ? randstring(rand(minl:maxl)) : random_bound_name(s)
 random_name(s::State, ins::Vector{Symbol}) =
   ins[rand(1:end)]

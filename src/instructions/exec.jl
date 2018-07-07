@@ -8,7 +8,7 @@ end
 
 EXEC_DO_STAR_COUNT(s::State) = if !isempty(s.integer) && s.integer[end] >= 0 && !isempty(s.exec)
   push!(s.integer, 0, pop!(s.integer) - 1)
-  push!(s.exec, pop!(s.exec), convert(Symbol, "EXEC.DO*RANGE"))
+  push!(s.exec, pop!(s.exec), Symbol("EXEC.DO*RANGE"))
 end
 
 EXEC_DO_STAR_RANGE(s::State) = if length(s.integer) > 1 && !isempty(s.exec)
@@ -17,13 +17,16 @@ EXEC_DO_STAR_RANGE(s::State) = if length(s.integer) > 1 && !isempty(s.exec)
   if dest_idx != curr_idx
     body = pop!(s.exec)
     curr_idx::Int32 = curr_idx + (dest_idx > curr_idx ? one(Int32) : -one(Int32))
-    push!(s.exec, {curr_idx, dest_idx, convert(Symbol, "EXEC.DO*RANGE"), copy(body)}, body)
+    if !(body isa Symbol)
+      body = copy(body)
+    end
+    push!(s.exec, [curr_idx, dest_idx, Symbol("EXEC.DO*RANGE"), body], body)
   end
 end
 
 EXEC_DO_STAR_TIMES(s::State) = if !isempty(s.integer) && s.integer[end] >= 0 && !isempty(s.exec)
   push!(s.integer, 0, pop!(s.integer) - 1)
-  push!(s.exec, {convert(Symbol, "INTEGER.POP"), pop!(s.exec)}, convert(Symbol, "EXEC.DO*RANGE"))
+  push!(s.exec, [Symbol("INTEGER.POP"), pop!(s.exec)], Symbol("EXEC.DO*RANGE"))
 end
 
 # What if "EXEC_DUP" is the command being duplicated?
@@ -55,7 +58,10 @@ EXEC_S(s::State) = if length(s.exec) > 2
   a = pop!(s.exec)
   b = pop!(s.exec)
   c = pop!(s.exec)
-  push!(s.exec, a, copy(c), {b, c})
+  if !(c isa Symbol)
+    c = copy(c)
+  end
+  push!(s.exec, a, c, [b, c])
 end
 
 EXEC_SHOVE(s::State) = if !isempty(s.integer) && !isempty(s.exec)
@@ -70,7 +76,7 @@ end
 
 EXEC_Y(s::State) = if !isempty(s.exec)
   body = pop!(s.exec)
-  push!(s.exec, {convert(Symbol, "EXEC.Y"), copy(body)}, body)
+  push!(s.exec, [Symbol("EXEC.Y"), copy(body)], body)
 end
 
 EXEC_YANK(s::State) = if !isempty(s.integer) && !isempty(s.exec)

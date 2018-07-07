@@ -2,7 +2,7 @@
 # If no such container can be found, an empty list is returned.
 function container(haystack::Vector{Any}, needle::Any)
   # Search all sub-containers for the needle, recursively.
-  cnt = {}
+  cnt = []
   for sub in haystack
     cnt = container(sub, needle)
     if !isempty(cnt)
@@ -16,12 +16,12 @@ function container(haystack::Vector{Any}, needle::Any)
     return haystack
   end
 
-  # If we can't find the needle, then return the empty list. 
-  return {}
+  # If we can't find the needle, then return the empty list.
+  return []
 end
 
 # If the haystack isn't a vector, then return an empty list.
-container(haystack::Any, needle::Any) = {}
+container(haystack::Any, needle::Any) = []
 
 # Calculates the number of points in a given Push expression.
 function num_points(expr::Vector{Any})
@@ -30,7 +30,7 @@ function num_points(expr::Vector{Any})
     points += num_points(sub)
   end
   return points
-end 
+end
 num_points(expr::Any) = 1
 
 function insert_at_point!(v::Any, r::Any, pt::Integer)

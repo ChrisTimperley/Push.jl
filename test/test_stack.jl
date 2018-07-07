@@ -1,5 +1,5 @@
 using Push
-using Base.Test
+using Test
 
 # Peek.
 x = [10, 20, 30, 40, 50]

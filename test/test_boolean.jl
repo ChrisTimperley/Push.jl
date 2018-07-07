@@ -1,5 +1,5 @@
 using Push
-using Base.Test
+using Test
 
 # Load the base configuration used by all tests.
 cfg_path = joinpath(dirname(@__FILE__), "configuration/boolean.cfg")
