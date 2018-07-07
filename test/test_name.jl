@@ -1,12 +1,12 @@
 using Push
-using Base.Test
+using Test
 
 cfg_path = joinpath(dirname(@__FILE__), "configuration/name.cfg")
 cfg = Push.load_configuration(cfg_path)
 
 # NAME.QUOTE
 s = Push.run("(NAME.QUOTE NAME.QUOTE)", cfg)
-@test s.name == [convert(Symbol, "NAME.QUOTE")]
+@test s.name == [Symbol("NAME.QUOTE")]
 
 # NAME.=
 s = Push.run("(X Y NAME.=)", cfg)

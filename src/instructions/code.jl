@@ -5,8 +5,8 @@ end
 CODE_APPEND(s::State) = if length(s.code) > 1
   first = pop!(s.code)
   second = peek(s.code)
-  s.code[end] = vcat(isa(first, Vector) ? first : {first},
-    isa(second, Vector) ? second : {second})
+  s.code[end] = vcat(isa(first, Vector) ? first : [first],
+    isa(second, Vector) ? second : [second])
 end
 
 CODE_ATOM(s::State) = if !isempty(s.code)
@@ -14,13 +14,13 @@ CODE_ATOM(s::State) = if !isempty(s.code)
 end
 
 CODE_CAR(s::State) = if !isempty(s.code) && isa(s.code[end], Vector)
-  s.code[end] = isempty(s.code[end]) ? {} : s.code[end][1]
+  s.code[end] = isempty(s.code[end]) ? [] : s.code[end][1]
 end
 
 CODE_CDR(s::State) = if !isempty(s.code)
   top = peek(s.code)
   if !isa(top, Vector) || length(top) < 2
-    s.code[end] = {}
+    s.code[end] = []
   else
     s.code[end] = top[2:end]
   end
@@ -28,7 +28,7 @@ end
 
 CODE_CONS(s::State) = if length(s.code) > 1
   top = pop!(s.code)
-  s.code[end] = vcat({peek(s.code)}, isa(top, Vector) ? top : {top})
+  s.code[end] = vcat([peek(s.code)], isa(top, Vector) ? top : [top])
 end
 
 CODE_CONTAINER(s::State) = if length(s.code) > 1
@@ -42,8 +42,8 @@ CODE_CONTAINS(s::State) = if length(s.code) > 1
 end
 
 CODE_DISCREPANCY(s::State) = if length(s.code) > 1
-  a = isa(peek(s.code), Vector) ? pop!(s.code) : {pop!(s.code)}
-  b = isa(peek(s.code), Vector) ? pop!(s.code) : {pop!(s.code)}
+  a = isa(peek(s.code), Vector) ? pop!(s.code) : [pop!(s.code)]
+  b = isa(peek(s.code), Vector) ? pop!(s.code) : [pop!(s.code)]
   dis = zero(Int32)
 
   for v in setdiff(a, b)
@@ -57,7 +57,7 @@ CODE_DISCREPANCY(s::State) = if length(s.code) > 1
 end
 
 CODE_DO(s::State) = if !isempty(s.code)
-  push!(s.exec, convert(Symbol, "CODE.POP"), peek(s.code))
+  push!(s.exec, Symbol("CODE.POP"), peek(s.code))
 end
 
 CODE_DO_STAR(s::State) = if !isempty(s.code)
@@ -65,15 +65,15 @@ CODE_DO_STAR(s::State) = if !isempty(s.code)
 end
 
 CODE_DO_STAR_COUNT(s::State) = if !isempty(s.code) && !isempty(s.integer) && s.integer[end] > 0
-  push!(s.exec, pop!(s.code), convert(Symbol, "EXEC.DO*COUNT"))
+  push!(s.exec, pop!(s.code), Symbol("EXEC.DO*COUNT"))
 end
 
 CODE_DO_STAR_TIMES(s::State) = if !isempty(s.code) && !isempty(s.integer) && s.integer[end] > 0
-  push!(s.exec, pop!(s.code), convert(Symbol, "EXEC.DO*TIMES"))
+  push!(s.exec, pop!(s.code), Symbol("EXEC.DO*TIMES"))
 end
 
 CODE_DO_STAR_RANGE(s::State) = if !isempty(s.code) && length(s.integer) > 1
-  push!(s.exec, pop!(s.code), convert(Symbol, "EXEC.DO*RANGE"))
+  push!(s.exec, pop!(s.code), Symbol("EXEC.DO*RANGE"))
 end
 
 CODE_DUP(s::State) = if !isempty(s.code)
@@ -85,7 +85,7 @@ CODE_EXTRACT(s::State) = if !isempty(s.code) && !isempty(s.integer)
   code = peek(s.code)
 
   # Do nothing (other than pop from the INTEGER stack) if the top of the CODE
-  # stack is an atom. 
+  # stack is an atom.
   if !isa(code, Vector)
     return
   end
@@ -94,7 +94,7 @@ CODE_EXTRACT(s::State) = if !isempty(s.code) && !isempty(s.integer)
   index %= num_points(code)
 
   # Depth-first search for the given index.
-  q = {code}
+  q = Any[code]
   j = 0
   while !isempty(q)
     expr = pop!(q)
@@ -120,7 +120,7 @@ end
 CODE_FLUSH(s::State) = empty!(s.code)
 
 CODE_FROM_BOOLEAN(s::State) = if !isempty(s.boolean)
-  push!(s.code, pop!(s.boolean))  
+  push!(s.code, pop!(s.boolean))
 end
 
 CODE_FROM_FLOAT(s::State) = if !isempty(s.float)
@@ -144,7 +144,7 @@ end
 CODE_INSERT(s::State) = if !isempty(s.integer) && length(s.code) > 1
   cntr = pop!(s.code)
   item = pop!(s.code)
-  
+
   # Calculate the insertion point.
   i = abs(pop!(s.integer)) % num_points(cntr)
 
@@ -163,11 +163,11 @@ CODE_LENGTH(s::State) = if !isempty(s.code)
 end
 
 CODE_LIST(s::State) = if length(s.code) > 1
-  s.code[end] = {pop!(s.code), peek(s.code)}
+  s.code[end] = [pop!(s.code), peek(s.code)]
 end
 
 CODE_MEMBER(s::State) = if length(s.code) > 1
-  first = isa(peek(s.code), Vector) ? pop!(s.code) : {pop!(s.code)}
+  first = isa(peek(s.code), Vector) ? pop!(s.code) : [pop!(s.code)]
   push!(s.boolean, in(pop!(s.code), first))
 end
 
@@ -175,7 +175,7 @@ CODE_NOOP(s::State) = return
 
 CODE_NTH(s::State) = if !isempty(s.integer) && !isempty(s.code) && isa(s.code[end], Vector)
   if isempty(peek(s.code))
-    s.code[end] = {}
+    s.code[end] = []
   else
     s.code[end] = s.code[end][1 + (abs(pop!(s.integer)) % length(peek(s.code)))]
   end
@@ -183,10 +183,10 @@ end
 
 # Zeroth CDR is the first CDR in this implementation.
 # Seems to be implied by the Push 3.0 language reference.
-CODE_NTH_CDR(s::State) = if !isempty(s.code) && !isempty(s.integer)  
+CODE_NTH_CDR(s::State) = if !isempty(s.code) && !isempty(s.integer)
   i = pop!(s.integer)
   if !isa(peek(s.code), Vector) || isempty(peek(s.code))
-    s.code[end] = {}
+    s.code[end] = []
   else
     i = abs(i) % length(peek(s.code))
     deleteat!(s.code[end], 1:i+1)

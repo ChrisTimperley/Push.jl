@@ -1,5 +1,5 @@
 using Push
-using Base.Test
+using Test
 
 cfg_path = joinpath(dirname(@__FILE__), "configuration/integer.cfg")
 cfg = Push.load_configuration(cfg_path)

@@ -1,5 +1,5 @@
 using Push
-using Base.Test
+using Test
 
 cfg_path = joinpath(dirname(@__FILE__), "configuration/exec.cfg")
 cfg = Push.load_configuration(cfg_path)
@@ -7,11 +7,11 @@ cfg = Push.load_configuration(cfg_path)
 # EQUALS.
 # What are the semantics of comparison on the CODE stack?
 s = Push.run("(EXEC.= 3 3)", cfg)
-@test s.boolean == {true}
+@test s.boolean == [true]
 s = Push.run("(EXEC.= 3 3.0)", cfg)
-@test s.boolean == {true} # Should this be true or false?
+@test s.boolean == [true] # Should this be true or false?
 s = Push.run("(EXEC.= 3)", cfg)
-@test s.boolean == {}
+@test s.boolean == []
 
 # EXEC.DUP
 s = Push.run("(EXEC.DUP 3 INTEGER.+)", cfg)
@@ -39,9 +39,9 @@ s = Push.run("(FALSE EXEC.IF 5 10)", cfg)
 
 # EXEC.ROT
 s = Push.run("(EXEC.ROT A B C)", cfg)
-@test s.name == {:B, :C, :A}
+@test s.name == [:B, :C, :A]
 s = Push.run("(EXEC.ROT C B A)", cfg)
-@test s.name == {:B, :A, :C}
+@test s.name == [:B, :A, :C]
 
 # EXEC.SHOVE
 s = Push.run("(0 EXEC.SHOVE A B C D)", cfg)

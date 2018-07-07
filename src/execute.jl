@@ -21,7 +21,7 @@ execute(s::State) = while !isempty(s.exec)
 end
 
 # Could be made faster...
-execute(s::State, v::Vector{Any}) = for elem in reverse(v)
+execute(s::State, v::Vector) = for elem in reverse(v)
   push!(s.exec, elem)
 end
 
@@ -31,7 +31,7 @@ execute(s::State, v::Bool) =
 execute(s::State, v::Int32) =
   push!(s.integer, v)
 
-execute(s::State, f::Float32) = 
+execute(s::State, f::Float32) =
   push!(s.float, f)
 
 function execute(s::State, v::Symbol)

@@ -5,7 +5,7 @@ module Parser
   to_push(s::String) = parse(lex(s))
 
   # Lex source code into a sequence of tokens.
-  lex(s::String) = String[ss for ss in matchall(r"\(|\)|[^\(\)\s]+", s)]
+  lex(s::String) = String[m.match for m in eachmatch(r"\(|\)|[^\(\)\s]+", s; overlap=false)]
 
   # Parse tokens into a Push program.
   function parse(tokens::Vector{String})
@@ -13,7 +13,7 @@ module Parser
     prog_stack = Vector{Any}[]
 
     while !isempty(tokens)
-      t = shift!(tokens)
+      t = popfirst!(tokens)
       if t == "("
         p2 = Any[]
         push!(prog, p2)
@@ -21,16 +21,16 @@ module Parser
         prog = p2
       elseif t == ")"
         prog = pop!(prog_stack)
-      elseif ismatch(r"^\-?\d+\.\d+$", t)
-        push!(prog, convert(Float32, float(t)))
-      elseif ismatch(r"^\-?\d+$", t)
-        push!(prog, convert(Int32, int(t)))
+      elseif occursin(r"^\-?\d+\.\d+$", t)
+        push!(prog, Base.parse(Float32, t))
+      elseif occursin(r"^\-?\d+$", t)
+        push!(prog, Base.parse(Int32, t))
       elseif t == "FALSE"
         push!(prog, false)
       elseif t == "TRUE"
         push!(prog, true)
-      elseif ismatch(r"^\w\S*$", t)
-        push!(prog, convert(Symbol, uppercase(t)))
+      elseif occursin(r"^\w\S*$", t)
+        push!(prog, Symbol(uppercase(t)))
       else
         error("PARSING ERROR - Unrecognised token: $(t).")
       end

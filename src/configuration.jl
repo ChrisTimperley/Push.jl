@@ -3,7 +3,7 @@
 # - Clear excess whitespace.
 # - Configuration validation.
 #
-type Configuration
+mutable struct Configuration
   parameters::Dict{String, String}
   types::Vector{String}
   instructions::Vector{String}
